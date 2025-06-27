@@ -75,10 +75,11 @@ export default function Bridge() {
           {/* Header */}
           <div className="text-center mb-12">
             <h1 className="text-3xl md:text-4xl font-bold text-q-neutral-dark mb-4">
-              Wähle deinen Weg zur finanziellen Freiheit
+              ⚠️ WARNUNG: Das ist nicht für jeden geeignet
             </h1>
             <p className="text-xl text-q-neutral-medium">
-              Verschiedene Wege, ein Ziel: Deine finanzielle Unabhängigkeit
+              Wähle dein System basierend auf deinem Ziel und deiner Risikobereitschaft. 
+              Über 10.000 Menschen haben bereits ihren Weg zur finanziellen Freiheit gefunden.
             </p>
           </div>
 
@@ -101,19 +102,19 @@ export default function Bridge() {
                 <div className="space-y-4 mb-8">
                   <div className="flex items-center">
                     <div className="w-2 h-2 bg-q-secondary rounded-full mr-3"></div>
-                    <span className="text-q-neutral-dark">Schritt-für-Schritt Anleitung</span>
+                    <span className="text-q-neutral-dark">Die 3 kritischen Fehler, die 90% arm halten</span>
                   </div>
                   <div className="flex items-center">
                     <div className="w-2 h-2 bg-q-secondary rounded-full mr-3"></div>
-                    <span className="text-q-neutral-dark">0€ Startkapital erforderlich</span>
+                    <span className="text-q-neutral-dark">0€ Startkapital - funktioniert für jeden</span>
                   </div>
                   <div className="flex items-center">
                     <div className="w-2 h-2 bg-q-secondary rounded-full mr-3"></div>
-                    <span className="text-q-neutral-dark">Erste Ergebnisse in 30 Tagen</span>
+                    <span className="text-q-neutral-dark">Erste 500€ in den ersten 30 Tagen</span>
                   </div>
                   <div className="flex items-center">
                     <div className="w-2 h-2 bg-q-secondary rounded-full mr-3"></div>
-                    <span className="text-q-neutral-dark">Bonus: E-Mail-Funnel-Templates</span>
+                    <span className="text-q-neutral-dark">Geheime Automatisierungs-Tricks</span>
                   </div>
                 </div>
 
@@ -159,19 +160,19 @@ export default function Bridge() {
                 <div className="space-y-4 mb-8">
                   <div className="flex items-center">
                     <div className="w-2 h-2 bg-q-secondary rounded-full mr-3"></div>
-                    <span className="text-q-neutral-dark">Skalierung auf 5.000€+</span>
+                    <span className="text-q-neutral-dark">Multiple Einkommensströme wie die Reichen</span>
                   </div>
                   <div className="flex items-center">
                     <div className="w-2 h-2 bg-q-secondary rounded-full mr-3"></div>
-                    <span className="text-q-neutral-dark">Automatisierte Systeme</span>
+                    <span className="text-q-neutral-dark">KI-Automatisierung für passives Einkommen</span>
                   </div>
                   <div className="flex items-center">
                     <div className="w-2 h-2 bg-q-secondary rounded-full mr-3"></div>
-                    <span className="text-q-neutral-dark">Multiple Einkommensquellen</span>
+                    <span className="text-q-neutral-dark">Die 7-Säulen-Strategie für 5.000€+</span>
                   </div>
                   <div className="flex items-center">
                     <div className="w-2 h-2 bg-q-secondary rounded-full mr-3"></div>
-                    <span className="text-q-neutral-dark">Bonus: KI-Automatisierung</span>
+                    <span className="text-q-neutral-dark">Exklusive High-Performer Community</span>
                   </div>
                 </div>
 

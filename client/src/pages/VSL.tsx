@@ -14,33 +14,33 @@ export default function VSL() {
   const systemData = {
     'magic-profit': {
       title: 'Magic Profit System',
-      subtitle: 'Für Einsteiger: Von 0€ zu 2.000€ passivem Einkommen',
-      description: 'Das perfekte System für alle, die ohne Vorkenntnisse und ohne Startkapital ihr erstes passives Einkommen aufbauen möchten.',
+      subtitle: 'Das Geheimnis der ersten 2.000€ passives Einkommen',
+      description: 'Warum 90% der Menschen arm bleiben und wie du mit diesem simplen System zu den 10% gehörst, die es schaffen. Funktioniert auch ohne Vorkenntnisse oder Startkapital.',
       duration: '45 Minuten',
       views: '150.000+ Aufrufe',
-      badge: 'BESTSELLER',
+      badge: 'ÜBER 10.000 ERFOLGE',
       badgeColor: 'bg-q-accent',
       benefits: [
-        'Schritt-für-Schritt Anleitung',
-        '0€ Startkapital erforderlich',
-        'Erste Ergebnisse in 30 Tagen',
-        'Bonus: E-Mail-Funnel-Templates'
+        'Die 3 kritischen Fehler, die 90% arm halten',
+        'Warum du KEIN Startkapital brauchst',
+        'Der 30-Tage-Plan für deine ersten 500€',
+        'Bonus: Die geheimen Automatisierungs-Tricks'
       ],
       color: 'q-primary'
     },
     'money-magnet': {
       title: 'Money Magnet System',
-      subtitle: 'Für Fortgeschrittene: Skalierung auf 5.000€+',
-      description: 'Das erweiterte System für alle, die bereits erste Erfahrungen gesammelt haben und ihr Einkommen auf das nächste Level bringen möchten.',
+      subtitle: 'Von 2.000€ zu 5.000€+ - Die Skalierungs-Geheimnisse',
+      description: 'Wie erfolgreiche Menschen aus einem kleinen Einkommen ein Vermögen machen. Die fortgeschrittenen Strategien, die nur die oberen 1% kennen.',
       duration: '52 Minuten',
       views: '95.000+ Aufrufe',
-      badge: 'PREMIUM',
+      badge: 'NUR FÜR ERNSTHAFTE',
       badgeColor: 'bg-q-secondary',
       benefits: [
-        'Skalierung auf 5.000€+',
-        'Automatisierte Systeme',
-        'Multiple Einkommensquellen',
-        'Bonus: KI-Automatisierung'
+        'Multiple Einkommensströme wie die Reichen',
+        'KI-Automatisierung für passives Einkommen',
+        'Die 7-Säulen-Strategie für 5.000€+',
+        'Bonus: Exklusive High-Performer Community'
       ],
       color: 'q-secondary'
     }

@@ -27,27 +27,30 @@ export default function Home() {
   const testimonials = [
     {
       name: "Maria S.",
-      role: "Vollzeit-Mama",
+      role: "Alleinerziehende Mama",
       initials: "MS",
       rating: 5,
-      text: "In nur 3 Monaten von 0€ auf 1.800€ passives Einkommen. Endlich kann ich für meine Kinder da sein und trotzdem zum Familieneinkommen beitragen.",
-      verified: true
+      text: "Am Anfang war ich skeptisch. Aber bereits nach 30 Tagen hatte ich meine ersten 180€ verdient. Nach 90 Tagen waren es konstant 1.800€ im Monat. Heute, 6 Monate später, sind es über 3.200€. Das Beste: Es läuft komplett automatisch!",
+      verified: true,
+      avatarColor: "bg-pink-500"
     },
     {
       name: "Thomas K.",
-      role: "Angestellter",
+      role: "Frustrierter Angestellter",
       initials: "TK",
       rating: 5,
-      text: "Das System ist genial! Arbeite nur noch 30 Minuten täglich daran und verdiene 3.200€ nebenbei. Mein Chef weiß nicht mal, was ich in der Mittagspause mache.",
-      verified: true
+      text: "Ich war am Anfang skeptisch. Aber die Ergebnisse sprechen für sich: Von 0€ auf 4.200€ passives Einkommen in nur 6 Monaten. Das System funktioniert wirklich! Mein Chef ahnt nicht, dass ich bald kündige.",
+      verified: true,
+      avatarColor: "bg-blue-600"
     },
     {
       name: "Julia M.",
       role: "Studentin",
       initials: "JM",
       rating: 5,
-      text: "Als Studentin dachte ich, ich hätte kein Geld zum Investieren. Falsch gedacht! Mit 50€ gestartet, jetzt bei 950€ monatlich. BAföG war gestern!",
-      verified: true
+      text: "Als Studentin dachte ich, finanzielle Freiheit wäre nur was für Reiche. Mit diesem System verdiene ich jetzt mehr als meine Eltern - und das neben dem Studium! BAföG? Brauche ich nicht mehr.",
+      verified: true,
+      avatarColor: "bg-green-500"
     }
   ];
 
