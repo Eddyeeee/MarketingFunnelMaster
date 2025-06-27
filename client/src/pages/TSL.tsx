@@ -98,12 +98,170 @@ export default function TSL() {
               </p>
 
               <div className="bg-red-50 border-l-4 border-red-500 p-6 my-8">
-                <h3 className="text-xl font-bold text-red-800 mb-4">⚠️ WARNUNG: Das hier ist nicht für jeden!</h3>
+                <h3 className="text-xl font-bold text-red-800 mb-4">⚠️ WARNUNG: Das ist nicht für jeden!</h3>
                 <p className="text-red-700">
-                  Wenn du nicht bereit bist, mindestens 30 Minuten täglich zu investieren und deine Komfortzone zu verlassen, 
-                  dann solltest du jetzt aufhören zu lesen. Das System, das ich dir zeige, funktioniert nur für Menschen, 
-                  die wirklich handeln wollen.
+                  Falls du zu den Menschen gehörst, die bei der ersten Schwierigkeit aufgeben oder nicht bereit sind, 
+                  15-30 Minuten täglich zu investieren, dann schließe diese Seite JETZT. Dieses System funktioniert nur 
+                  für Menschen, die <strong>wirklich</strong> etwas ändern wollen.
                 </p>
+              </div>
+
+              <h3 className="text-2xl font-bold text-q-neutral-dark mb-6">
+                Der Grund, warum 90% der Menschen arm bleiben (und es nicht einmal merken)
+              </h3>
+
+              <p className="text-lg mb-6">
+                Lass mich dir eine Geschichte erzählen, die dein Leben verändern wird...
+              </p>
+
+              <p className="text-lg mb-6">
+                Vor 3 Jahren war ich genau wie du. Gefangen im Hamsterrad. Jeden Monat das gleiche Spiel: 
+                Gehalt rein, Rechnungen raus, und am Ende des Monats war wieder nichts übrig.
+              </p>
+
+              <p className="text-lg mb-6">
+                Ich dachte, ich müsste härter arbeiten. Länger arbeiten. Einen besseren Job finden. 
+                <span className="text-q-primary font-semibold"> Ich lag völlig falsch.</span>
+              </p>
+
+              <div className="bg-yellow-50 border-l-4 border-yellow-500 p-6 my-8">
+                <h4 className="text-lg font-bold text-yellow-800 mb-3">Die brutale Wahrheit:</h4>
+                <p className="text-yellow-700">
+                  Reiche Menschen arbeiten NICHT härter als du. Sie arbeiten NICHT länger als du. 
+                  Sie haben nur EIN SYSTEM, das für sie arbeitet, während sie schlafen.
+                </p>
+              </div>
+
+              <h3 className="text-2xl font-bold text-q-neutral-dark mb-6">
+                Die 3 kritischen Fehler, die 90% der Menschen arm halten
+              </h3>
+
+              <div className="space-y-6 mb-8">
+                <div className="bg-gray-50 p-6 rounded-lg">
+                  <h4 className="text-xl font-bold text-q-primary mb-3">
+                    <span className="bg-q-primary text-white px-3 py-1 rounded-full mr-3">1</span>
+                    Sie verkaufen Zeit gegen Geld
+                  </h4>
+                  <p className="text-lg">
+                    Der größte Fehler überhaupt. Solange du deine Zeit verkaufst, wirst du niemals reich. 
+                    Reiche Menschen haben verstanden: Du musst ein System aufbauen, das auch ohne dich läuft.
+                  </p>
+                </div>
+
+                <div className="bg-gray-50 p-6 rounded-lg">
+                  <h4 className="text-xl font-bold text-q-primary mb-3">
+                    <span className="bg-q-primary text-white px-3 py-1 rounded-full mr-3">2</span>
+                    Sie warten auf den "perfekten Moment"
+                  </h4>
+                  <p className="text-lg">
+                    "Wenn ich mehr Geld habe...", "Wenn ich mehr Zeit habe...", "Wenn die Kinder größer sind...". 
+                    Der perfekte Moment kommt nie. Erfolgreiche Menschen starten mit dem, was sie haben.
+                  </p>
+                </div>
+
+                <div className="bg-gray-50 p-6 rounded-lg">
+                  <h4 className="text-xl font-bold text-q-primary mb-3">
+                    <span className="bg-q-primary text-white px-3 py-1 rounded-full mr-3">3</span>
+                    Sie denken, sie brauchen viel Startkapital
+                  </h4>
+                  <p className="text-lg">
+                    Das ist der größte Mythos. Die erfolgreichsten Menschen haben oft mit NICHTS angefangen. 
+                    Was du brauchst, ist das richtige System - nicht das große Geld.
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-green-50 border-l-4 border-green-500 p-6 my-8">
+                <h4 className="text-lg font-bold text-green-800 mb-3">Hier ist die gute Nachricht:</h4>
+                <p className="text-green-700">
+                  Diese 3 Fehler kannst du ab HEUTE vermeiden. Und ich zeige dir genau wie. 
+                  Mit dem gleichen System, das bereits über 10.000 Menschen zu 2.000-5.000€ passivem Einkommen verholfen hat.
+                </p>
+              </div>
+
+              <h3 className="text-2xl font-bold text-q-neutral-dark mb-6">
+                Wie ich von 0€ auf 4.200€ passives Einkommen kam (und warum es auch bei dir funktioniert)
+              </h3>
+
+              <p className="text-lg mb-6">
+                Es war ein Dienstagabend im Oktober 2021. Ich saß in meiner kleinen Küche, starrte auf mein Bankkonto 
+                und wusste nicht, wie ich die Miete bezahlen sollte.
+              </p>
+
+              <p className="text-lg mb-6">
+                Damals arbeitete ich 50 Stunden die Woche in einem Job, den ich hasste. Jeden Morgen das gleiche: 
+                Wecker um 6:30 Uhr, schnell einen Kaffee, dann ins Büro hetzen.
+              </p>
+
+              <p className="text-lg mb-6">
+                <span className="text-q-primary font-semibold">Heute, knapp 3 Jahre später, verdiene ich 4.200€ im Monat. Vollautomatisch.</span> 
+                Ich stehe auf, wann ich will. Arbeite von wo ich will. Und das Beste: Das System läuft auch, wenn ich schlafe.
+              </p>
+
+              <div className="bg-blue-50 border-l-4 border-blue-500 p-6 my-8">
+                <h4 className="text-lg font-bold text-blue-800 mb-3">Das Geheimnis:</h4>
+                <p className="text-blue-700">
+                  Ich habe aufgehört, meine Zeit zu verkaufen. Stattdessen habe ich ein System aufgebaut, 
+                  das 24/7 für mich arbeitet. Dieses System nennt sich "Magic Profit System".
+                </p>
+              </div>
+
+              <h3 className="text-2xl font-bold text-q-neutral-dark mb-6">
+                Was macht das Magic Profit System so besonders?
+              </h3>
+
+              <p className="text-lg mb-6">
+                Das Magic Profit System basiert auf 3 simplen Säulen, die jeder umsetzen kann - 
+                auch ohne Vorkenntnisse und ohne Startkapital:
+              </p>
+
+              <div className="space-y-6 mb-8">
+                <div className="bg-green-50 p-6 rounded-lg border-l-4 border-green-500">
+                  <h4 className="text-xl font-bold text-green-800 mb-3">
+                    <span className="bg-green-500 text-white px-3 py-1 rounded-full mr-3">1</span>
+                    Automatisierung statt Zeitverkauf
+                  </h4>
+                  <p className="text-lg text-green-700">
+                    Du baust einmal ein System auf, das dann 24/7 für dich arbeitet. Keine Tauschgeschäfte mehr: 
+                    Zeit gegen Geld. Das System verdient auch, wenn du schläfst.
+                  </p>
+                </div>
+
+                <div className="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-500">
+                  <h4 className="text-xl font-bold text-blue-800 mb-3">
+                    <span className="bg-blue-500 text-white px-3 py-1 rounded-full mr-3">2</span>
+                    Skalierbarkeit ohne Grenzen
+                  </h4>
+                  <p className="text-lg text-blue-700">
+                    Während traditionelle Jobs ein Gehaltslimit haben, ist beim Magic Profit System der Himmel die Grenze. 
+                    Von 500€ zu 2.000€ zu 5.000€+ - alles ist möglich.
+                  </p>
+                </div>
+
+                <div className="bg-purple-50 p-6 rounded-lg border-l-4 border-purple-500">
+                  <h4 className="text-xl font-bold text-purple-800 mb-3">
+                    <span className="bg-purple-500 text-white px-3 py-1 rounded-full mr-3">3</span>
+                    Einfache Umsetzung für jeden
+                  </h4>
+                  <p className="text-lg text-purple-700">
+                    Kein Informatikstudium nötig. Keine komplizierten Technologien. Das System ist so simpel, 
+                    dass es auch deine Oma verstehen würde.
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-yellow-50 border-l-4 border-yellow-500 p-6 my-8">
+                <h4 className="text-lg font-bold text-yellow-800 mb-3">Echte Ergebnisse von echten Menschen:</h4>
+                <div className="space-y-4">
+                  <p className="text-yellow-700">
+                    <strong>Maria S., Alleinerziehende Mutter:</strong> "Nach 90 Tagen hatte ich konstant 1.800€ im Monat. 
+                    Heute sind es über 3.200€ - komplett automatisch!"
+                  </p>
+                  <p className="text-yellow-700">
+                    <strong>Thomas K., Angestellter:</strong> "Das System läuft jetzt seit 6 Monaten und bringt mir 4.200€ 
+                    passives Einkommen. Mein Chef ahnt nicht, dass ich bald kündige."
+                  </p>
+                </div>
               </div>
 
               <h3 className="text-2xl font-bold text-q-neutral-dark mb-6">
