@@ -110,8 +110,14 @@ export class MemStorage implements IStorage {
   async createLead(insertLead: InsertLead): Promise<Lead> {
     const id = this.currentLeadId++;
     const lead: Lead = { 
-      ...insertLead, 
+      ...insertLead,
       id,
+      source: insertLead.source || null,
+      firstName: insertLead.firstName || null,
+      lastName: insertLead.lastName || null,
+      phone: insertLead.phone || null,
+      quizAnswers: insertLead.quizAnswers || null,
+      funnel: insertLead.funnel || null,
       createdAt: new Date()
     };
     this.leads.set(id, lead);
@@ -150,6 +156,10 @@ export class MemStorage implements IStorage {
     const event: Analytics = {
       ...insertEvent,
       id,
+      page: insertEvent.page || null,
+      userId: insertEvent.userId || null,
+      sessionId: insertEvent.sessionId || null,
+      data: insertEvent.data || null,
       createdAt: new Date()
     };
     this.analytics.set(id, event);

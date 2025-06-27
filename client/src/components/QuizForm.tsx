@@ -25,73 +25,97 @@ type QuizFormData = z.infer<typeof quizSchema>;
 const questions = [
   {
     id: '1',
-    question: 'Wie würdest du deine aktuelle finanzielle Situation beschreiben?',
+    question: 'Welcher Typ beschreibt dich am besten?',
     options: [
       {
         value: 'student',
         icon: GraduationCap,
-        title: 'Student/Azubi',
-        description: 'Knapper Budgetrahmen, wenig Einkommen'
+        title: 'Struggling Student',
+        description: 'Student/Azubi mit wenig Budget, will nebenbei verdienen'
       },
       {
         value: 'employee',
         icon: Briefcase,
-        title: 'Angestellte/r',
-        description: 'Festes Einkommen, aber wenig übrig'
+        title: 'Burnout-Bernd',
+        description: 'Angestellte/r, frustriert vom Hamsterrad'
       },
       {
         value: 'parent',
         icon: Heart,
-        title: 'Vollzeit-Mama/Papa',
-        description: 'Familienfokus, suche Nebeneinkommen'
+        title: 'Overwhelmed Mom',
+        description: 'Alleinerziehend oder Vollzeit-Mama, braucht Extra-Einkommen'
       }
     ]
   },
   {
     id: '2',
-    question: 'Wie viel Zeit kannst du täglich investieren?',
+    question: 'Was ist dein größtes Problem gerade?',
     options: [
       {
-        value: '15min',
+        value: 'money_tight',
         icon: Clock,
-        title: '15-30 Minuten',
-        description: 'Schnelle Lösung für Vielbeschäftigte'
+        title: 'Geld ist knapp',
+        description: 'Jeden Monat kämpfe ich, über die Runden zu kommen'
       },
       {
-        value: '1hour',
+        value: 'no_time',
         icon: HourglassIcon,
-        title: '1-2 Stunden',
-        description: 'Regelmäßige Beschäftigung möglich'
+        title: 'Keine Zeit',
+        description: 'Ich arbeite schon viel, habe kaum Zeit für was Neues'
       },
       {
-        value: 'flexible',
+        value: 'no_idea',
         icon: Infinity,
-        title: 'Flexibel',
-        description: 'Zeit variiert je nach Woche'
+        title: 'Keine Ahnung wo anfangen',
+        description: 'Will was ändern, weiß aber nicht wie'
       }
     ]
   },
   {
     id: '3',
-    question: 'Was ist dein wichtigstes Ziel?',
+    question: 'Wie viel möchtest du zusätzlich verdienen?',
     options: [
       {
-        value: 'passive',
+        value: 'basic',
         icon: TrendingUp,
-        title: 'Passives Einkommen aufbauen',
-        description: 'Geld verdienen ohne aktive Arbeit'
+        title: '500-1.500€ monatlich',
+        description: 'Würde meine Sorgen deutlich reduzieren'
+      },
+      {
+        value: 'substantial',
+        icon: Bird,
+        title: '2.000-5.000€ monatlich',
+        description: 'Will finanziell unabhängig werden'
       },
       {
         value: 'freedom',
-        icon: Bird,
-        title: 'Finanzielle Freiheit',
-        description: 'Unabhängigkeit vom Arbeitgeber'
+        icon: Shield,
+        title: '5.000€+ monatlich',
+        description: 'Träume von kompletter finanzieller Freiheit'
+      }
+    ]
+  },
+  {
+    id: '4',
+    question: 'Was hält dich zurück?',
+    options: [
+      {
+        value: 'no_capital',
+        icon: TrendingUp,
+        title: 'Kein Startkapital',
+        description: 'Habe kein Geld zum Investieren'
       },
       {
-        value: 'security',
+        value: 'no_experience',
+        icon: Bird,
+        title: 'Keine Erfahrung',
+        description: 'Weiß nicht, wo ich anfangen soll'
+      },
+      {
+        value: 'tried_failed',
         icon: Shield,
-        title: 'Finanzielle Sicherheit',
-        description: 'Sorgenfreie Zukunft für die Familie'
+        title: 'Schon mal versucht',
+        description: 'Hatte schon mal Hoffnung, wurde enttäuscht'
       }
     ]
   }

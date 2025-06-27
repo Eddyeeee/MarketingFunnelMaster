@@ -80,11 +80,11 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-              Von 0€ zu 2.000-5.000€ <br />
-              <span className="text-q-accent">passivem Einkommen</span>
+              Warum 90% der Menschen niemals <br />
+              <span className="text-q-accent">finanziell frei werden</span>
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-blue-100">
-              Das bewährte System für finanzielle Freiheit - auch ohne Vorkenntnisse
+              Die schockierende Wahrheit über finanzielle Freiheit - und wie du zu den 10% gehörst
             </p>
             
             {/* Trust Indicators */}
@@ -110,7 +110,7 @@ export default function Home() {
                 className="gradient-cta hover:bg-q-accent-dark text-white px-8 py-4 text-lg font-semibold transition-all transform hover:scale-105"
               >
                 <Play className="mr-2" size={20} />
-                Kostenlosen Test starten
+                Kostenlosen Finanz-Test starten
               </Button>
               <Button 
                 onClick={handleScrollToVSL}

@@ -115,53 +115,77 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
 function generateQuizResults(answers: Record<string, string>) {
   const profile = answers['1'];
-  const time = answers['2'];
+  const problem = answers['2'];
   const goal = answers['3'];
+  const blocker = answers['4'];
   
-  // Profile mapping
+  // Profile mapping based on new quiz structure
   const profiles: Record<string, string> = {
-    'student': 'Student/Azubi mit begrenztem Budget',
-    'employee': 'Angestellte/r mit festem Einkommen',
-    'parent': 'Vollzeit-Elternteil mit Familienfokus'
+    'student': 'Struggling Student Sarah - Knapper Budgetrahmen, hohe Motivation',
+    'employee': 'Burnout-Bernd - Frustriert vom Hamsterrad, will ausbrechen',
+    'parent': 'Overwhelmed Mom Maria - Zeitnot, familienfokussiert'
   };
   
-  const times: Record<string, string> = {
-    '15min': '15-30 Minuten täglich',
-    '1hour': '1-2 Stunden täglich',
-    'flexible': 'Flexible Zeiteinteilung'
+  const problems: Record<string, string> = {
+    'money_tight': 'Monatliche Geldknappheit',
+    'no_time': 'Zeitmangel durch Vollzeitarbeit',
+    'no_idea': 'Orientierungslosigkeit beim Start'
   };
   
   const goals: Record<string, string> = {
-    'passive': 'Passives Einkommen aufbauen',
-    'freedom': 'Finanzielle Freiheit erreichen',
-    'security': 'Finanzielle Sicherheit schaffen'
+    'basic': '500-1.500€ Zusatzeinkommen angestrebt',
+    'substantial': '2.000-5.000€ für finanzielle Unabhängigkeit',
+    'freedom': '5.000€+ für komplette Freiheit'
   };
   
-  const profileText = `${profiles[profile] || 'Individueller Typ'} • ${times[time] || 'Flexible Zeit'} • ${goals[goal] || 'Finanzielle Ziele'}`;
+  const profileText = `${profiles[profile] || 'Individueller Typ'} • ${problems[problem] || 'Spezifisches Problem'} • ${goals[goal] || 'Finanzielle Ziele'}`;
   
-  // Strategy recommendation
+  // Advanced strategy recommendation based on multiple factors
   let strategyText = '';
   let recommendedFunnel = '';
   
-  if (profile === 'student') {
-    strategyText = 'Magic Profit System - Perfekt für den Einstieg mit 0€ Startkapital';
+  // Students and people with no capital -> Magic Profit
+  if (profile === 'student' || blocker === 'no_capital' || goal === 'basic') {
+    strategyText = 'Magic Profit System - Perfekt für den Einstieg mit 0€ Startkapital. Erste Ergebnisse in 30 Tagen möglich.';
     recommendedFunnel = 'magic-profit';
-  } else if (profile === 'parent') {
-    strategyText = 'Magic Profit System - Ideal für Eltern mit flexiblen Arbeitszeiten';
+  } 
+  // Parents needing flexible time -> Magic Profit  
+  else if (profile === 'parent' || problem === 'no_time') {
+    strategyText = 'Magic Profit System - Ideal für flexible Arbeitszeiten zwischen Familie und Job. 15-30 Min täglich reichen.';
     recommendedFunnel = 'magic-profit';
-  } else {
-    strategyText = 'Money Magnet System - Optimal für Skalierung und höhere Ziele';
+  }
+  // Higher earners and ambitious goals -> Money Magnet
+  else if (goal === 'substantial' || goal === 'freedom' || profile === 'employee') {
+    strategyText = 'Money Magnet System - Für ambitionierte Ziele und Skalierung auf 5.000€+. Multiple Einkommensströme aufbauen.';
     recommendedFunnel = 'money-magnet';
+  }
+  else {
+    strategyText = 'Magic Profit System - Der bewährte Einstieg für alle, die ohne Risiko starten wollen.';
+    recommendedFunnel = 'magic-profit';
+  }
+  
+  // Personalized next steps based on profile
+  let nextSteps = [];
+  if (recommendedFunnel === 'magic-profit') {
+    nextSteps = [
+      'Magic Profit VSL ansehen (45 Min Investment)',
+      'Kostenlosen Starter-Guide herunterladen',
+      'E-Mail-Serie mit Schritt-für-Schritt Anleitung erhalten',
+      'Bei Fragen: Kostenloses Beratungsgespräch buchen'
+    ];
+  } else {
+    nextSteps = [
+      'Money Magnet VSL ansehen (52 Min Investment)', 
+      'Premium-Guide für Fortgeschrittene sichern',
+      'Erweiterte E-Mail-Serie mit Skalierungs-Strategien',
+      'Zugang zur exklusiven Money Magnet Community'
+    ];
   }
   
   return {
     profileText,
     strategyText,
     recommendedFunnel,
-    nextSteps: [
-      'Kostenlosen personalisierten Plan herunterladen',
-      'VSL zum empfohlenen System ansehen',
-      'E-Mail-Funnel mit wertvollen Tipps erhalten'
-    ]
+    nextSteps
   };
 }
