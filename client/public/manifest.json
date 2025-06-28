@@ -1,0 +1,180 @@
+{
+  "name": "Q-Money & Cash Maximus - Finanzielle Freiheit",
+  "short_name": "Q-Money",
+  "description": "Bewährte Strategien für 2.000-5.000€ passives Einkommen. Über 10.000 zufriedene Kunden.",
+  "version": "2.0.0",
+  "manifest_version": 2,
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#3b82f6",
+  "background_color": "#ffffff",
+  "lang": "de",
+  "dir": "ltr",
+  "categories": ["finance", "education", "business", "productivity"],
+  "screenshots": [
+    {
+      "src": "/screenshots/desktop-home.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "Q-Money Hauptseite auf Desktop"
+    },
+    {
+      "src": "/screenshots/mobile-quiz.jpg", 
+      "sizes": "390x844",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Finanz-Quiz auf Mobile"
+    }
+  ],
+  "icons": [
+    {
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Finanz-Quiz starten",
+      "short_name": "Quiz",
+      "description": "Finde heraus, welcher Geld-Typ du bist",
+      "url": "/quiz",
+      "icons": [
+        {
+          "src": "/icons/quiz-shortcut.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "VSL ansehen",
+      "short_name": "Video",
+      "description": "Schaue dir das Erklärvideo an",
+      "url": "/vsl",
+      "icons": [
+        {
+          "src": "/icons/video-shortcut.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Jetzt starten",
+      "short_name": "Start",
+      "description": "Beginne deine Reise zur finanziellen Freiheit",
+      "url": "/bridge",
+      "icons": [
+        {
+          "src": "/icons/start-shortcut.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "handle_links": "preferred",
+  "capture_links": "existing-client-navigate",
+  "protocol_handlers": [
+    {
+      "protocol": "web+qmoney",
+      "url": "/?action=%s"
+    }
+  ],
+  "file_handlers": [
+    {
+      "action": "/open-file",
+      "accept": {
+        "application/pdf": [".pdf"],
+        "text/plain": [".txt"]
+      }
+    }
+  ],
+  "share_target": {
+    "action": "/share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
+  "widgets": [
+    {
+      "name": "Q-Money Stats",
+      "description": "Zeige deine Fortschritte an",
+      "tag": "qmoney-stats",
+      "template": "qmoney-stats-template",
+      "ms_ac_template": "adaptive-card.json",
+      "data": "widgets/stats.json",
+      "type": "application/json",
+      "screenshots": [
+        {
+          "src": "/widgets/stats-widget.png",
+          "sizes": "200x200",
+          "label": "Q-Money Stats Widget"
+        }
+      ],
+      "icons": [
+        {
+          "src": "/icons/widget-icon.png",
+          "sizes": "64x64"
+        }
+      ],
+      "auth": false,
+      "update": 900
+    }
+  ]
+} 

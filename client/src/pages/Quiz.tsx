@@ -41,7 +41,7 @@ export default function Quiz() {
 
           <Card className="shadow-lg">
             <CardContent className="p-8">
-              <QuizForm />
+              <QuizForm quizId="magic_tool" />
             </CardContent>
           </Card>
         </div>

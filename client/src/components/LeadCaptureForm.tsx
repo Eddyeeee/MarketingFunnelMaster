@@ -1,158 +1,198 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
-import { toast } from "@/hooks/use-toast";
-
-const leadSchema = z.object({
-  email: z.string().email("Bitte gib eine gültige E-Mail-Adresse ein"),
-  firstName: z.string().min(2, "Bitte gib deinen Vornamen ein"),
-  lastName: z.string().optional(),
-  phone: z.string().optional(),
-});
-
-type LeadFormData = z.infer<typeof leadSchema>;
+import React, { useState } from 'react';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import { useToast } from '../hooks/use-toast';
+import { trackLeadCapture } from '../lib/analytics';
 
 interface LeadCaptureFormProps {
-  funnel: string;
-  source: string;
-  onSubmit?: (data: LeadFormData) => void;
+  title?: string;
+  description?: string;
+  placeholder?: string;
   buttonText?: string;
+  source?: string;
+  funnel?: string;
+  className?: string;
+  onSuccess?: (data: any) => void;
   showPhone?: boolean;
-  showLastName?: boolean;
+  showName?: boolean;
+  quizAnswers?: Record<string, string>;
+  persona?: any;
 }
 
-export default function LeadCaptureForm({ 
-  funnel, 
-  source, 
-  onSubmit,
-  buttonText = "Kostenlosen Zugang sichern",
+export function LeadCaptureForm({
+  title = "Sichere dir jetzt deinen kostenlosen Guide!",
+  description = "Erhalte sofort Zugang zu unserem exklusiven Guide und starte noch heute mit deinem ersten Online-Einkommen.",
+  placeholder = "Deine E-Mail-Adresse",
+  buttonText = "Jetzt kostenlos sichern",
+  source = 'capture-lead',
+  funnel = 'magic_tool',
+  className = "",
+  onSuccess,
   showPhone = false,
-  showLastName = false
+  showName = false,
+  quizAnswers,
+  persona
 }: LeadCaptureFormProps) {
-  const form = useForm<LeadFormData>({
-    resolver: zodResolver(leadSchema),
-    defaultValues: {
-      email: "",
-      firstName: "",
-      lastName: "",
-      phone: ""
-    }
-  });
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
 
-  const leadMutation = useMutation({
-    mutationFn: async (data: LeadFormData) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!email) {
+      toast({
+        title: "E-Mail erforderlich",
+        description: "Bitte gib deine E-Mail-Adresse ein.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      // Erstelle Lead-Daten
       const leadData = {
-        ...data,
+        email,
+        name: showName ? name : undefined,
+        phone: showPhone ? phone : undefined,
+        source,
         funnel,
-        source
+        quizAnswers,
+        persona
       };
-      const response = await apiRequest('POST', '/api/leads', leadData);
-      return response.json();
-    },
-    onSuccess: (data) => {
-      toast({
-        title: "Erfolgreich!",
-        description: "Deine Daten wurden gespeichert. Du erhältst gleich eine E-Mail von uns.",
-      });
-      onSubmit?.(form.getValues());
-      form.reset();
-    },
-    onError: (error) => {
-      toast({
-        title: "Fehler",
-        description: "Beim Speichern deiner Daten ist ein Fehler aufgetreten. Bitte versuche es erneut.",
-        variant: "destructive"
-      });
-    }
-  });
 
-  const handleSubmit = (data: LeadFormData) => {
-    leadMutation.mutate(data);
+      // Sende an Backend
+      const response = await fetch('/api/capture-lead', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(leadData),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        // Track Lead Capture
+        await trackLeadCapture({
+          email,
+          name: showName ? name : undefined,
+          source,
+          funnel,
+          quizAnswers,
+          persona
+        });
+
+        toast({
+          title: "Erfolgreich angemeldet!",
+          description: "Du erhältst gleich eine E-Mail von uns mit deinem kostenlosen Guide.",
+        });
+
+        // Reset form
+        setEmail('');
+        setName('');
+        setPhone('');
+
+        // Call success callback
+        if (onSuccess) {
+          onSuccess(result);
+        }
+      } else {
+        throw new Error(result.error || 'Unbekannter Fehler');
+      }
+    } catch (error) {
+      console.error('Lead capture error:', error);
+      toast({
+        title: "Fehler beim Anmelden",
+        description: "Bitte versuche es noch einmal oder kontaktiere uns direkt.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-        <div className={`grid gap-4 ${showLastName ? 'md:grid-cols-2' : 'grid-cols-1'}`}>
-          <FormField
-            control={form.control}
-            name="firstName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Vorname *</FormLabel>
-                <FormControl>
-                  <Input placeholder="Dein Vorname" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+    <Card className={`w-full max-w-md mx-auto ${className}`}>
+      <CardHeader className="text-center">
+        <CardTitle className="text-xl font-bold text-gray-900">
+          {title}
+        </CardTitle>
+        <CardDescription className="text-gray-600">
+          {description}
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {showName && (
+            <div className="space-y-2">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                type="text"
+                placeholder="Dein Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full"
+              />
+            </div>
+          )}
           
-          {showLastName && (
-            <FormField
-              control={form.control}
-              name="lastName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nachname</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Dein Nachname" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+          <div className="space-y-2">
+            <Label htmlFor="email">E-Mail</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder={placeholder}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full"
+              required
             />
+          </div>
+
+          {showPhone && (
+            <div className="space-y-2">
+              <Label htmlFor="phone">Telefon (optional)</Label>
+              <Input
+                id="phone"
+                type="tel"
+                placeholder="Deine Telefonnummer"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="w-full"
+              />
+            </div>
           )}
-        </div>
-        
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>E-Mail-Adresse *</FormLabel>
-              <FormControl>
-                <Input type="email" placeholder="deine@email.de" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        
-        {showPhone && (
-          <FormField
-            control={form.control}
-            name="phone"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Telefonnummer (optional)</FormLabel>
-                <FormControl>
-                  <Input type="tel" placeholder="Deine Telefonnummer" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+
+          <Button
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <div className="flex items-center space-x-2">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                <span>Wird verarbeitet...</span>
+              </div>
+            ) : (
+              buttonText
             )}
-          />
-        )}
-        
-        <Button 
-          type="submit" 
-          className="w-full gradient-cta hover:bg-q-accent-dark text-white py-3 text-lg font-semibold"
-          disabled={leadMutation.isPending}
-        >
-          {leadMutation.isPending ? 'Wird verarbeitet...' : buttonText}
-        </Button>
-        
-        <p className="text-xs text-q-neutral-medium text-center">
-          Mit dem Absenden stimmst du unseren Datenschutzbestimmungen zu. 
-          Du kannst dich jederzeit wieder abmelden.
-        </p>
-      </form>
-    </Form>
+          </Button>
+
+          <p className="text-xs text-gray-500 text-center">
+            Du kannst dich jederzeit wieder abmelden. Wir respektieren deine Privatsphäre.
+          </p>
+        </form>
+      </CardContent>
+    </Card>
   );
 }
+
+export default LeadCaptureForm;
