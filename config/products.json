@@ -1,0 +1,297 @@
+{
+  "products": {
+    "remotecash": {
+      "id": "remotecash",
+      "name": "Remote Cash Flow",
+      "brand": "Remote Cash Flow",
+      "domain": "remotecashflow.com",
+      "description": "Die geheime Remote-Geld-Methode",
+      "targetAudience": "Remote Worker, Digital Nomads, 2000€+ monatlich",
+      "personas": ["remote_worker", "digital_nomad", "location_freedom"],
+      "pricing": {
+        "basic": 397,
+        "premium": 797
+      },
+      "commission": 80,
+      "digistoreIds": {
+        "basic": "remotecash_basic_789",
+        "premium": "remotecash_premium_012"
+      },
+      "colors": {
+        "primary": "#0891b2",
+        "secondary": "#7c2d12",
+        "accent": "#dc2626"
+      },
+      "content": {
+        "quizTitle": "Entdecke deinen Remote Cash Flow Typ!",
+        "quizDescription": "Finde heraus, welcher Remote-Geldverdienst-Typ du bist und erhalte deine personalisierte Strategie.",
+        "vslTitle": "Remote Cash Flow: Die geheime Methode für 2000€+ von überall",
+        "bridgeTitle": "Perfekt! Dein personalisierter Remote Cash Flow Plan ist bereit!",
+        "secretReveal": "Das ist Q-Money von Andreas Lang - die bewährte Methode für Remote Income!"
+      },
+      "psychology": {
+        "hideBrand": true,
+        "mysteryApproach": true,
+        "revealAtEnd": true,
+        "urgency": "Nur noch 47 Plätze verfügbar!",
+        "scarcity": "Diese Methode wird nur 100 Menschen gezeigt!"
+      }
+    },
+    "qmoney": {
+      "id": "qmoney",
+      "name": "Q-Money",
+      "brand": "Q-Money",
+      "domain": "qmoney.com",
+      "description": "Online-Geldverdienen Grundkurs",
+      "targetAudience": "Anfänger, 500€+ monatlich",
+      "personas": ["money_tight", "no_time", "no_idea"],
+      "pricing": {
+        "basic": 297,
+        "premium": 597
+      },
+      "commission": 80,
+      "digistoreIds": {
+        "basic": "qmoney_basic_123",
+        "premium": "qmoney_premium_456"
+      },
+      "colors": {
+        "primary": "#2563eb",
+        "secondary": "#7c3aed",
+        "accent": "#059669"
+      },
+      "content": {
+        "quizTitle": "Finde heraus, welcher Geld-Typ du bist!",
+        "quizDescription": "Beantworte 4 kurze Fragen und erhalte deine personalisierte Strategie für finanziellen Erfolg.",
+        "vslTitle": "Q-Money: Der Weg zu 500€+ monatlich",
+        "bridgeTitle": "Perfekt! Dein personalisierter Q-Money Plan ist bereit!",
+        "secretReveal": "Das ist Q-Money von Andreas Lang!"
+      },
+      "psychology": {
+        "hideBrand": false,
+        "mysteryApproach": false,
+        "revealAtEnd": false,
+        "urgency": "Nur noch 23 Plätze verfügbar!",
+        "scarcity": "Diese Methode wird nur 50 Menschen gezeigt!"
+      }
+    },
+    "cryptoflow": {
+      "id": "cryptoflow",
+      "name": "Crypto Flow Master",
+      "brand": "Crypto Flow Master",
+      "domain": "cryptoflowmaster.com",
+      "description": "Kryptowährungen & Trading Strategien",
+      "targetAudience": "Crypto Enthusiasten, Trader, 5000€+ monatlich",
+      "personas": ["crypto_beginner", "active_trader", "hodler"],
+      "pricing": {
+        "basic": 497,
+        "premium": 997
+      },
+      "commission": 80,
+      "digistoreIds": {
+        "basic": "cryptoflow_basic_345",
+        "premium": "cryptoflow_premium_678"
+      },
+      "colors": {
+        "primary": "#f59e0b",
+        "secondary": "#1f2937",
+        "accent": "#10b981"
+      },
+      "content": {
+        "quizTitle": "Entdecke deinen Crypto Flow Typ!",
+        "quizDescription": "Finde heraus, welcher Crypto-Typ du bist und erhalte deine personalisierte Trading-Strategie.",
+        "vslTitle": "Crypto Flow Master: Die geheime Methode für 5000€+ mit Kryptowährungen",
+        "bridgeTitle": "Perfekt! Dein personalisierter Crypto Flow Plan ist bereit!",
+        "secretReveal": "Das ist die bewährte Crypto-Methode!"
+      },
+      "psychology": {
+        "hideBrand": true,
+        "mysteryApproach": true,
+        "revealAtEnd": true,
+        "urgency": "Nur noch 15 Plätze verfügbar!",
+        "scarcity": "Diese Methode wird nur 30 Menschen gezeigt!"
+      }
+    },
+    "affiliatepro": {
+      "id": "affiliatepro",
+      "name": "Affiliate Pro System",
+      "brand": "Affiliate Pro",
+      "domain": "affiliatepro.com",
+      "description": "Affiliate Marketing & Partnerprogramme",
+      "targetAudience": "Affiliate Marketer, Content Creator, 3000€+ monatlich",
+      "personas": ["content_creator", "affiliate_marketer", "social_media"],
+      "pricing": {
+        "basic": 347,
+        "premium": 747
+      },
+      "commission": 80,
+      "digistoreIds": {
+        "basic": "affiliatepro_basic_901",
+        "premium": "affiliatepro_premium_234"
+      },
+      "colors": {
+        "primary": "#ec4899",
+        "secondary": "#8b5cf6",
+        "accent": "#06b6d4"
+      },
+      "content": {
+        "quizTitle": "Entdecke deinen Affiliate Pro Typ!",
+        "quizDescription": "Finde heraus, welcher Affiliate-Typ du bist und erhalte deine personalisierte Marketing-Strategie.",
+        "vslTitle": "Affiliate Pro: Die geheime Methode für 3000€+ mit Partnerprogrammen",
+        "bridgeTitle": "Perfekt! Dein personalisierter Affiliate Pro Plan ist bereit!",
+        "secretReveal": "Das ist die bewährte Affiliate-Methode!"
+      },
+      "psychology": {
+        "hideBrand": true,
+        "mysteryApproach": true,
+        "revealAtEnd": true,
+        "urgency": "Nur noch 25 Plätze verfügbar!",
+        "scarcity": "Diese Methode wird nur 60 Menschen gezeigt!"
+      }
+    },
+    "flowtelligence": {
+      "name": "Flowtelligence",
+      "tagline": "Ihr intelligenter Weg zur finanziellen Autonomie",
+      "description": "Die intelligente Plattform für flexibles Einkommen und finanzielle Freiheit",
+      "price": 297,
+      "originalPrice": 997,
+      "currency": "EUR",
+      "features": [
+        "Persönliche Erfolgsstrategien",
+        "Exklusive Community",
+        "Step-by-Step Anleitung",
+        "Lifetime Updates",
+        "Persönlicher Support"
+      ],
+      "bonuses": [
+        {
+          "name": "Zeit-Reich Starter Kit",
+          "value": 197,
+          "description": "Sofort umsetzbare Strategien für Eltern in Elternzeit"
+        },
+        {
+          "name": "Skalen-Schmiede Blueprint", 
+          "value": 297,
+          "description": "Systeme zur Skalierung Ihres Freelance-Business"
+        },
+        {
+          "name": "Kapital-Klar Sicherheitsplan",
+          "value": 197,
+          "description": "Sichere Wege zur Rentenaufbesserung"
+        },
+        {
+          "name": "Flowtelligence Community",
+          "value": 99,
+          "description": "Exklusiver Zugang zur geschlossenen Community"
+        }
+      ],
+      "psychologicalTriggers": {
+        "hideBrand": true,
+        "mysteryApproach": true,
+        "revealAtEnd": "Q-Money von Andreas Lang",
+        "urgency": "Nur 47 Plätze verfügbar",
+        "scarcity": "Angebot läuft in 23:47:12"
+      },
+      "personas": {
+        "zeitReich": {
+          "name": "Zeit-Reich",
+          "target": "Eltern in Elternzeit",
+          "painPoints": ["Zeitmangel", "finanzielle Abhängigkeit", "berufliche Unsicherheit"],
+          "solutions": ["flexible Nebenjobs", "Zeitmanagement", "Skills-Aufbau"],
+          "tone": "empathisch, unterstützend, 'Du'-Ansprache",
+          "channels": ["Instagram", "TikTok", "Facebook-Gruppen"]
+        },
+        "skalenSchmiede": {
+          "name": "Skalen-Schmiede", 
+          "target": "Freelancer & Solopreneure",
+          "painPoints": ["Zeit-Engpass", "Skalierungsprobleme", "Kontrollverlust"],
+          "solutions": ["Systeme", "Delegation", "Automatisierung"],
+          "tone": "autoritär, datengestützt, ambitioniert",
+          "channels": ["LinkedIn", "YouTube", "Reddit"]
+        },
+        "kapitalKlar": {
+          "name": "Kapital-Klar",
+          "target": "Best Ager 50+",
+          "painPoints": ["Rentenlücke", "Sicherheitsbedenken", "Komplexität"],
+          "solutions": ["Asset-Aktivierung", "sichere Anlagen", "Erfahrungsnutzung"],
+          "tone": "respektvoll, sicher, 'Sie'-Ansprache", 
+          "channels": ["Facebook", "E-Mail", "YouTube"]
+        }
+      },
+      "vslSegments": [
+        {
+          "name": "Hook",
+          "duration": 30,
+          "content": "Wie Sie in 30 Tagen ein passives Einkommen von 2.000€+ aufbauen - ohne Risiko und ohne Vorkenntnisse"
+        },
+        {
+          "name": "Problem",
+          "duration": 60,
+          "content": "Die meisten Menschen tauschen Zeit gegen Geld. Sie arbeiten 40+ Stunden pro Woche, haben kaum Zeit für Familie und sind finanziell abhängig von einem Job."
+        },
+        {
+          "name": "Agitation", 
+          "duration": 90,
+          "content": "Was passiert, wenn Sie krank werden? Wenn Ihr Job wegfällt? Wenn Sie mehr Zeit für Ihre Familie brauchen? Die meisten Menschen haben keinen Plan B."
+        },
+        {
+          "name": "Solution",
+          "duration": 120,
+          "content": "Flowtelligence zeigt Ihnen, wie Sie ein System aufbauen, das für Sie arbeitet. Ein System, das Geld verdient, während Sie schlafen."
+        },
+        {
+          "name": "Proof",
+          "duration": 60,
+          "content": "Über 15.000 Menschen haben bereits mit diesem System begonnen. Sie verdienen durchschnittlich 2.847€ im ersten Monat."
+        },
+        {
+          "name": "Bonus",
+          "duration": 45,
+          "content": "Heute erhalten Sie zusätzlich: Zeit-Reich Starter Kit (Wert: 197€), Skalen-Schmiede Blueprint (Wert: 297€), Kapital-Klar Sicherheitsplan (Wert: 197€)"
+        },
+        {
+          "name": "Urgency",
+          "duration": 30,
+          "content": "Dieses Angebot ist nur für die ersten 47 Personen verfügbar. Sobald alle Plätze vergeben sind, steigt der Preis auf 997€."
+        },
+        {
+          "name": "Secret",
+          "duration": 45,
+          "content": "Das Geheimnis: Dies ist das bewährte Q-Money System von Andreas Lang - nur unter neuem Namen und mit verbesserten Strategien für 2025."
+        }
+      ]
+    }
+  },
+  "global": {
+    "defaultLanguage": "de",
+    "supportedLanguages": ["de", "en"],
+    "analytics": {
+      "googleAnalytics": true,
+      "facebookPixel": true,
+      "hotjar": true
+    },
+    "integrations": {
+      "digistore24": true,
+      "stripe": true,
+      "mailchimp": true,
+      "convertkit": true
+    }
+  },
+  "domains": {
+    "main": "flowtelligence.com",
+    "subdomains": {
+      "zeitReich": "zeit-reich.flowtelligence.com",
+      "skalenSchmiede": "skalen-schmiede.flowtelligence.com", 
+      "kapitalKlar": "kapital-klar.flowtelligence.com"
+    }
+  },
+  "branding": {
+    "primaryColor": "#2563eb",
+    "secondaryColor": "#f59e0b", 
+    "accentColor": "#10b981",
+    "fontFamily": "Inter, system-ui, sans-serif",
+    "logo": {
+      "light": "/assets/logo-light.svg",
+      "dark": "/assets/logo-dark.svg"
+    }
+  }
+} 

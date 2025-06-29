@@ -110,14 +110,15 @@ export default function Home() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-8">
               <div className="flex-shrink-0">
-                <span className="text-2xl font-bold text-q-primary">Q-Money</span>
-                <span className="text-lg font-medium text-q-neutral-medium ml-2">& Cash Maximus</span>
+                <span className="text-2xl font-bold text-q-primary">Digitaler Kompass</span>
+                <span className="text-lg font-medium text-q-neutral-medium ml-2">Ihr Wegweiser zur finanziellen Freiheit</span>
               </div>
             </div>
             <div className="hidden md:flex items-center space-x-6">
               <a href="#quiz" className="text-q-neutral-medium hover:text-q-primary transition-colors">Quiz</a>
               <a href="#vsl" className="text-q-neutral-medium hover:text-q-primary transition-colors">System</a>
               <a href="#testimonials" className="text-q-neutral-medium hover:text-q-primary transition-colors">Erfolge</a>
+              <Link href="/personas" className="text-q-neutral-medium hover:text-q-primary transition-colors">Personas</Link>
               <Button onClick={handleStartQuiz} className="gradient-cta hover:bg-q-accent-dark text-white touch-target">
                 Jetzt starten
               </Button>
@@ -138,11 +139,11 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight animate-fade-in-up">
-              Warum 90% der Menschen niemals <br />
-              <span className="text-q-accent">finanziell frei werden</span>
+              Ihr persönlicher <br />
+              <span className="text-q-accent">Wegweiser zur finanziellen Freiheit</span>
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-blue-100 text-scannable">
-              Die schockierende Wahrheit über finanzielle Freiheit - und wie du zu den 10% gehörst
+              Entdecken Sie Ihre personalisierte Strategie - unabhängig von Ihrer Lebenssituation
             </p>
             
             {/* Live Visitor Counter */}

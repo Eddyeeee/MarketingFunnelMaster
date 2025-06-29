@@ -1,16 +1,78 @@
+import React, { useEffect, useState } from 'react';
 import { Link } from "wouter";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowLeft, Star, Crown, Download, Play, Mail, FileText, Link as LinkIcon, ChevronRight } from "lucide-react";
+import { ArrowLeft, Star, Crown, Download, Play, Mail, FileText, Link as LinkIcon, ChevronRight, CheckCircle, Clock, Target, TrendingUp, ArrowRight } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 import { toast } from "@/hooks/use-toast";
+import { useLocation } from 'wouter';
+import EmailPreview from '../components/EmailPreview';
+import { UpsellModal } from '../components/UpsellModal';
+import { useUpsell } from '../hooks/use-upsell';
 
 export default function Bridge() {
   const { data: emailFunnels = [] } = useQuery({
     queryKey: ['/api/email-funnels']
   });
+
+  const [, setLocation] = useLocation();
+  const [countdown, setCountdown] = useState(10);
+  const [persona, setPersona] = useState<any>(null);
+  const [showEmailPreview, setShowEmailPreview] = useState(false);
+  const [leadId, setLeadId] = useState<number | null>(null);
+
+  // Upsell System
+  const {
+    currentProduct,
+    isModalOpen,
+    openUpsellModal,
+    closeUpsellModal,
+    purchaseProduct,
+    startAutoUpsell,
+    loadQMoneyUpsell,
+    loadCashMaximusUpsell
+  } = useUpsell({
+    personaType: persona?.type,
+    leadId: leadId || undefined,
+    purchaseAmount: 0
+  });
+
+  useEffect(() => {
+    // Lade Persona-Daten aus localStorage (falls verfügbar)
+    const savedPersona = localStorage.getItem('quizPersona');
+    if (savedPersona) {
+      setPersona(JSON.parse(savedPersona));
+    }
+
+    // Lade Lead-ID aus localStorage (falls verfügbar)
+    const savedLeadId = localStorage.getItem('leadId');
+    if (savedLeadId) {
+      setLeadId(parseInt(savedLeadId));
+    }
+
+    // Countdown für automatische Weiterleitung
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          // Starte Upsell vor VSL-Weiterleitung
+          startAutoUpsell(3);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [setLocation, startAutoUpsell]);
+
+  // Lade Q-Money Upsell nach Persona-Erkennung
+  useEffect(() => {
+    if (persona?.type) {
+      loadQMoneyUpsell();
+    }
+  }, [persona?.type, loadQMoneyUpsell]);
 
   const handleImportFunnel = (funnel: string) => {
     trackEvent('funnel_import', 'engagement', funnel);
@@ -47,8 +109,64 @@ export default function Bridge() {
     });
   };
 
+  const handleContinueNow = () => {
+    // Starte Upsell vor VSL-Weiterleitung
+    startAutoUpsell(2);
+  };
+
+  const handleShowEmailPreview = () => {
+    setShowEmailPreview(true);
+  };
+
+  const handleUpsellPurchase = (productId: string) => {
+    trackEvent('upsell_purchase', 'conversion', productId);
+    
+    // Wenn Q-Money gekauft wurde, lade Cash Maximus
+    if (productId.includes('qmoney')) {
+      setTimeout(() => {
+        loadCashMaximusUpsell();
+        startAutoUpsell(3);
+      }, 2000);
+    }
+  };
+
+  // Zeige E-Mail-Preview an
+  if (showEmailPreview && persona) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-12 px-4">
+        <div className="max-w-6xl mx-auto">
+          {/* Navigation */}
+          <nav className="bg-white shadow-sm mb-8">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex justify-between items-center h-16">
+                <Button 
+                  variant="ghost" 
+                  onClick={() => setShowEmailPreview(false)}
+                  className="flex items-center space-x-2"
+                >
+                  <ArrowLeft size={20} />
+                  <span>Zurück zur Bridge</span>
+                </Button>
+                <div className="flex-shrink-0">
+                  <span className="text-2xl font-bold text-blue-600">Magic Tool</span>
+                  <span className="text-lg font-medium text-gray-600 ml-2">E-Mail-Preview</span>
+                </div>
+              </div>
+            </div>
+          </nav>
+
+          <EmailPreview 
+            persona={persona} 
+            leadId={leadId || undefined}
+            className="shadow-2xl"
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-12 px-4">
       {/* Navigation */}
       <nav className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -71,185 +189,211 @@ export default function Bridge() {
 
       {/* Bridge Content */}
       <section className="py-12">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-3xl md:text-4xl font-bold text-q-neutral-dark mb-4">
-              ⚠️ WARNUNG: Das ist nicht für jeden geeignet
+          <div className="text-center mb-8">
+            <div className="flex justify-center mb-4">
+              <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center">
+                <CheckCircle className="w-8 h-8 text-white" />
+              </div>
+            </div>
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+              Perfekt! Dein personalisierter Plan ist bereit! 🎯
             </h1>
-            <p className="text-xl text-q-neutral-medium">
-              Wähle dein System basierend auf deinem Ziel und deiner Risikobereitschaft. 
-              Über 10.000 Menschen haben bereits ihren Weg zur finanziellen Freiheit gefunden.
+            <p className="text-xl text-gray-600">
+              Du wirst in {countdown} Sekunden automatisch zu deiner personalisierten Strategie weitergeleitet...
             </p>
           </div>
 
-          {/* Funnel Options */}
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
-            {/* Magic Profit Funnel */}
-            <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 shadow-lg">
-              <CardContent className="p-8">
-                <div className="text-center mb-6">
-                  <div className="bg-q-primary text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                    <Star size={24} />
-                  </div>
-                  <h3 className="text-2xl font-bold text-q-neutral-dark mb-2">Magic Profit</h3>
-                  <p className="text-q-neutral-medium">Perfekt für Einsteiger</p>
-                  <Badge className="bg-q-accent text-white mt-2">
-                    BESTSELLER
-                  </Badge>
-                </div>
-                
-                <div className="space-y-4 mb-8">
-                  <div className="flex items-center">
-                    <div className="w-2 h-2 bg-q-secondary rounded-full mr-3"></div>
-                    <span className="text-q-neutral-dark">Die 3 kritischen Fehler, die 90% arm halten</span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="w-2 h-2 bg-q-secondary rounded-full mr-3"></div>
-                    <span className="text-q-neutral-dark">0€ Startkapital - funktioniert für jeden</span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="w-2 h-2 bg-q-secondary rounded-full mr-3"></div>
-                    <span className="text-q-neutral-dark">Erste 500€ in den ersten 30 Tagen</span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="w-2 h-2 bg-q-secondary rounded-full mr-3"></div>
-                    <span className="text-q-neutral-dark">Geheime Automatisierungs-Tricks</span>
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <Button 
-                    onClick={() => handleImportFunnel('magic-profit')}
-                    className="w-full bg-q-primary hover:bg-q-primary-dark text-white"
-                  >
-                    <Download className="mr-2" size={20} />
-                    Magic Profit importieren
-                  </Button>
-                  <Button 
-                    onClick={() => handleStartQuizFunnel('magic-profit')}
-                    variant="outline"
-                    className="w-full border-q-primary text-q-primary hover:bg-q-primary hover:text-white"
-                  >
-                    <Play className="mr-2" size={20} />
-                    Quiz-Funnel starten
-                  </Button>
-                  <Link href="/vsl/magic-profit">
-                    <Button variant="ghost" className="w-full text-q-primary">
-                      VSL ansehen
-                    </Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Money Magnet Funnel */}
-            <Card className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 shadow-lg">
-              <CardContent className="p-8">
-                <div className="text-center mb-6">
-                  <div className="bg-q-secondary text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                    <Crown size={24} />
-                  </div>
-                  <h3 className="text-2xl font-bold text-q-neutral-dark mb-2">Money Magnet</h3>
-                  <p className="text-q-neutral-medium">Für Fortgeschrittene</p>
-                  <Badge className="bg-q-secondary text-white mt-2">
-                    PREMIUM
-                  </Badge>
-                </div>
-                
-                <div className="space-y-4 mb-8">
-                  <div className="flex items-center">
-                    <div className="w-2 h-2 bg-q-secondary rounded-full mr-3"></div>
-                    <span className="text-q-neutral-dark">Multiple Einkommensströme wie die Reichen</span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="w-2 h-2 bg-q-secondary rounded-full mr-3"></div>
-                    <span className="text-q-neutral-dark">KI-Automatisierung für passives Einkommen</span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="w-2 h-2 bg-q-secondary rounded-full mr-3"></div>
-                    <span className="text-q-neutral-dark">Die 7-Säulen-Strategie für 5.000€+</span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="w-2 h-2 bg-q-secondary rounded-full mr-3"></div>
-                    <span className="text-q-neutral-dark">Exklusive High-Performer Community</span>
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <Button 
-                    onClick={() => handleImportFunnel('money-magnet')}
-                    className="w-full bg-q-secondary hover:bg-q-secondary-dark text-white"
-                  >
-                    <Download className="mr-2" size={20} />
-                    Money Magnet importieren
-                  </Button>
-                  <Button 
-                    onClick={() => handleStartQuizFunnel('money-magnet')}
-                    variant="outline"
-                    className="w-full border-q-secondary text-q-secondary hover:bg-q-secondary hover:text-white"
-                  >
-                    <Play className="mr-2" size={20} />
-                    Quiz-Funnel starten
-                  </Button>
-                  <Link href="/vsl/money-magnet">
-                    <Button variant="ghost" className="w-full text-q-secondary">
-                      VSL ansehen
-                    </Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Additional Resources */}
-          <Card className="shadow-lg">
-            <CardContent className="p-8">
-              <h3 className="text-xl font-bold text-q-neutral-dark text-center mb-6">
-                Zusätzliche Ressourcen
-              </h3>
-              <div className="grid md:grid-cols-2 gap-6">
-                {emailFunnels.slice(0, 2).map((funnel: any, index: number) => (
-                  <Button
-                    key={funnel.id}
-                    onClick={() => handleOpenEmailFunnel(funnel.id)}
-                    variant="outline"
-                    className="flex items-center justify-between p-4 h-auto hover:shadow-md transition-all"
-                  >
-                    <div className="flex items-center">
-                      <Mail className="text-q-primary mr-3" size={20} />
-                      <span className="font-semibold text-q-neutral-dark">{funnel.name}</span>
+          {/* Persona Summary */}
+          {persona && (
+            <Card className="mb-8 shadow-lg">
+              <CardHeader className="text-center bg-gradient-to-r from-blue-50 to-purple-50">
+                <CardTitle className="text-2xl font-bold text-gray-900">
+                  Dein Profil: {persona.profileText}
+                </CardTitle>
+                <CardDescription className="text-lg text-gray-600">
+                  {persona.strategyText}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="p-6">
+                <div className="grid md:grid-cols-3 gap-6">
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <Target className="w-6 h-6 text-blue-600" />
                     </div>
-                    <ChevronRight className="text-q-neutral-medium" size={20} />
-                  </Button>
-                ))}
-                
-                <Button
-                  onClick={handleOpenTSL}
-                  variant="outline"
-                  className="flex items-center justify-between p-4 h-auto hover:shadow-md transition-all"
-                >
-                  <div className="flex items-center">
-                    <FileText className="text-q-primary mr-3" size={20} />
-                    <span className="font-semibold text-q-neutral-dark">Text Sales Letter</span>
+                    <h3 className="font-semibold text-gray-900 mb-1">Dein Ziel</h3>
+                    <p className="text-sm text-gray-600">{persona.actionPlan?.expectedResults}</p>
                   </div>
-                  <ChevronRight className="text-q-neutral-medium" size={20} />
-                </Button>
-                
-                <Button
-                  onClick={handleOpenBridgePage}
-                  variant="outline"
-                  className="flex items-center justify-between p-4 h-auto hover:shadow-md transition-all"
-                >
-                  <div className="flex items-center">
-                    <LinkIcon className="text-q-primary mr-3" size={20} />
-                    <span className="font-semibold text-q-neutral-dark">Bridge Page</span>
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <Clock className="w-6 h-6 text-green-600" />
+                    </div>
+                    <h3 className="font-semibold text-gray-900 mb-1">Timeline</h3>
+                    <p className="text-sm text-gray-600">{persona.actionPlan?.timeline}</p>
                   </div>
-                  <ChevronRight className="text-q-neutral-medium" size={20} />
-                </Button>
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <TrendingUp className="w-6 h-6 text-purple-600" />
+                    </div>
+                    <h3 className="font-semibold text-gray-900 mb-1">Strategie</h3>
+                    <Badge variant="default" className="bg-purple-600">
+                      {persona.recommendedFunnel?.replace('_', ' ').toUpperCase()}
+                    </Badge>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* What You'll Get */}
+          <Card className="mb-8 shadow-lg">
+            <CardHeader className="text-center">
+              <CardTitle className="text-2xl font-bold text-gray-900">
+                Was du gleich erhältst:
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <div className="flex items-start space-x-3">
+                    <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <CheckCircle className="w-4 h-4 text-green-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-900">30-Tage-Action-Plan</h3>
+                      <p className="text-sm text-gray-600">Tägliche Schritte für deinen Erfolg</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <CheckCircle className="w-4 h-4 text-green-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-900">Persönliche Strategie</h3>
+                      <p className="text-sm text-gray-600">Maßgeschneidert auf deine Situation</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <CheckCircle className="w-4 h-4 text-green-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-900">Exklusive Tools</h3>
+                      <p className="text-sm text-gray-600">Professionelle Software und Templates</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <div className="flex items-start space-x-3">
+                    <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <CheckCircle className="w-4 h-4 text-green-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-900">Community-Zugang</h3>
+                      <p className="text-sm text-gray-600">Netzwerk mit Gleichgesinnten</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <CheckCircle className="w-4 h-4 text-green-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-900">1:1 Support</h3>
+                      <p className="text-sm text-gray-600">Persönliche Beratung und Coaching</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <CheckCircle className="w-4 h-4 text-green-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-900">Geld-zurück-Garantie</h3>
+                      <p className="text-sm text-gray-600">30 Tage ohne Risiko testen</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
+
+          {/* Social Proof */}
+          <Card className="mb-8 shadow-lg">
+            <CardContent className="p-6">
+              <div className="text-center mb-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  Über 10.000 Menschen haben bereits Erfolg gehabt
+                </h3>
+                <div className="flex justify-center space-x-1 mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                  ))}
+                  <span className="ml-2 text-sm text-gray-600">4.9/5 Sterne</span>
+                </div>
+              </div>
+              <div className="grid md:grid-cols-3 gap-4 text-center">
+                <div>
+                  <div className="text-2xl font-bold text-blue-600">€2.4M</div>
+                  <div className="text-sm text-gray-600">Verdient von Teilnehmern</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-green-600">94%</div>
+                  <div className="text-sm text-gray-600">Erfolgsrate</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-purple-600">30 Tage</div>
+                  <div className="text-sm text-gray-600">Bis zum ersten Erfolg</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Call to Action */}
+          <div className="text-center">
+            <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-8 rounded-lg text-white mb-6">
+              <h2 className="text-3xl font-bold mb-4">
+                Bereit für deine finanzielle Transformation? 🚀
+              </h2>
+              <p className="text-xl text-blue-100 mb-6">
+                Klicke jetzt und erhalte sofort Zugang zu deiner personalisierten Strategie!
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button
+                  onClick={handleContinueNow}
+                  size="lg"
+                  className="bg-white text-blue-600 hover:bg-gray-100 font-semibold px-8 py-4 text-lg"
+                >
+                  Jetzt zu meiner Strategie
+                  <ArrowRight className="w-6 h-6 ml-2" />
+                </Button>
+                <Button
+                  onClick={handleShowEmailPreview}
+                  size="lg"
+                  variant="outline"
+                  className="border-white text-white hover:bg-white hover:text-blue-600 font-semibold px-8 py-4 text-lg"
+                >
+                  E-Mail-Preview anzeigen
+                  <Mail className="w-6 h-6 ml-2" />
+                </Button>
+              </div>
+            </div>
+            
+            <p className="text-sm text-gray-500">
+              Du wirst automatisch in {countdown} Sekunden weitergeleitet, oder klicke oben für sofortigen Zugang.
+            </p>
+          </div>
+
+          {/* Upsell Modal */}
+          {currentProduct && (
+            <UpsellModal
+              isOpen={isModalOpen}
+              onClose={closeUpsellModal}
+              product={currentProduct}
+              personaType={persona?.type}
+              leadId={leadId || undefined}
+              onPurchase={handleUpsellPurchase}
+            />
+          )}
         </div>
       </section>
     </div>

@@ -2,6 +2,15 @@ import express from "express";
 import { z } from "zod";
 import { storage } from "./storage";
 import { leads, emailFunnels, analytics } from "../shared/schema";
+import { emailService } from "./services/emailService";
+import { vslService } from "./services/vslService";
+import quizRoutes from './routes/quizRoutes';
+import leadRoutes from './routes/leadRoutes';
+import analyticsRoutes from './routes/analyticsRoutes';
+import vslRoutes from './routes/vslRoutes';
+import emailRoutes from './routes/emailRoutes';
+import paymentRoutes from './routes/paymentRoutes';
+import upsellRoutes from './routes/upsellRoutes';
 
 const router = express.Router();
 
@@ -117,6 +126,47 @@ router.get("/api/email-funnels", async (req, res) => {
   }
 });
 
+// E-Mail-Statistiken für einen Lead
+router.get("/api/email-stats/:leadId", async (req, res) => {
+  try {
+    const { leadId } = req.params;
+    const stats = await emailService.getEmailStats(parseInt(leadId));
+    
+    if (!stats) {
+      return res.status(404).json({ error: 'Lead not found' });
+    }
+    
+    res.json({
+      success: true,
+      stats
+    });
+  } catch (error) {
+    console.error('Error fetching email stats:', error);
+    res.status(500).json({ error: 'Failed to fetch email stats' });
+  }
+});
+
+// E-Mail-Funnel für eine Persona
+router.get("/api/email-funnels/persona/:personaType", async (req, res) => {
+  try {
+    const { personaType } = req.params;
+    const funnels = await storage.getEmailFunnels();
+    const personaFunnel = funnels.find(f => f.name.includes(personaType));
+    
+    if (!personaFunnel) {
+      return res.status(404).json({ error: 'Email funnel not found for persona type' });
+    }
+    
+    res.json({
+      success: true,
+      funnel: personaFunnel
+    });
+  } catch (error) {
+    console.error('Error fetching persona email funnel:', error);
+    res.status(500).json({ error: 'Failed to fetch persona email funnel' });
+  }
+});
+
 router.get("/api/email-funnels/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -181,24 +231,104 @@ router.post("/api/quiz/results", async (req, res) => {
   try {
     const { email, name, answers, persona, utmParams, sessionId, pageUrl, referrer } = req.body;
     
-    // 1. Erstelle Lead aus Quiz-Ergebnissen
+    // 1. Erstelle Lead aus Quiz-Ergebnissen mit erweiterten Daten
     const lead = await storage.createLead({
       email,
       firstName: name || null,
       source: 'quiz',
-      funnel: 'magic_tool',
-      quizAnswers: JSON.stringify(answers)
+      funnel: persona?.recommendedFunnel || 'magic_tool',
+      quizAnswers: JSON.stringify({
+        answers,
+        persona: {
+          type: persona?.type,
+          profileText: persona?.profileText,
+          strategyText: persona?.strategyText,
+          recommendedFunnel: persona?.recommendedFunnel,
+          actionPlan: persona?.actionPlan
+        },
+        timestamp: new Date().toISOString()
+      })
     });
 
-    // 2. Erfolgreiche Antwort ohne externe Services
+    // 2. Track Quiz Completion Analytics
+    await storage.createAnalyticsEvent({
+      event: 'quiz_completed',
+      page: pageUrl || '/quiz',
+      sessionId: sessionId || undefined,
+      data: JSON.stringify({
+        quizId: 'magic_tool',
+        personaType: persona?.type,
+        recommendedFunnel: persona?.recommendedFunnel,
+        answers: answers,
+        leadId: lead.id
+      })
+    });
+
+    // 3. Track Lead Capture Analytics
+    await storage.createAnalyticsEvent({
+      event: 'lead_captured',
+      page: pageUrl || '/quiz',
+      sessionId: sessionId || undefined,
+      data: JSON.stringify({
+        source: 'quiz',
+        funnel: persona?.recommendedFunnel || 'magic_tool',
+        personaType: persona?.type,
+        leadId: lead.id
+      })
+    });
+
+    // 4. Sende personalisierte Willkommens-E-Mail
+    let emailSent = false;
+    try {
+      emailSent = await emailService.sendWelcomeEmail(lead, persona);
+      
+      if (emailSent) {
+        // Plane Follow-up E-Mails
+        await emailService.scheduleFollowUpEmails(lead, persona);
+        
+        // Track E-Mail-Versand
+        await storage.createAnalyticsEvent({
+          event: 'email_sent',
+          page: pageUrl || '/quiz',
+          sessionId: sessionId || undefined,
+          data: JSON.stringify({
+            leadId: lead.id,
+            emailType: 'welcome',
+            personaType: persona?.type,
+            funnelName: persona?.recommendedFunnel
+          })
+        });
+      }
+    } catch (emailError) {
+      console.error('Error sending welcome email:', emailError);
+      // E-Mail-Fehler sollte den Quiz-Abschluss nicht blockieren
+    }
+
+    // 5. Erfolgreiche Antwort mit erweiterten Daten
     res.json({
       success: true,
-      lead: { id: lead.id, email: lead.email },
+      lead: { 
+        id: lead.id, 
+        email: lead.email,
+        persona: persona?.type,
+        recommendedFunnel: persona?.recommendedFunnel
+      },
+      persona: {
+        type: persona?.type,
+        profileText: persona?.profileText,
+        strategyText: persona?.strategyText,
+        actionPlan: persona?.actionPlan
+      },
+      email: {
+        sent: emailSent,
+        type: 'welcome',
+        personaType: persona?.type
+      },
       integrations: {
         n8n: false,
         instapage: false
       },
-      message: 'Quiz-Ergebnisse erfolgreich gespeichert. Du erhältst gleich eine E-Mail von uns.'
+      message: 'Quiz-Ergebnisse erfolgreich gespeichert. Du erhältst gleich eine E-Mail mit deiner personalisierten Strategie.'
     });
 
   } catch (error) {
@@ -325,6 +455,119 @@ router.get("/api/quizzes/:id", async (req, res) => {
       error: 'Failed to fetch quiz questions'
     });
   }
+});
+
+// VSL-API-Routen
+router.get("/api/vsl/:personaType", async (req, res) => {
+  try {
+    const { personaType } = req.params;
+    const { leadId } = req.query;
+    
+    // Lade Lead-Daten falls Lead-ID vorhanden
+    let leadData = null;
+    if (leadId) {
+      const leads = await storage.getLeads();
+      leadData = leads.find(l => l.id === parseInt(leadId as string));
+    }
+    
+    // Generiere personabasiert VSL
+    const vslConfig = await vslService.generateVSL(personaType, leadData);
+    
+    // Track VSL-View
+    await vslService.trackVSLView(personaType, leadId ? parseInt(leadId as string) : undefined);
+    
+    res.json({
+      success: true,
+      vsl: vslConfig
+    });
+  } catch (error) {
+    console.error('Error generating VSL:', error);
+    res.status(500).json({ error: 'Failed to generate VSL' });
+  }
+});
+
+// VSL-Statistiken
+router.get("/api/vsl/stats/:personaType", async (req, res) => {
+  try {
+    const { personaType } = req.params;
+    const stats = await vslService.getVSLStats(personaType);
+    
+    res.json({
+      success: true,
+      stats
+    });
+  } catch (error) {
+    console.error('Error fetching VSL stats:', error);
+    res.status(500).json({ error: 'Failed to fetch VSL stats' });
+  }
+});
+
+// VSL-Conversion tracken
+router.post("/api/vsl/conversion", async (req, res) => {
+  try {
+    const { personaType, leadId, amount } = req.body;
+    
+    // Track Conversion
+    await vslService.trackVSLConversion(personaType, leadId, amount);
+    
+    res.json({
+      success: true,
+      message: 'Conversion tracked successfully'
+    });
+  } catch (error) {
+    console.error('Error tracking VSL conversion:', error);
+    res.status(500).json({ error: 'Failed to track conversion' });
+  }
+});
+
+// A/B-Testing für VSL-Varianten
+router.get("/api/vsl/ab-test/:personaType", async (req, res) => {
+  try {
+    const { personaType } = req.params;
+    const { variant } = req.query;
+    
+    // Generiere VSL mit A/B-Test-Variante
+    const vslConfig = await vslService.generateVSL(personaType);
+    
+    // Hier würde normalerweise A/B-Test-Logik implementiert
+    const testVariant = variant || 'A';
+    
+    res.json({
+      success: true,
+      vsl: vslConfig,
+      variant: testVariant,
+      testId: `vsl_${personaType}_${testVariant}`
+    });
+  } catch (error) {
+    console.error('Error generating A/B test VSL:', error);
+    res.status(500).json({ error: 'Failed to generate A/B test VSL' });
+  }
+});
+
+// API-Routen
+router.use('/api/quizzes', quizRoutes);
+router.use('/api/leads', leadRoutes);
+router.use('/api/analytics', analyticsRoutes);
+router.use('/api/vsl', vslRoutes);
+router.use('/api/email', emailRoutes);
+router.use('/api/payment', paymentRoutes);
+router.use('/api/upsell', upsellRoutes);
+
+// Health Check
+router.get('/health', (req, res) => {
+  res.json({ 
+    status: 'healthy', 
+    timestamp: new Date().toISOString(),
+    services: {
+      quiz: 'active',
+      lead: 'active',
+      analytics: 'active',
+      vsl: 'active',
+      email: 'active',
+      payment: 'active',
+      upsell: 'active'
+    }
+  });
 });
 
 export default router;

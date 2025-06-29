@@ -6,6 +6,7 @@ import { Label } from './ui/label';
 import { Input } from './ui/input';
 import { useToast } from '../hooks/use-toast';
 import { trackLeadCapture } from '../lib/analytics';
+import QuizResults from './QuizResults';
 
 interface QuizQuestion {
   id: string;
@@ -43,6 +44,8 @@ export function QuizForm({
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+  const [quizPersona, setQuizPersona] = useState<any>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -148,43 +151,145 @@ export function QuizForm({
     const goal = answers['3'];
     const blocker = answers['4'];
 
-    // Profile mapping
-    const profiles: Record<string, string> = {
-      'student': 'Struggling Student Sarah',
-      'employee': 'Burnout-Bernd',
-      'parent': 'Overwhelmed Mom Maria'
+    // Erweiterte Profile mapping
+    const profiles: Record<string, { name: string; description: string; characteristics: string[] }> = {
+      'student': {
+        name: 'Struggling Student Sarah',
+        description: 'Studentin mit begrenztem Budget, sucht nach flexiblen Einkommensmöglichkeiten',
+        characteristics: ['Flexible Zeitplanung', 'Technik-affin', 'Lernbereit', 'Budget-bewusst']
+      },
+      'employee': {
+        name: 'Burnout-Bernd',
+        description: 'Vollzeit-Angestellter, der nach finanzieller Unabhängigkeit strebt',
+        characteristics: ['Zeitlich eingeschränkt', 'Erfahrung im Business', 'Strukturiert', 'Zielorientiert']
+      },
+      'parent': {
+        name: 'Overwhelmed Mom Maria',
+        description: 'Elternteil, das Familie und Einkommen unter einen Hut bringen muss',
+        characteristics: ['Flexible Arbeitszeiten', 'Familienorientiert', 'Multitasking', 'Geduldig']
+      }
     };
 
-    const problems: Record<string, string> = {
-      'money_tight': 'Monatliche Geldknappheit',
-      'no_time': 'Zeitmangel durch Vollzeitarbeit',
-      'no_idea': 'Orientierungslosigkeit beim Start'
+    const problems: Record<string, { name: string; impact: string; solution: string }> = {
+      'money_tight': {
+        name: 'Monatliche Geldknappheit',
+        impact: 'Stress durch finanzielle Unsicherheit',
+        solution: 'Sofortige Einkommensgenerierung mit minimalem Risiko'
+      },
+      'no_time': {
+        name: 'Zeitmangel durch Vollzeitarbeit',
+        impact: 'Keine Zeit für traditionelle Nebenjobs',
+        solution: 'Automatisierte Systeme mit flexibler Zeiteinteilung'
+      },
+      'no_idea': {
+        name: 'Orientierungslosigkeit beim Start',
+        impact: 'Überforderung durch zu viele Optionen',
+        solution: 'Strukturierter Einstieg mit klarem Fahrplan'
+      }
     };
 
-    const goals: Record<string, string> = {
-      'basic': '500-1.500€ Zusatzeinkommen',
-      'substantial': '2.000-5.000€ für finanzielle Unabhängigkeit',
-      'freedom': '5.000€+ für komplette Freiheit'
+    const goals: Record<string, { range: string; timeline: string; strategy: string }> = {
+      'basic': {
+        range: '500-1.500€ monatlich',
+        timeline: '30-60 Tage',
+        strategy: 'Konsistente Grundlagen mit skalierbarem Potenzial'
+      },
+      'substantial': {
+        range: '2.000-5.000€ monatlich',
+        timeline: '3-6 Monate',
+        strategy: 'Multiple Einkommensströme mit Automatisierung'
+      },
+      'freedom': {
+        range: '5.000€+ monatlich',
+        timeline: '6-12 Monate',
+        strategy: 'Vollständige Automatisierung und Team-Aufbau'
+      }
     };
 
-    const profileText = `${profiles[profile] || 'Individueller Typ'} • ${problems[problem] || 'Spezifisches Problem'} • ${goals[goal] || 'Finanzielle Ziele'}`;
+    const blockers: Record<string, { name: string; solution: string; mindset: string }> = {
+      'no_capital': {
+        name: 'Kein Startkapital',
+        solution: '0€-Start-Strategien mit vorhandenen Ressourcen',
+        mindset: 'Kreativität über Kapital'
+      },
+      'no_skills': {
+        name: 'Fehlende Fähigkeiten',
+        solution: 'Schritt-für-Schritt-Training und Mentoring',
+        mindset: 'Lernen durch Tun'
+      },
+      'no_network': {
+        name: 'Keine Kontakte',
+        solution: 'Online-Netzwerk-Aufbau und Community-Integration',
+        mindset: 'Digitale Verbindungen schaffen'
+      }
+    };
 
-    // Strategy recommendation
+    // Persona-Text generieren
+    const profileData = profiles[profile] || profiles['student'];
+    const problemData = problems[problem] || problems['money_tight'];
+    const goalData = goals[goal] || goals['basic'];
+    const blockerData = blockers[blocker] || blockers['no_capital'];
+
+    const profileText = `${profileData.name} • ${problemData.name} • ${goalData.range}`;
+
+    // Erweiterte Strategie-Empfehlung basierend auf Kombination
     let strategyText = '';
     let recommendedFunnel = '';
+    let nextSteps: string[] = [];
+    let timeline = '';
+    let expectedResults = '';
 
-    if (profile === 'student' || blocker === 'no_capital' || goal === 'basic') {
-      strategyText = 'Magic Tool System - Perfekt für den Einstieg mit 0€ Startkapital. Erste Ergebnisse in 30 Tagen möglich.';
-      recommendedFunnel = 'magic_tool';
-    } else if (profile === 'parent' || problem === 'no_time') {
+    // Kombinations-basierte Strategie
+    if (profile === 'student' && goal === 'basic') {
+      strategyText = 'Magic Tool System - Perfekt für Studenten mit 0€ Startkapital. Erste 500€ in 30 Tagen möglich.';
+      recommendedFunnel = 'magic_tool_student';
+      nextSteps = [
+        'Tägliche 30-Minuten-Routine etablieren',
+        'Social Media Präsenz aufbauen',
+        'Erste Kunden innerhalb von 7 Tagen gewinnen'
+      ];
+      timeline = '30 Tage bis zum ersten Einkommen';
+      expectedResults = '500-800€ im ersten Monat';
+    } else if (profile === 'parent' && problem === 'no_time') {
       strategyText = 'Magic Tool System - Ideal für flexible Arbeitszeiten zwischen Familie und Job. 15-30 Min täglich reichen.';
-      recommendedFunnel = 'magic_tool';
-    } else if (goal === 'substantial' || goal === 'freedom' || profile === 'employee') {
+      recommendedFunnel = 'magic_tool_parent';
+      nextSteps = [
+        'Morgenroutine vor der Familie etablieren',
+        'Abendzeit für Kundenbetreuung nutzen',
+        'Wochenenden für Content-Erstellung'
+      ];
+      timeline = '45 Tage bis zum ersten Einkommen';
+      expectedResults = '800-1.200€ im ersten Monat';
+    } else if (profile === 'employee' && goal === 'substantial') {
       strategyText = 'Magic Tool System - Für ambitionierte Ziele und Skalierung auf 5.000€+. Multiple Einkommensströme aufbauen.';
-      recommendedFunnel = 'magic_tool';
+      recommendedFunnel = 'magic_tool_employee';
+      nextSteps = [
+        'Frühmorgens 1 Stunde investieren',
+        'Mittagspause für Kundenbetreuung nutzen',
+        'Abends für Automatisierung arbeiten'
+      ];
+      timeline = '90 Tage bis zur Skalierung';
+      expectedResults = '2.000-3.000€ im dritten Monat';
+    } else if (goal === 'freedom') {
+      strategyText = 'Magic Tool System - Der Weg zur finanziellen Freiheit. Vollständige Automatisierung und Team-Aufbau.';
+      recommendedFunnel = 'magic_tool_freedom';
+      nextSteps = [
+        'System vollständig automatisieren',
+        'Team von 3-5 Personen aufbauen',
+        'Multiple Einkommensströme etablieren'
+      ];
+      timeline = '180 Tage bis zur finanziellen Freiheit';
+      expectedResults = '5.000€+ ab dem sechsten Monat';
     } else {
       strategyText = 'Magic Tool System - Der bewährte Einstieg für alle, die ohne Risiko starten wollen.';
       recommendedFunnel = 'magic_tool';
+      nextSteps = [
+        'Grundlagen in 7 Tagen erlernen',
+        'Erste Ergebnisse in 14 Tagen sehen',
+        'Konsistente Steigerung über 30 Tage'
+      ];
+      timeline = '30 Tage bis zum ersten Einkommen';
+      expectedResults = '500-1.500€ im ersten Monat';
     }
 
     return {
@@ -192,7 +297,18 @@ export function QuizForm({
       profileText,
       strategyText,
       recommendedFunnel,
-      preferences: answers
+      preferences: answers,
+      persona: {
+        profile: profileData,
+        problem: problemData,
+        goal: goalData,
+        blocker: blockerData
+      },
+      actionPlan: {
+        nextSteps,
+        timeline,
+        expectedResults
+      }
     };
   };
 
@@ -248,6 +364,18 @@ export function QuizForm({
           persona
         });
 
+        // Setze Quiz-Ergebnisse für Anzeige
+        setQuizPersona(persona);
+        setShowResults(true);
+
+        // Speichere Persona-Daten im localStorage für Bridge-Seite
+        localStorage.setItem('quizPersona', JSON.stringify(persona));
+
+        // Speichere Lead-ID im localStorage für E-Mail-Preview
+        if (result.lead?.id) {
+          localStorage.setItem('leadId', result.lead.id.toString());
+        }
+
         toast({
           title: "Quiz erfolgreich abgeschlossen!",
           description: "Du erhältst gleich eine E-Mail mit deiner personalisierten Strategie.",
@@ -261,6 +389,11 @@ export function QuizForm({
             lead: result.lead
           });
         }
+
+        // Weiterleitung zur Bridge-Seite nach 3 Sekunden
+        setTimeout(() => {
+          window.location.href = '/bridge';
+        }, 3000);
       } else {
         throw new Error(result.error || 'Unbekannter Fehler');
       }
@@ -279,6 +412,17 @@ export function QuizForm({
   const currentQ = questions[currentQuestion];
   const isLastQuestion = currentQuestion === questions.length - 1;
   const canProceed = answers[currentQ?.id];
+
+  // Zeige Quiz-Ergebnisse an
+  if (showResults && quizPersona) {
+    return (
+      <QuizResults
+        persona={quizPersona}
+        onContinue={() => setShowResults(false)}
+        className={className}
+      />
+    );
+  }
 
   if (currentQuestion >= questions.length) {
     // Show results form

@@ -1,0 +1,537 @@
+/* 🎨 FLOWTELLIGENCE CI-SYSTEM 2025 */
+
+/* ===== DESIGN TOKENS ===== */
+:root {
+  /* 🎯 HAUPTFARBEN - Flowtelligence */
+  --flow-primary: #2563eb;      /* Vertrauensvolles Blau */
+  --flow-secondary: #f59e0b;    /* Dynamisches Orange */
+  --flow-accent: #10b981;       /* Erfolgsgrün */
+  --flow-neutral: #1f2937;      /* Dunkelgrau */
+  --flow-light: #f8fafc;        /* Helles Grau */
+  --flow-white: #ffffff;        /* Reinweiß */
+  
+  /* 🌟 PERSONA-SPEZIFISCHE FARBEN */
+  /* Zeit-Reich (Eltern) */
+  --zeit-primary: #8b5cf6;      /* Warmes Violett - Empathie */
+  --zeit-secondary: #f97316;    /* Warmes Orange - Energie */
+  --zeit-accent: #06b6d4;       /* Helles Blau - Hoffnung */
+  
+  /* Skalen-Schmiede (Freelancer) */
+  --skalen-primary: #059669;    /* Dunkles Grün - Wachstum */
+  --skalen-secondary: #dc2626;  /* Rot - Dringlichkeit */
+  --skalen-accent: #7c3aed;     /* Violett - Innovation */
+  
+  /* Kapital-Klar (Best Ager) */
+  --kapital-primary: #1e40af;   /* Dunkles Blau - Vertrauen */
+  --kapital-secondary: #d97706; /* Gold - Wert */
+  --kapital-accent: #059669;    /* Grün - Sicherheit */
+  
+  /* Eltern-Einkommen (Eltern in Elternzeit) */
+  --eltern-primary: #F8A583;    /* Sanftes Korall/Orange - Wärme */
+  --eltern-secondary: #3A6B70;  /* Beruhigendes Petrol - Ruhe */
+  --eltern-accent: #7E57C2;     /* Kräftiges Violett - Aktion */
+  
+  /* Projekt-Profit (Freelancer) */
+  --projekt-primary: #0A4C9C;   /* Modernes Blau - Kompetenz */
+  --projekt-secondary: #2ECC71; /* Dynamisches Grün - Wachstum */
+  --projekt-accent: #FFA726;    /* Leuchtendes Orange - Innovation */
+  
+  /* Renten-Rendite (Best Ager) */
+  --renten-primary: #1D594E;    /* Dunkles Tannengrün - Sicherheit */
+  --renten-secondary: #BDB38B;  /* Edles Gold/Ocker - Wertigkeit */
+  --renten-accent: #003366;     /* Marineblau - Vertrauen */
+  
+  /* Starter-Kapital (Karrierestarter 18-25) */
+  --starter-primary: #1A1A1A;   /* Dunkles Anthrazit - Tech & Fokus */
+  --starter-secondary: #00FFFF; /* Elektrisches Blau - Energie */
+  --starter-accent: #FF00FF;    /* Kräftiges Magenta - Aktion */
+  
+  /* Feierabend-Kapital (Unzufriedene Angestellte 28-45) */
+  --feierabend-primary: #2C3E50; /* Zuverlässiges Marineblau - Seriosität */
+  --feierabend-secondary: #F1C40F; /* Optimistisches Gelb/Gold - Hoffnung */
+  --feierabend-accent: #1ABC9C; /* Inspirierendes Türkis/Teal - Veränderung */
+  
+  /* 📝 TYPOGRAFIE */
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  
+  /* 📏 ABSTÄNDE */
+  --space-xs: 0.25rem;   /* 4px */
+  --space-sm: 0.5rem;    /* 8px */
+  --space-md: 1rem;      /* 16px */
+  --space-lg: 1.5rem;    /* 24px */
+  --space-xl: 2rem;      /* 32px */
+  --space-2xl: 3rem;     /* 48px */
+  --space-3xl: 4rem;     /* 64px */
+  
+  /* 📐 RADIUS */
+  --radius-sm: 0.25rem;  /* 4px */
+  --radius-md: 0.5rem;   /* 8px */
+  --radius-lg: 0.75rem;  /* 12px */
+  --radius-xl: 1rem;     /* 16px */
+  --radius-full: 9999px;
+  
+  /* 🎭 SHADOWS */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  
+  /* ⚡ ANIMATIONEN */
+  --transition-fast: 150ms ease-in-out;
+  --transition-normal: 300ms ease-in-out;
+  --transition-slow: 500ms ease-in-out;
+}
+
+/* ===== GLOBAL STYLES ===== */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-primary);
+  line-height: 1.6;
+  color: var(--flow-neutral);
+  background-color: var(--flow-white);
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== TYPOGRAPHY ===== */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 var(--space-md) 0;
+}
+
+h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
+h2 { font-size: clamp(1.5rem, 4vw, 2.5rem); }
+h3 { font-size: clamp(1.25rem, 3vw, 2rem); }
+h4 { font-size: clamp(1.125rem, 2.5vw, 1.5rem); }
+h5 { font-size: 1.25rem; }
+h6 { font-size: 1.125rem; }
+
+p {
+  margin: 0 0 var(--space-md) 0;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md) var(--space-xl);
+  border: none;
+  border-radius: var(--radius-lg);
+  font-family: var(--font-primary);
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+/* Flowtelligence Buttons */
+.btn-primary {
+  background: linear-gradient(135deg, var(--flow-primary), var(--flow-accent));
+  color: var(--flow-white);
+}
+
+.btn-secondary {
+  background: var(--flow-secondary);
+  color: var(--flow-white);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--flow-primary);
+  border: 2px solid var(--flow-primary);
+}
+
+.btn-outline:hover {
+  background: var(--flow-primary);
+  color: var(--flow-white);
+}
+
+/* Persona-spezifische Buttons */
+.btn-zeit {
+  background: linear-gradient(135deg, var(--zeit-primary), var(--zeit-secondary));
+  color: var(--flow-white);
+}
+
+.btn-skalen {
+  background: linear-gradient(135deg, var(--skalen-primary), var(--skalen-accent));
+  color: var(--flow-white);
+}
+
+.btn-kapital {
+  background: linear-gradient(135deg, var(--kapital-primary), var(--kapital-secondary));
+  color: var(--flow-white);
+}
+
+/* Persona-spezifische Buttons */
+.btn-eltern {
+  background: linear-gradient(135deg, var(--eltern-primary), var(--eltern-accent));
+  color: var(--flow-white);
+}
+
+.btn-projekt {
+  background: linear-gradient(135deg, var(--projekt-primary), var(--projekt-accent));
+  color: var(--flow-white);
+}
+
+.btn-renten {
+  background: linear-gradient(135deg, var(--renten-primary), var(--renten-accent));
+  color: var(--flow-white);
+}
+
+.btn-starter {
+  background: linear-gradient(135deg, var(--starter-primary), var(--starter-accent));
+  color: var(--flow-white);
+}
+
+.btn-feierabend {
+  background: linear-gradient(135deg, var(--feierabend-primary), var(--feierabend-accent));
+  color: var(--flow-white);
+}
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--flow-white);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-normal);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+}
+
+/* ===== CONTAINERS ===== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+.container-sm {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+.container-lg {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+/* ===== GRID SYSTEM ===== */
+.grid {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.grid-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.grid-3 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+.grid-4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+/* ===== SECTIONS ===== */
+.section {
+  padding: var(--space-3xl) 0;
+}
+
+.section-sm {
+  padding: var(--space-2xl) 0;
+}
+
+.section-lg {
+  padding: var(--space-3xl) 0;
+}
+
+/* ===== HERO SECTIONS ===== */
+.hero {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, var(--flow-light) 0%, var(--flow-white) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23e5e7eb" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== LOGO STYLES ===== */
+.logo {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: var(--flow-primary);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--flow-primary), var(--flow-accent));
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--flow-white);
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+
+/* Persona-spezifische Logos */
+.logo-zeit .logo-icon {
+  background: linear-gradient(135deg, var(--zeit-primary), var(--zeit-secondary));
+}
+
+.logo-skalen .logo-icon {
+  background: linear-gradient(135deg, var(--skalen-primary), var(--skalen-accent));
+}
+
+.logo-kapital .logo-icon {
+  background: linear-gradient(135deg, var(--kapital-primary), var(--kapital-secondary));
+}
+
+/* Persona-spezifische Logos */
+.logo-eltern .logo-icon {
+  background: linear-gradient(135deg, var(--eltern-primary), var(--eltern-accent));
+}
+
+.logo-projekt .logo-icon {
+  background: linear-gradient(135deg, var(--projekt-primary), var(--projekt-accent));
+}
+
+.logo-renten .logo-icon {
+  background: linear-gradient(135deg, var(--renten-primary), var(--renten-accent));
+}
+
+.logo-starter .logo-icon {
+  background: linear-gradient(135deg, var(--starter-primary), var(--starter-accent));
+}
+
+.logo-feierabend .logo-icon {
+  background: linear-gradient(135deg, var(--feierabend-primary), var(--feierabend-accent));
+}
+
+/* ===== NAVIGATION ===== */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) 0;
+}
+
+.nav-links {
+  display: flex;
+  gap: var(--space-lg);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-link {
+  color: var(--flow-neutral);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color var(--transition-fast);
+}
+
+.nav-link:hover {
+  color: var(--flow-primary);
+}
+
+/* ===== UTILITY CLASSES ===== */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.mb-0 { margin-bottom: 0; }
+.mb-sm { margin-bottom: var(--space-sm); }
+.mb-md { margin-bottom: var(--space-md); }
+.mb-lg { margin-bottom: var(--space-lg); }
+.mb-xl { margin-bottom: var(--space-xl); }
+
+.mt-0 { margin-top: 0; }
+.mt-sm { margin-top: var(--space-sm); }
+.mt-md { margin-top: var(--space-md); }
+.mt-lg { margin-top: var(--space-lg); }
+.mt-xl { margin-top: var(--space-xl); }
+
+.hidden { display: none; }
+.block { display: block; }
+.inline-block { display: inline-block; }
+.flex { display: flex; }
+.inline-flex { display: inline-flex; }
+
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+
+.w-full { width: 100%; }
+.h-full { height: 100%; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 var(--space-sm);
+  }
+  
+  .hero {
+    min-height: 60vh;
+    text-align: center;
+  }
+  
+  .nav-links {
+    display: none;
+  }
+  
+  .grid-2,
+  .grid-3,
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.6s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.6s ease-out;
+}
+
+/* ===== LOADING STATES ===== */
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid var(--flow-primary);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ===== FOCUS STATES ===== */
+.btn:focus,
+.nav-link:focus,
+.logo:focus {
+  outline: 2px solid var(--flow-primary);
+  outline-offset: 2px;
+}
+
+/* ===== DARK MODE SUPPORT ===== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --flow-neutral: #f8fafc;
+    --flow-light: #1f2937;
+    --flow-white: #111827;
+  }
+  
+  .card {
+    background: #1f2937;
+    border: 1px solid #374151;
+  }
+  
+  .hero {
+    background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+  }
+} 
