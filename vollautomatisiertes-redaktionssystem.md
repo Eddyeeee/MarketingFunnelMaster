@@ -388,3 +388,381 @@ Trigger: Stündlich
 
 **Status:** 🚀 Bereit für die Umsetzung!
 **Nächster Schritt:** n8n installieren und erste Workflows erstellen 
+
+## 🚀 ERWEITERTE AGENTEN-STRUKTUR (Basierend auf Recherche)
+
+### **NEUE SPEZIALISTEN FÜR WERBUNG & KAMPAGNEN:**
+
+#### **26. ADVERTISING & CAMPAIGN STRATEGIST**
+**Advertising & Campaign Strategy Agent**
+- **Aufgaben:** Werbe-Strategie, Kampagnen-Planung, Budget-Optimierung, ROI-Analyse
+- **Input:** Personas, Conversion-Daten, Markt-Analyse, Budget-Vorgaben
+- **Output:** Werbe-Strategien, Kampagnen-Pläne, Budget-Allocation
+- **Vernetzung:** ← Analytics, → Conversion-Optimierung, → Content-Strategie
+
+#### **27. META & SOCIAL ADVERTISING EXPERT**
+**Meta & Social Advertising Expert**
+- **Aufgaben:** Meta Ads, Instagram Ads, Facebook Ads, TikTok Ads, Pinterest Ads
+- **Input:** Werbe-Strategien, Personas, Creative-Assets, Budget
+- **Output:** Ad-Campaigns, Creative-Sets, Targeting-Strategien
+- **Vernetzung:** ← Advertising-Strategist, → Creative-Designer, → Analytics
+
+#### **28. GOOGLE ADS & SEARCH EXPERT**
+**Google Ads & Search Expert**
+- **Aufgaben:** Google Ads, Search Campaigns, Display Ads, Shopping Ads
+- **Input:** SEO-Daten, Keywords, Conversion-Daten, Budget
+- **Output:** Search-Campaigns, Display-Campaigns, Shopping-Campaigns
+- **Vernetzung:** ← SEO-Strategie, → Conversion-Optimierung, → Analytics
+
+#### **29. CREATIVE DESIGN & AD ASSETS**
+**Creative Design & Ad Assets Agent**
+- **Aufgaben:** Ad-Creatives, Visual Assets, Video-Ads, Banner-Design
+- **Input:** Werbe-Strategien, Brand-Guidelines, Personas, Ad-Formats
+- **Output:** Ad-Creatives, Visual Assets, Video-Ads
+- **Vernetzung:** ← Advertising-Strategist, → Video-Produktion, → Brand-Building
+
+#### **30. VIRAL CONTENT & TREND ANALYST**
+**Viral Content & Trend Analyst**
+- **Aufgaben:** Trend-Analyse, Viral-Potential, Content-Virality, Social-Proof
+- **Input:** Social Media Trends, Content-Performance, Viral-Metriken
+- **Output:** Viral-Content-Strategien, Trend-Predictions, Viral-Optimierungen
+- **Vernetzung:** ← Content-Strategie, → Social Media, → Analytics
+
+### **NEUE SPEZIALISTEN FÜR FLEXIBLE DATENBANK:**
+
+#### **31. DYNAMIC DATABASE ARCHITECT**
+**Dynamic Database Architect**
+- **Aufgaben:** Datenbank-Design, Schema-Optimierung, Performance-Tuning, Skalierung
+- **Input:** Daten-Anforderungen, Performance-Ziele, Skalierungs-Pläne
+- **Output:** Datenbank-Architektur, Schema-Designs, Performance-Optimierungen
+- **Vernetzung:** → Alle Abteilungen (Zentrale Dateninfrastruktur)
+
+#### **32. REAL-TIME DATA ANALYTICS**
+**Real-Time Data Analytics Agent**
+- **Aufgaben:** Echtzeit-Analyse, Live-Monitoring, Predictive Analytics, Alert-System
+- **Input:** Live-Daten, Performance-Metriken, Business-KPIs
+- **Output:** Real-Time-Insights, Predictive-Models, Alert-Notifications
+- **Vernetzung:** ← Alle Abteilungen, → CEO, → Performance-Optimization
+
+#### **33. AI-POWERED DECISION ENGINE**
+**AI-Powered Decision Engine**
+- **Aufgaben:** Automatisierte Entscheidungen, A/B-Test-Automation, Dynamic-Optimization
+- **Input:** Performance-Daten, Conversion-Metriken, Business-Rules
+- **Output:** Automatisierte Entscheidungen, Optimization-Actions
+- **Vernetzung:** ← Analytics, → Automation-Engineering, → CEO
+
+### **NEUE SPEZIALISTEN FÜR VIRALEN CONTENT:**
+
+#### **34. VIRAL CONTENT CREATOR**
+**Viral Content Creator**
+- **Aufgaben:** Viral-Content-Erstellung, Meme-Generierung, Trend-Integration
+- **Input:** Trend-Analyse, Viral-Strategien, Personas, Platform-Anforderungen
+- **Output:** Viral-Content, Memes, Trend-basierte Inhalte
+- **Vernetzung:** ← Viral-Analyst, → Content-Strategie, → Social Media
+
+#### **35. SOCIAL PROOF & INFLUENCER MANAGER**
+**Social Proof & Influencer Manager**
+- **Aufgaben:** Influencer-Identifikation, Partnership-Management, Social-Proof-Generierung
+- **Input:** Personas, Brand-Guidelines, Influencer-Daten
+- **Output:** Influencer-Strategien, Partnership-Pläne, Social-Proof-Content
+- **Vernetzung:** ← Brand-Building, → Social Media, → Content-Distribution
+
+#### **36. COMMUNITY & ENGAGEMENT MANAGER**
+**Community & Engagement Manager**
+- **Aufgaben:** Community-Building, Engagement-Optimierung, User-Generated-Content
+- **Input:** Community-Daten, Engagement-Metriken, User-Feedback
+- **Output:** Community-Strategien, Engagement-Kampagnen, UGC-Pläne
+- **Vernetzung:** ← Social Media, → Content-Strategie, → Brand-Building
+
+---
+
+## 🔄 ERWEITERTE WORKFLOWS
+
+### **Fluss 6: Werbung & Kampagnen (NEU)**
+```
+Analytics → Advertising-Strategist → Meta/Social-Expert → Creative-Designer → Campaign-Launch → Performance-Monitoring
+```
+
+### **Fluss 7: Viral Content (NEU)**
+```
+Trend-Analyst → Viral-Creator → Social-Proof-Manager → Community-Manager → Content-Distribution → Viral-Tracking
+```
+
+### **Fluss 8: Dynamic Optimization (NEU)**
+```
+Real-Time-Analytics → AI-Decision-Engine → Dynamic-Optimization → Performance-Monitoring → Continuous-Improvement
+```
+
+---
+
+## 📊 FLEXIBLE DATENBANK-ARCHITEKTUR
+
+### **Dynamische Schema-Struktur:**
+```json
+{
+  "database_name": "ewolf_media_empire",
+  "dynamic_schemas": {
+    "niches": {
+      "schema_version": "2.1",
+      "fields": {
+        "niche_id": "UUID",
+        "niche_name": "String",
+        "profitability_score": "Float",
+        "competition_level": "Enum",
+        "trend_direction": "Enum",
+        "viral_potential": "Float",
+        "ad_campaign_status": "Enum",
+        "content_performance": "JSON",
+        "conversion_metrics": "JSON",
+        "last_updated": "Timestamp"
+      }
+    },
+    "personas": {
+      "schema_version": "1.8",
+      "fields": {
+        "persona_id": "UUID",
+        "niche_id": "UUID",
+        "persona_name": "String",
+        "demographics": "JSON",
+        "psychographics": "JSON",
+        "pain_points": "Array",
+        "buying_behavior": "JSON",
+        "content_preferences": "JSON",
+        "viral_sensitivity": "Float",
+        "ad_responsiveness": "Float",
+        "conversion_triggers": "Array"
+      }
+    },
+    "content_performance": {
+      "schema_version": "1.5",
+      "fields": {
+        "content_id": "UUID",
+        "niche_id": "UUID",
+        "content_type": "Enum",
+        "viral_score": "Float",
+        "engagement_rate": "Float",
+        "conversion_rate": "Float",
+        "social_shares": "Integer",
+        "time_to_viral": "Integer",
+        "viral_velocity": "Float",
+        "trending_keywords": "Array"
+      }
+    },
+    "ad_campaigns": {
+      "schema_version": "1.3",
+      "fields": {
+        "campaign_id": "UUID",
+        "niche_id": "UUID",
+        "platform": "Enum",
+        "campaign_type": "Enum",
+        "budget": "Float",
+        "roas": "Float",
+        "ctr": "Float",
+        "cpc": "Float",
+        "conversion_rate": "Float",
+        "viral_impact": "Float",
+        "automation_level": "Enum"
+      }
+    }
+  }
+}
+```
+
+---
+
+## 🎯 VIRAL CONTENT STRATEGIE
+
+### **Viral-Content-Framework:**
+```json
+{
+  "viral_content_strategy": {
+    "content_types": {
+      "memes": {
+        "creation_frequency": "daily",
+        "platforms": ["Instagram", "TikTok", "Twitter"],
+        "viral_potential": "high",
+        "automation_level": "semi-automated"
+      },
+      "trending_topics": {
+        "creation_frequency": "real-time",
+        "platforms": ["all"],
+        "viral_potential": "very_high",
+        "automation_level": "automated"
+      },
+      "user_generated_content": {
+        "creation_frequency": "continuous",
+        "platforms": ["Instagram", "TikTok"],
+        "viral_potential": "medium",
+        "automation_level": "human-curated"
+      },
+      "viral_videos": {
+        "creation_frequency": "weekly",
+        "platforms": ["YouTube", "TikTok", "Instagram"],
+        "viral_potential": "very_high",
+        "automation_level": "semi-automated"
+      }
+    },
+    "viral_metrics": {
+      "viral_threshold": {
+        "shares": 1000,
+        "views": 10000,
+        "engagement_rate": 0.05,
+        "time_to_viral": 24
+      },
+      "viral_velocity": {
+        "shares_per_hour": 50,
+        "views_per_hour": 500,
+        "comments_per_hour": 10
+      }
+    }
+  }
+}
+```
+
+---
+
+## 💰 WERBUNG & KAMPAGNEN-STRATEGIE
+
+### **Multi-Platform Advertising Framework:**
+```json
+{
+  "advertising_strategy": {
+    "platforms": {
+      "meta": {
+        "campaign_types": ["awareness", "consideration", "conversion"],
+        "budget_allocation": 0.4,
+        "automation_level": "high",
+        "viral_integration": true
+      },
+      "google": {
+        "campaign_types": ["search", "display", "shopping"],
+        "budget_allocation": 0.3,
+        "automation_level": "high",
+        "viral_integration": false
+      },
+      "tiktok": {
+        "campaign_types": ["awareness", "engagement"],
+        "budget_allocation": 0.2,
+        "automation_level": "medium",
+        "viral_integration": true
+      },
+      "pinterest": {
+        "campaign_types": ["awareness", "consideration"],
+        "budget_allocation": 0.1,
+        "automation_level": "medium",
+        "viral_integration": true
+      }
+    },
+    "viral_advertising": {
+      "viral_content_boost": true,
+      "trending_topic_integration": true,
+      "user_generated_content_amplification": true,
+      "influencer_collaboration": true
+    }
+  }
+}
+```
+
+---
+
+## 🚀 ERWEITERTE SKALIERUNGS-STRATEGIE
+
+### **PHASE 1: DACH-MARKT (Monat 1-6)**
+- **Websites:** 50-100
+- **Nischen:** 10-20
+- **Video-Content:** 20%
+- **Viral-Content:** 10%
+- **Ad-Budget:** €5.000-15.000/Monat
+
+### **PHASE 2: EUROPÄISCHE EXPANSION (Monat 7-12)**
+- **Websites:** 200-300
+- **Nischen:** 30-50
+- **Video-Content:** 30%
+- **Viral-Content:** 20%
+- **Ad-Budget:** €20.000-50.000/Monat
+
+### **PHASE 3: GLOBALE EXPANSION (Monat 13-24)**
+- **Websites:** 500-800
+- **Nischen:** 100+
+- **Video-Content:** 40%
+- **Viral-Content:** 30%
+- **Ad-Budget:** €100.000-300.000/Monat
+
+### **PHASE 4: VIRAL EMPIRE (Monat 25-36)**
+- **Websites:** 800+
+- **Nischen:** 200+
+- **Video-Content:** 50%
+- **Viral-Content:** 40%
+- **Ad-Budget:** €500.000+/Monat
+- **Viral-Content-Dominanz**
+
+---
+
+## 🎯 ERWEITERTE ERGEBNISSE
+
+### **12 MONATE**
+- 200-300 profitable Websites
+- 50-100 etablierte Nischen
+- €50.000-100.000 monatlicher Umsatz
+- 30% Video-Content-Anteil
+- 20% Viral-Content-Anteil
+- €20.000-50.000 Ad-Budget
+
+### **24 MONATE**
+- 500-800 profitable Websites
+- 100+ etablierte Nischen
+- €200.000-500.000 monatlicher Umsatz
+- 40% Video-Content-Anteil
+- 30% Viral-Content-Anteil
+- €100.000-300.000 Ad-Budget
+
+### **36 MONATE**
+- 800+ profitable Websites
+- 200+ etablierte Nischen
+- €1.000.000+ monatlicher Umsatz
+- 50% Video-Content-Anteil
+- 40% Viral-Content-Anteil
+- €500.000+ Ad-Budget
+- **Viral-Content-Dominanz in 50+ Nischen**
+
+---
+
+## 🔧 TECHNISCHE IMPLEMENTIERUNG
+
+### **Flexible Datenbank-Technologie:**
+- **PostgreSQL** für strukturierte Daten
+- **MongoDB** für flexible Schemas
+- **Redis** für Echtzeit-Caching
+- **Elasticsearch** für Content-Suche
+- **Apache Kafka** für Event-Streaming
+
+### **AI & Automation:**
+- **GPT-4o** für kreative Aufgaben
+- **Claude 3.5** für analytische Aufgaben
+- **Llama 3** für spezialisierte Tasks
+- **n8n** für Workflow-Automation
+- **Custom AI Models** für Nischen-spezifische Aufgaben
+
+### **Advertising & Analytics:**
+- **Meta Business API** für Facebook/Instagram Ads
+- **Google Ads API** für Search/Display
+- **TikTok Ads API** für TikTok Campaigns
+- **Custom Analytics Dashboard** für Real-Time Monitoring
+- **AI-Powered Optimization Engine** für automatische Kampagnen-Optimierung
+
+---
+
+## 🎯 HUMAN-IN-THE-LOOP ERWEITERT
+
+### **NEUE KONTROLLPUNKTE:**
+1. **Ad-Budget-Freigabe** (Advertising-Strategist → Human-Approval)
+2. **Viral-Content-Review** (Viral-Creator → Human-Review)
+3. **Campaign-Launch** (Ad-Expert → Human-Approval)
+4. **Budget-Increase** (AI-Decision-Engine → Human-Approval)
+5. **Viral-Strategy-Change** (Viral-Analyst → Human-Approval)
+
+### **AUTOMATISIERUNGS-GRADE ERWEITERT:**
+- **Vollautomatisiert:** Routine-Tasks, Basic Ad-Optimization, Viral-Content-Detection
+- **Semi-Automatisiert:** Content-Erstellung, Ad-Campaign-Management, Viral-Content-Creation
+- **Human-Review:** Strategische Entscheidungen, Budget-Freigaben, Viral-Content-Approval
+- **Human-Entscheidung:** Nischen-Auswahl, Major Budget-Changes, Viral-Strategy-Shifts 

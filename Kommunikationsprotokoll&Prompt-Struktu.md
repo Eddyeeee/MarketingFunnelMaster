@@ -152,3 +152,201 @@ Output: Bild-URLs werden dem DAT hinzugefügt und an den Publisher weitergeleite
 Jeder Agent "liest" das gesamte bisherige Ticket, um den vollen Kontext zu verstehen. Seine Antwort ist nicht nur der reine Output, sondern die Aktualisierung des Tickets selbst. Er fügt seine Arbeitsergebnisse hinzu und ändert den Status, bevor er es weiterleitet.
 
 Durch diese strukturierte Vorgehensweise wird sichergestellt, dass die Kommunikation präzise, effizient und skalierbar ist. Jeder "Mitarbeiter" weiß genau, was von ihm erwartet wird, welche Informationen er erhält und in welchem Format er liefern muss. Dies ist die Grundlage, um Hunderte von Prozessen parallel und ohne Qualitätsverlust zu steuern.
+
+## 2. ERWEITERTE AGENTEN-STRUKTUR (800-Website-Vision)
+
+### **NEUE SPEZIALISTEN FÜR VIDEO-PRODUKTION:**
+
+#### **16. VIDEO-STRATEGIE & KONZEPTION**
+**Video Strategy & Concept Agent**
+- **Aufgaben:** Video-Strategie, Konzept-Entwicklung, Storyboard-Planung, Multi-Format-Strategie
+- **Input:** Content-Strategie, Personas, SEO-Daten, Trends
+- **Output:** Video-Konzepte, Storyboards, Multi-Format-Pläne
+- **Vernetzung:** ← Content-Strategie, → Video-Produktion, → Social Media
+
+#### **17. VIDEO-SCRIPT & STORYBOARD**
+**Video Script & Storyboard Agent**
+- **Aufgaben:** Video-Scripts, Storyboards, Sprecher-Notizen, Timing
+- **Input:** Video-Konzepte, Personas, SEO-Keywords
+- **Output:** Detaillierte Scripts, Storyboards, Produktions-Anweisungen
+- **Vernetzung:** ← Video-Strategie, → Video-Produktion, → Audio-Produktion
+
+#### **18. VIDEO-PRODUKTION & ANIMATION**
+**Video Production & Animation Agent**
+- **Aufgaben:** Video-Erstellung, Animation, Motion Graphics, Visual Effects
+- **Input:** Scripts, Storyboards, Brand-Guidelines, Assets
+- **Output:** Fertige Videos, Animationen, Motion Graphics
+- **Vernetzung:** ← Video-Script, → Video-Optimierung, → Content-Distribution
+
+#### **19. AUDIO-PRODUKTION & VOICEOVER**
+**Audio Production & Voiceover Agent**
+- **Aufgaben:** Audio-Aufnahme, Voiceover, Sound Design, Musik-Auswahl
+- **Input:** Scripts, Video-Content, Brand-Guidelines
+- **Output:** Audio-Files, Voiceovers, Soundtracks
+- **Vernetzung:** ← Video-Script, → Video-Produktion, → Podcast-Produktion
+
+#### **20. VIDEO-OPTIMIERUNG & RENDERING**
+**Video Optimization & Rendering Agent**
+- **Aufgaben:** Video-Optimierung, Rendering, Format-Konvertierung, Quality Control
+- **Input:** Roh-Videos, Platform-Anforderungen, Quality-Standards
+- **Output:** Optimierte Videos, Multi-Format-Versionen
+- **Vernetzung:** ← Video-Produktion, → Content-Distribution, → Analytics
+
+### **NEUE SPEZIALISTEN FÜR SKALIERUNG:**
+
+#### **21. MULTI-LANGUAGE & LOCALIZATION**
+**Multi-Language & Localization Agent**
+- **Aufgaben:** Übersetzung, Lokalisierung, Kultur-Anpassung, Multi-Sprach-Content
+- **Input:** Original-Content, Ziel-Sprachen, Kultur-Kontext
+- **Output:** Übersetzte Content, Lokalisierte Versionen
+- **Vernetzung:** ← Content-Strategie, → SEO-Strategie, → Content-Distribution
+
+#### **22. CONTENT-DISTRIBUTION & SYNDICATION**
+**Content Distribution & Syndication Agent**
+- **Aufgaben:** Content-Verteilung, Syndikation, Cross-Posting, Platform-Optimierung
+- **Input:** Fertige Content, Platform-Anforderungen, Distribution-Strategien
+- **Output:** Distribution-Pläne, Platform-spezifische Versionen
+- **Vernetzung:** ← Alle Content-Agenten, → Social Media, → Analytics
+
+#### **23. PERFORMANCE-OPTIMIERUNG & A/B-TESTING**
+**Performance Optimization & A/B Testing Agent**
+- **Aufgaben:** Performance-Tracking, A/B-Testing, Conversion-Optimierung, ROI-Analyse
+- **Input:** Performance-Daten, Conversion-Metriken, Test-Ergebnisse
+- **Output:** Optimierungs-Empfehlungen, A/B-Test-Pläne
+- **Vernetzung:** ← Analytics, → Conversion-Optimierung, → Content-Strategie
+
+#### **24. AUTOMATION-ENGINEERING & WORKFLOW-OPTIMIZATION**
+**Automation Engineering & Workflow Optimization Agent**
+- **Aufgaben:** Workflow-Automatisierung, Process-Optimierung, System-Integration
+- **Input:** Workflow-Daten, Performance-Metriken, Automatisierungs-Anforderungen
+- **Output:** Automatisierte Workflows, Process-Optimierungen
+- **Vernetzung:** → Alle Abteilungen (Automatisierung)
+
+#### **25. SCALABILITY & RESOURCE MANAGEMENT**
+**Scalability & Resource Management Agent**
+- **Aufgaben:** Ressourcen-Management, Skalierungs-Planung, Capacity-Planning
+- **Input:** Resource-Usage, Growth-Projektionen, Performance-Daten
+- **Output:** Skalierungs-Pläne, Resource-Allocation
+- **Vernetzung:** ← CEO, → Technische Infrastruktur, → Analytics
+
+## 3. ERWEITERTE KOMMUNIKATIONSFLÜSSE
+
+### **Fluss 3: Video-Produktion (NEU)**
+```
+Video-Strategie → Video-Script → Video-Produktion → Audio-Produktion → Video-Optimierung → Content-Distribution
+```
+
+### **Fluss 4: Multi-Language-Content (NEU)**
+```
+Content-Strategie → Multi-Language → SEO-Strategie → Content-Distribution → Performance-Optimierung
+```
+
+### **Fluss 5: Skalierung & Automation (NEU)**
+```
+Analytics → Performance-Optimierung → Automation-Engineering → Scalability-Management → CEO
+```
+
+## 4. VIDEO-PRODUKTION DAT-STRUKTUR
+
+```json
+{
+  "ticketID": "VIDEO-GARTEN-001",
+  "auftraggeber_agent": "KI-Content-Stratege",
+  "empfaenger_agent": "KI-Video-Strategie",
+  "projekt_domain": "gruener-daumen-ki.de",
+  "content_type": "Video",
+  "video_format": ["YouTube", "Instagram", "TikTok"],
+  "video_laenge": "3-5 Minuten",
+  "bezug_zu_persona": ["Gabi, 55, Hobby-Gärtnerin"],
+  "kern_aufgabe": "Erstelle ein Video-Konzept für 'Die 5 besten KI-Tools für Gartenplanung'",
+  "input_daten": {
+    "titel": "Die 5 besten KI-Tools für deine Gartenplanung 2025",
+    "text_content": "Fertiger Artikel-Text",
+    "seo_vorgaben": {
+      "haupt_keyword": "KI Gartenplanung",
+      "video_tags": ["Gartenplanung", "KI Tools", "Garten Apps"]
+    },
+    "platform_anforderungen": {
+      "youtube": {"laenge": "5-7 min", "format": "16:9", "thumbnail": true},
+      "instagram": {"laenge": "60 sec", "format": "9:16", "reels": true},
+      "tiktok": {"laenge": "30-60 sec", "format": "9:16", "trending": true}
+    }
+  },
+  "output_anforderungen": {
+    "video_konzept": "Detailliertes Konzept mit Storyboard",
+    "script": "Vollständiges Video-Script",
+    "visual_style": "Modern, clean, garden-themed",
+    "call_to_action": "Affiliate-Links in Beschreibung"
+  },
+  "erfolgs_kriterien": [
+    "Video ist platform-optimiert",
+    "SEO-Keywords sind integriert",
+    "Call-to-Action ist klar",
+    "Branding ist konsistent"
+  ],
+  "status": "Offen"
+}
+```
+
+## 5. SKALIERUNGS-STRATEGIE FÜR 800 WEBSITES
+
+### **PHASE 1: DACH-MARKT (Monat 1-6)**
+- **Sprachen:** Deutsch, Englisch
+- **Websites:** 50-100
+- **Nischen:** 10-20
+- **Video-Content:** 20% aller Content
+
+### **PHASE 2: EUROPÄISCHE EXPANSION (Monat 7-12)**
+- **Sprachen:** Deutsch, Englisch, Französisch, Spanisch, Italienisch
+- **Websites:** 200-300
+- **Nischen:** 30-50
+- **Video-Content:** 30% aller Content
+
+### **PHASE 3: GLOBALE EXPANSION (Monat 13-24)**
+- **Sprachen:** 10+ Sprachen
+- **Websites:** 500-800
+- **Nischen:** 100+
+- **Video-Content:** 40% aller Content
+
+### **PHASE 4: AUTOMATION & AI-OPTIMIERUNG (Monat 25-36)**
+- **Vollautomatisierte Content-Erstellung**
+- **AI-gestützte Video-Produktion**
+- **Predictive Analytics**
+- **Autonomous Optimization**
+
+## 6. HUMAN-IN-THE-LOOP ERWEITERUNG
+
+### **NEUE KONTROLLPUNKTE:**
+1. **Video-Konzept-Freigabe** (Video-Strategie → Human-Review)
+2. **Script-Approval** (Video-Script → Human-Review)
+3. **Video-Final-Cut** (Video-Optimierung → Human-Review)
+4. **Multi-Language-Quality** (Multi-Language → Human-Review)
+5. **Skalierungs-Entscheidungen** (Scalability → Human-Approval)
+
+### **AUTOMATISIERUNGS-GRADE ERWEITERT:**
+- **Vollautomatisiert:** Routine-Tasks, Monitoring, Reporting, Basic Video-Rendering
+- **Semi-Automatisiert:** Content-Erstellung, Social Media, Email-Marketing, Video-Scripting
+- **Human-Review:** Strategische Entscheidungen, Brand-Content, Video-Final-Cut, Multi-Language
+- **Human-Entscheidung:** Nischen-Auswahl, Partner-Programme, Skalierungs-Entscheidungen
+
+## 7. ERWARTETE ERGEBNISSE (ERWEITERT)
+
+### **12 MONATE**
+- 200-300 profitable Websites
+- 50-100 etablierte Nischen
+- €50.000-100.000 monatlicher Umsatz
+- 30% Video-Content-Anteil
+
+### **24 MONATE**
+- 500-800 profitable Websites
+- 100+ etablierte Nischen
+- €200.000-500.000 monatlicher Umsatz
+- 40% Video-Content-Anteil
+- Multi-Sprach-Präsenz
+
+### **36 MONATE**
+- 800+ profitable Websites
+- 200+ etablierte Nischen
+- €1.000.000+ monatlicher Umsatz
+- Vollautomatisierte Content-Erstellung
+- Globale Marktführerschaft
