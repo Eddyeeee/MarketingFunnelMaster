@@ -1,0 +1,429 @@
+name: 🚀 CI/CD Pipeline - Q-Money System
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Daily security scan at 02:00 UTC
+    - cron: '0 2 * * *'
+
+env:
+  NODE_VERSION: '18'
+  CACHE_VERSION: 'v1'
+
+jobs:
+  # ===============================
+  # SECURITY & VULNERABILITY SCAN
+  # ===============================
+  security:
+    name: 🔒 Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔍 Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: 📤 Upload Trivy scan results
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+  # ===============================
+  # LINT & CODE QUALITY
+  # ===============================
+  lint:
+    name: 🧹 Lint & Code Quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🧹 ESLint
+        run: npm run lint
+
+      - name: 💅 Prettier check
+        run: npm run format:check
+
+      - name: 🔍 TypeScript check
+        run: npm run type-check
+
+  # ===============================
+  # UNIT & INTEGRATION TESTS
+  # ===============================
+  test:
+    name: 🧪 Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18, 20]
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🧪 Run tests with coverage
+        run: npm run test:coverage
+
+      - name: 📊 Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+
+  # ===============================
+  # E2E TESTS
+  # ===============================
+  e2e:
+    name: 🎭 E2E Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🏗️ Build application
+        run: npm run build
+
+      - name: 🎭 Install Playwright
+        run: npx playwright install --with-deps
+
+      - name: 🧪 Run E2E tests
+        run: npm run test:e2e
+
+      - name: 📤 Upload test results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
+  # ===============================
+  # PERFORMANCE TESTS
+  # ===============================
+  performance:
+    name: ⚡ Performance Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🏗️ Build application
+        run: npm run build
+
+      - name: 🚀 Start server
+        run: npm start &
+        env:
+          NODE_ENV: production
+
+      - name: ⏳ Wait for server
+        run: npx wait-on http://localhost:3000 --timeout 60000
+
+      - name: 🏃 Run Lighthouse CI
+        run: |
+          npm install -g @lhci/cli@0.12.x
+          lhci autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+  # ===============================
+  # ACCESSIBILITY TESTS
+  # ===============================
+  accessibility:
+    name: ♿ Accessibility Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🏗️ Build application
+        run: npm run build
+
+      - name: 🚀 Start server
+        run: npm start &
+        env:
+          NODE_ENV: production
+
+      - name: ⏳ Wait for server
+        run: npx wait-on http://localhost:3000 --timeout 60000
+
+      - name: ♿ Run axe accessibility tests
+        run: |
+          npm install -g @axe-core/cli
+          axe http://localhost:3000 --exit
+
+  # ===============================
+  # BUILD & BUNDLE ANALYSIS
+  # ===============================
+  build:
+    name: 🏗️ Build & Analysis
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🏗️ Build application
+        run: npm run build
+
+      - name: 📊 Analyze bundle
+        run: npm run analyze
+
+      - name: 📤 Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-files
+          path: |
+            dist/
+            client/dist/
+          retention-days: 30
+
+      - name: 💾 Cache build
+        uses: actions/cache@v3
+        with:
+          path: |
+            dist/
+            client/dist/
+          key: build-${{ github.sha }}
+
+  # ===============================
+  # DOCKER BUILD & SECURITY SCAN
+  # ===============================
+  docker:
+    name: 🐳 Docker Build & Scan
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🐳 Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: 🏗️ Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
+          tags: q-money-system:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: 🔍 Run Trivy vulnerability scanner on image
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'q-money-system:latest'
+          format: 'sarif'
+          output: 'trivy-image-results.sarif'
+
+      - name: 📤 Upload Trivy scan results
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: 'trivy-image-results.sarif'
+
+  # ===============================
+  # DEPLOYMENT (STAGING)
+  # ===============================
+  deploy-staging:
+    name: 🚀 Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [security, lint, test, e2e, performance, accessibility, build, docker]
+    if: github.ref == 'refs/heads/develop'
+    environment:
+      name: staging
+      url: https://staging.q-money-system.com
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 💾 Restore build cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            dist/
+            client/dist/
+          key: build-${{ github.sha }}
+
+      - name: 🚀 Deploy to Staging
+        run: |
+          echo "Deploying to staging environment..."
+          # Add your staging deployment commands here
+          # e.g., rsync, AWS CLI, Vercel, Netlify, etc.
+
+      - name: 🔍 Health check
+        run: |
+          curl -f https://staging.q-money-system.com/health || exit 1
+
+      - name: 📢 Notify Slack
+        uses: 8398a7/action-slack@v3
+        if: always()
+        with:
+          status: ${{ job.status }}
+          channel: '#deployments'
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+
+  # ===============================
+  # DEPLOYMENT (PRODUCTION)
+  # ===============================
+  deploy-production:
+    name: 🎯 Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [security, lint, test, e2e, performance, accessibility, build, docker]
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: production
+      url: https://q-money-system.com
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 💾 Restore build cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            dist/
+            client/dist/
+          key: build-${{ github.sha }}
+
+      - name: 🚀 Deploy to Production
+        run: |
+          echo "Deploying to production environment..."
+          # Add your production deployment commands here
+
+      - name: 🔍 Health check
+        run: |
+          curl -f https://q-money-system.com/health || exit 1
+
+      - name: 📊 Update performance baseline
+        run: |
+          # Update performance baselines after successful deployment
+          echo "Updating performance baselines..."
+
+      - name: 📢 Notify success
+        uses: 8398a7/action-slack@v3
+        if: success()
+        with:
+          status: success
+          channel: '#deployments'
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+          text: '🎉 Production deployment successful! 🚀'
+
+      - name: 🚨 Notify failure
+        uses: 8398a7/action-slack@v3
+        if: failure()
+        with:
+          status: failure
+          channel: '#alerts'
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+          text: '🚨 Production deployment failed! Please check immediately.'
+
+  # ===============================
+  # POST-DEPLOYMENT MONITORING
+  # ===============================
+  monitoring:
+    name: 📊 Post-Deployment Monitoring
+    runs-on: ubuntu-latest
+    needs: [deploy-production]
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔍 Smoke tests
+        run: |
+          # Run smoke tests against production
+          curl -f https://q-money-system.com/api/health || exit 1
+          curl -f https://q-money-system.com/ || exit 1
+
+      - name: ⚡ Performance monitoring
+        run: |
+          # Trigger performance monitoring
+          echo "Starting performance monitoring..."
+
+      - name: 📈 Update metrics
+        run: |
+          # Update deployment metrics
+          echo "Updating deployment metrics..."
+
+# ===============================
+# WORKFLOW NOTIFICATIONS
+# ===============================
+  notify-completion:
+    name: 📢 Workflow Completion
+    runs-on: ubuntu-latest
+    needs: [deploy-production, monitoring]
+    if: always()
+    steps:
+      - name: 📊 Workflow summary
+        run: |
+          echo "## 🚀 Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status:** ${{ needs.deploy-production.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment:** Production" >> $GITHUB_STEP_SUMMARY
+          echo "- **URL:** https://q-money-system.com" >> $GITHUB_STEP_SUMMARY 

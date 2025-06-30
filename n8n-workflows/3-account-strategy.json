@@ -1,0 +1,510 @@
+{
+  "name": "3-Account Strategy Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 4
+            }
+          ]
+        }
+      },
+      "id": "strategy-trigger",
+      "name": "Strategy Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $json.openaiApiKey }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "gpt-4"
+            },
+            {
+              "name": "messages",
+              "value": "=[{\"role\": \"system\", \"content\": \"Du bist ein Experte für 3-Account-Social-Media-Strategie. Erstelle Content für: 1) @digital.wealth.academy (allgemein, Lead-Gen), 2) @smartbusiness.flow (Q-Money Fokus), 3) @passive.income.labs (Cash Maximus Fokus). Verwende psychologische Verkaufshebel, Storytelling, Social Proof.\"}, {\"role\": \"user\", \"content\": \"Erstelle 3 Social-Media-Posts für heute - einen für jeden Account. Jeder Post soll zur jeweiligen Account-Strategie passen und psychologische Verkaufshebel nutzen.\"}]"
+            },
+            {
+              "name": "max_tokens",
+              "value": 2000
+            },
+            {
+              "name": "temperature",
+              "value": 0.9
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3-account-content-generator",
+      "name": "3-Account Content Generator",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Parse 3-account content\nconst response = $input.first().json;\nconst content = response.choices[0].message.content;\n\n// Split into account-specific posts\nconst accountPosts = content.split('ACCOUNT:').filter(post => post.trim());\n\nconst formattedPosts = accountPosts.map((post, index) => {\n  const lines = post.trim().split('\\n');\n  const accountName = lines[0].replace('@', '').trim();\n  const postContent = lines.slice(1, -2).join('\\n');\n  const hashtags = lines.slice(-2).join(' ');\n  \n  // Account-specific configuration\n  let accountConfig;\n  if (accountName.includes('digital.wealth.academy')) {\n    accountConfig = {\n      account: 'digital_wealth_academy',\n      pageId: '{{ $json.digitalWealthPageId }}',\n      accessToken: '{{ $json.digitalWealthAccessToken }}',\n      landingPage: '{{ $json.generalLandingPage }}',\n      product: 'general',\n      funnelStage: 'awareness',\n      psychologicalTriggers: {\n        authority: '🎓 Zertifizierte Experten',\n        socialProof: '👥 Über 50.000+ Follower',\n        value: '💡 Kostenlose Tipps' \n      }\n    };\n  } else if (accountName.includes('smartbusiness.flow')) {\n    accountConfig = {\n      account: 'smart_business_flow',\n      pageId: '{{ $json.smartBusinessPageId }}',\n      accessToken: '{{ $json.smartBusinessAccessToken }}',\n      landingPage: '{{ $json.qmoneyLandingPage }}',\n      product: 'qmoney',\n      funnelStage: 'interest',\n      psychologicalTriggers: {\n        scarcity: '🔥 Nur noch 5 Plätze verfügbar!',\n        urgency: '⚡ Angebot läuft in 48h ab',\n        socialProof: '🚀 1.000+ erfolgreiche Teilnehmer'\n      }\n    };\n  } else if (accountName.includes('passive.income.labs')) {\n    accountConfig = {\n      account: 'passive_income_labs',\n      pageId: '{{ $json.passiveIncomePageId }}',\n      accessToken: '{{ $json.passiveIncomeAccessToken }}',\n      landingPage: '{{ $json.cashmaximusLandingPage }}',\n      product: 'cashmaximus',\n      funnelStage: 'desire',\n      psychologicalTriggers: {\n        authority: '🏆 Premium-Experte',\n        exclusivity: '💎 Exklusiver Zugang',\n        results: '💰 5.000€+ monatlich passiv'\n      }\n    };\n  }\n  \n  return {\n    id: `post_${accountConfig.account}_${index + 1}`,\n    account: accountConfig.account,\n    content: postContent,\n    hashtags: hashtags,\n    pageId: accountConfig.pageId,\n    accessToken: accountConfig.accessToken,\n    landingPage: accountConfig.landingPage,\n    product: accountConfig.product,\n    funnelStage: accountConfig.funnelStage,\n    psychologicalTriggers: accountConfig.psychologicalTriggers,\n    scheduledTime: new Date(Date.now() + (index * 2 * 60 * 60 * 1000)).toISOString(),\n    contentType: 'account_specific'\n  };\n});\n\nreturn formattedPosts.map(post => ({ json: post }));"
+      },
+      "id": "account-content-parser",
+      "name": "Account Content Parser",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "account",
+              "leftValue": "={{ $json.account }}",
+              "rightValue": "digital_wealth_academy",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "digital-wealth-router",
+      "name": "Digital Wealth Router",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [900, 100]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "account",
+              "leftValue": "={{ $json.account }}",
+              "rightValue": "smart_business_flow",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "smart-business-router",
+      "name": "Smart Business Router",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "account",
+              "leftValue": "={{ $json.account }}",
+              "rightValue": "passive_income_labs",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "passive-income-router",
+      "name": "Passive Income Router",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [900, 500]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "url": "https://graph.facebook.com/v18.0/{{ $json.pageId }}/feed",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $json.accessToken }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "={{ $json.content }}\\n\\n{{ $json.psychologicalTriggers.authority }}\\n{{ $json.psychologicalTriggers.socialProof }}\\n{{ $json.psychologicalTriggers.value }}\\n\\n{{ $json.hashtags }}\\n\\n🔗 Link in Bio für mehr Infos"
+            },
+            {
+              "name": "link",
+              "value": "={{ $json.landingPage }}"
+            },
+            {
+              "name": "scheduled_publish_time",
+              "value": "={{ $json.scheduledTime }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "digital-wealth-poster",
+      "name": "Digital Wealth Poster",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1120, 100]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "url": "https://graph.facebook.com/v18.0/{{ $json.pageId }}/feed",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $json.accessToken }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "={{ $json.content }}\\n\\n{{ $json.psychologicalTriggers.scarcity }}\\n{{ $json.psychologicalTriggers.urgency }}\\n{{ $json.psychologicalTriggers.socialProof }}\\n\\n{{ $json.hashtags }}\\n\\n🔗 Link in Bio für Q-Money"
+            },
+            {
+              "name": "link",
+              "value": "={{ $json.landingPage }}"
+            },
+            {
+              "name": "scheduled_publish_time",
+              "value": "={{ $json.scheduledTime }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "smart-business-poster",
+      "name": "Smart Business Poster",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1120, 300]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "url": "https://graph.facebook.com/v18.0/{{ $json.pageId }}/feed",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $json.accessToken }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "={{ $json.content }}\\n\\n{{ $json.psychologicalTriggers.authority }}\\n{{ $json.psychologicalTriggers.exclusivity }}\\n{{ $json.psychologicalTriggers.results }}\\n\\n{{ $json.hashtags }}\\n\\n🔗 Link in Bio für Cash Maximus"
+            },
+            {
+              "name": "link",
+              "value": "={{ $json.landingPage }}"
+            },
+            {
+              "name": "scheduled_publish_time",
+              "value": "={{ $json.scheduledTime }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "passive-income-poster",
+      "name": "Passive Income Poster",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1120, 500]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "url": "https://api.digistore24.com/api/v1/affiliate/register-sale",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $json.digistoreApiKey }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "product_id",
+              "value": "={{ $json.productId }}"
+            },
+            {
+              "name": "customer_email",
+              "value": "={{ $json.customerEmail }}"
+            },
+            {
+              "name": "affiliate_id",
+              "value": "={{ $json.affiliateId }}"
+            },
+            {
+              "name": "commission_rate",
+              "value": "80"
+            },
+            {
+              "name": "source_account",
+              "value": "={{ $json.account }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "80-percent-commission-tracker",
+      "name": "80% Commission Tracker",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1340, 300]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "url": "https://hooks.slack.com/services/YOUR_WEBHOOK_URL",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "🎯 3-Account Strategy Update!\n\nAccount: {{ $json.account }}\nProduct: {{ $json.product }}\nFunnel Stage: {{ $json.funnelStage }}\nCommission: 80%\n\n🚀 Post erfolgreich veröffentlicht!\n💰 Potenzial: {{ $json.potentialEarnings }}€"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3-account-notification",
+      "name": "3-Account Notification",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1560, 300]
+    }
+  ],
+  "connections": {
+    "Strategy Trigger": {
+      "main": [
+        [
+          {
+            "node": "3-Account Content Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3-Account Content Generator": {
+      "main": [
+        [
+          {
+            "node": "Account Content Parser",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Account Content Parser": {
+      "main": [
+        [
+          {
+            "node": "Digital Wealth Router",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Smart Business Router",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Passive Income Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Digital Wealth Router": {
+      "main": [
+        [
+          {
+            "node": "Digital Wealth Poster",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Smart Business Router": {
+      "main": [
+        [
+          {
+            "node": "Smart Business Poster",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Passive Income Router": {
+      "main": [
+        [
+          {
+            "node": "Passive Income Poster",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Digital Wealth Poster": {
+      "main": [
+        [
+          {
+            "node": "80% Commission Tracker",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Smart Business Poster": {
+      "main": [
+        [
+          {
+            "node": "80% Commission Tracker",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Passive Income Poster": {
+      "main": [
+        [
+          {
+            "node": "80% Commission Tracker",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "80% Commission Tracker": {
+      "main": [
+        [
+          {
+            "node": "3-Account Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-01-28T10:00:00.000Z",
+      "updatedAt": "2025-01-28T10:00:00.000Z",
+      "id": "3-account-strategy",
+      "name": "3-Account Strategy"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-01-28T10:00:00.000Z",
+  "versionId": "1"
+} 

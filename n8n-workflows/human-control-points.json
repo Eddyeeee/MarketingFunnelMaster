@@ -1,0 +1,510 @@
+{
+  "name": "Human-in-the-Loop Kontrollpunkte",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "budget-threshold",
+              "leftValue": "={{ $json.adSpend }}",
+              "rightValue": 100,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "budget-check",
+      "name": "Budget Check",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "send",
+        "chatId": "{{ $json.telegramChatId }}",
+        "text": "💰 Budget-Freigabe erforderlich!\n\nAd-Spend: {{ $json.adSpend }}€\nCampaign: {{ $json.campaignName }}\nPlatform: {{ $json.platform }}\n\nGenehmigen? /approve oder /reject",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        },
+        "options": {}
+      },
+      "id": "budget-notification",
+      "name": "Budget Notification",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [460, 200],
+      "credentials": {
+        "telegramApi": {
+          "id": "telegram-credentials",
+          "name": "Telegram Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "url": "https://hooks.slack.com/services/YOUR_WEBHOOK_URL",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "💰 Budget-Freigabe erforderlich!\n\nAd-Spend: {{ $json.adSpend }}€\nCampaign: {{ $json.campaignName }}\nPlatform: {{ $json.platform }}\n\n<https://deine-domain.com/approve/{{ $json.approvalId }}|Genehmigen> | <https://deine-domain.com/reject/{{ $json.approvalId }}|Ablehnen>"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "slack-budget-notification",
+      "name": "Slack Budget Notification",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [460, 400]
+    },
+    {
+      "parameters": {
+        "resource": "database",
+        "operation": "insert",
+        "table": "approval_queue",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "approval_id": "={{ $json.approvalId }}",
+            "type": "budget_approval",
+            "data": "={{ JSON.stringify($json) }}",
+            "status": "pending",
+            "created_at": "={{ new Date().toISOString() }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "approval-queue",
+      "name": "Approval Queue",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [680, 300],
+      "credentials": {
+        "postgres": {
+          "id": "postgres-credentials",
+          "name": "PostgreSQL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 5
+            }
+          ]
+        }
+      },
+      "id": "approval-checker",
+      "name": "Approval Checker",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "resource": "database",
+        "operation": "select",
+        "table": "approval_queue",
+        "additionalFields": {
+          "where": "status = 'approved' OR status = 'rejected'"
+        },
+        "options": {}
+      },
+      "id": "check-approvals",
+      "name": "Check Approvals",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [1120, 300],
+      "credentials": {
+        "postgres": {
+          "id": "postgres-credentials",
+          "name": "PostgreSQL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "status",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "approved",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "approval-status-check",
+      "name": "Approval Status Check",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1340, 300]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "url": "https://graph.facebook.com/v18.0/act_{{ $json.adAccountId }}/adsets",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $json.accessToken }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "name",
+              "value": "={{ $json.campaignName }}"
+            },
+            {
+              "name": "campaign_id",
+              "value": "={{ $json.campaignId }}"
+            },
+            {
+              "name": "daily_budget",
+              "value": "={{ $json.dailyBudget }}"
+            },
+            {
+              "name": "billing_event",
+              "value": "IMPRESSIONS"
+            },
+            {
+              "name": "optimization_goal",
+              "value": "REACH"
+            },
+            {
+              "name": "targeting",
+              "value": "={{ $json.targeting }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "execute-approved-campaign",
+      "name": "Execute Approved Campaign",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1560, 200]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "url": "https://hooks.slack.com/services/YOUR_WEBHOOK_URL",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "❌ Budget-Freigabe abgelehnt!\n\nCampaign: {{ $json.campaignName }}\nGrund: {{ $json.rejectionReason }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "rejection-notification",
+      "name": "Rejection Notification",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1560, 400]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "content-type",
+              "leftValue": "={{ $json.contentType }}",
+              "rightValue": "viral",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "content-review-check",
+      "name": "Content Review Check",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [240, 600]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "url": "https://hooks.slack.com/services/YOUR_WEBHOOK_URL",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "📝 Content-Review erforderlich!\n\nContent: {{ $json.contentPreview }}\nPlatform: {{ $json.platform }}\nType: {{ $json.contentType }}\n\n<https://deine-domain.com/review/{{ $json.contentId }}|Review Content>"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "content-review-notification",
+      "name": "Content Review Notification",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [460, 600]
+    },
+    {
+      "parameters": {
+        "resource": "database",
+        "operation": "insert",
+        "table": "content_review_queue",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "content_id": "={{ $json.contentId }}",
+            "content": "={{ $json.content }}",
+            "platform": "={{ $json.platform }}",
+            "status": "pending_review",
+            "created_at": "={{ new Date().toISOString() }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "content-review-queue",
+      "name": "Content Review Queue",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [680, 600],
+      "credentials": {
+        "postgres": {
+          "id": "postgres-credentials",
+          "name": "PostgreSQL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "performance",
+              "leftValue": "={{ $json.ctr }}",
+              "rightValue": 0.02,
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "performance-alert-check",
+      "name": "Performance Alert Check",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [240, 900]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "url": "https://hooks.slack.com/services/YOUR_WEBHOOK_URL",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "⚠️ Performance-Alert!\n\nCampaign: {{ $json.campaignName }}\nCTR: {{ $json.ctr }}%\nSpend: {{ $json.spend }}€\n\n<https://deine-domain.com/optimize/{{ $json.campaignId }}|Optimize Campaign>"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "performance-alert",
+      "name": "Performance Alert",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [460, 900]
+    }
+  ],
+  "connections": {
+    "Budget Check": {
+      "main": [
+        [
+          {
+            "node": "Budget Notification",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Slack Budget Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Budget Notification": {
+      "main": [
+        [
+          {
+            "node": "Approval Queue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Slack Budget Notification": {
+      "main": [
+        [
+          {
+            "node": "Approval Queue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Approval Checker": {
+      "main": [
+        [
+          {
+            "node": "Check Approvals",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Approvals": {
+      "main": [
+        [
+          {
+            "node": "Approval Status Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Approval Status Check": {
+      "main": [
+        [
+          {
+            "node": "Execute Approved Campaign",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Rejection Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Content Review Check": {
+      "main": [
+        [
+          {
+            "node": "Content Review Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Content Review Notification": {
+      "main": [
+        [
+          {
+            "node": "Content Review Queue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Performance Alert Check": {
+      "main": [
+        [
+          {
+            "node": "Performance Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-01-28T10:00:00.000Z",
+      "updatedAt": "2025-01-28T10:00:00.000Z",
+      "id": "human-control",
+      "name": "Human Control"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-01-28T10:00:00.000Z",
+  "versionId": "1"
+} 

@@ -1,0 +1,149 @@
+{
+  "social_media": {
+    "facebook": {
+      "app_id": "YOUR_FACEBOOK_APP_ID",
+      "app_secret": "YOUR_FACEBOOK_APP_SECRET",
+      "page_access_token": "YOUR_FACEBOOK_PAGE_ACCESS_TOKEN",
+      "page_id": "YOUR_FACEBOOK_PAGE_ID",
+      "webhook_verify_token": "YOUR_WEBHOOK_VERIFY_TOKEN"
+    },
+    "instagram": {
+      "business_account_id": "YOUR_INSTAGRAM_BUSINESS_ACCOUNT_ID",
+      "access_token": "YOUR_INSTAGRAM_ACCESS_TOKEN",
+      "app_id": "YOUR_INSTAGRAM_APP_ID",
+      "app_secret": "YOUR_INSTAGRAM_APP_SECRET"
+    },
+    "tiktok": {
+      "client_key": "YOUR_TIKTOK_CLIENT_KEY",
+      "client_secret": "YOUR_TIKTOK_CLIENT_SECRET",
+      "access_token": "YOUR_TIKTOK_ACCESS_TOKEN",
+      "open_id": "YOUR_TIKTOK_OPEN_ID"
+    },
+    "pinterest": {
+      "app_id": "YOUR_PINTEREST_APP_ID",
+      "app_secret": "YOUR_PINTEREST_APP_SECRET",
+      "access_token": "YOUR_PINTEREST_ACCESS_TOKEN",
+      "board_id": "YOUR_PINTEREST_BOARD_ID"
+    },
+    "twitter": {
+      "api_key": "YOUR_TWITTER_API_KEY",
+      "api_secret": "YOUR_TWITTER_API_SECRET",
+      "access_token": "YOUR_TWITTER_ACCESS_TOKEN",
+      "access_token_secret": "YOUR_TWITTER_ACCESS_TOKEN_SECRET",
+      "bearer_token": "YOUR_TWITTER_BEARER_TOKEN"
+    },
+    "linkedin": {
+      "client_id": "YOUR_LINKEDIN_CLIENT_ID",
+      "client_secret": "YOUR_LINKEDIN_CLIENT_SECRET",
+      "access_token": "YOUR_LINKEDIN_ACCESS_TOKEN",
+      "organization_id": "YOUR_LINKEDIN_ORGANIZATION_ID"
+    },
+    "youtube": {
+      "client_id": "YOUR_YOUTUBE_CLIENT_ID",
+      "client_secret": "YOUR_YOUTUBE_CLIENT_SECRET",
+      "access_token": "YOUR_YOUTUBE_ACCESS_TOKEN",
+      "refresh_token": "YOUR_YOUTUBE_REFRESH_TOKEN"
+    }
+  },
+  "ai_services": {
+    "openai": {
+      "api_key": "YOUR_OPENAI_API_KEY",
+      "organization": "YOUR_OPENAI_ORGANIZATION_ID"
+    },
+    "elevenlabs": {
+      "api_key": "YOUR_ELEVENLABS_API_KEY"
+    },
+    "dalle": {
+      "api_key": "YOUR_DALLE_API_KEY"
+    },
+    "claude": {
+      "api_key": "YOUR_CLAUDE_API_KEY"
+    }
+  },
+  "ecommerce": {
+    "shopify": {
+      "shop_name": "YOUR_SHOPIFY_SHOP_NAME",
+      "api_key": "YOUR_SHOPIFY_API_KEY",
+      "api_secret": "YOUR_SHOPIFY_API_SECRET",
+      "access_token": "YOUR_SHOPIFY_ACCESS_TOKEN",
+      "webhook_secret": "YOUR_SHOPIFY_WEBHOOK_SECRET"
+    },
+    "digistore24": {
+      "api_key": "YOUR_DIGISTORE24_API_KEY",
+      "api_secret": "YOUR_DIGISTORE24_API_SECRET"
+    }
+  },
+  "email_services": {
+    "sendgrid": {
+      "api_key": "YOUR_SENDGRID_API_KEY"
+    },
+    "mailchimp": {
+      "api_key": "YOUR_MAILCHIMP_API_KEY",
+      "list_id": "YOUR_MAILCHIMP_LIST_ID"
+    },
+    "convertkit": {
+      "api_key": "YOUR_CONVERTKIT_API_KEY",
+      "form_id": "YOUR_CONVERTKIT_FORM_ID"
+    }
+  },
+  "analytics": {
+    "google_analytics": {
+      "measurement_id": "YOUR_GA_MEASUREMENT_ID",
+      "api_secret": "YOUR_GA_API_SECRET"
+    },
+    "mixpanel": {
+      "project_token": "YOUR_MIXPANEL_PROJECT_TOKEN",
+      "api_secret": "YOUR_MIXPANEL_API_SECRET"
+    },
+    "facebook_pixel": {
+      "pixel_id": "YOUR_FACEBOOK_PIXEL_ID",
+      "access_token": "YOUR_FACEBOOK_ACCESS_TOKEN"
+    }
+  },
+  "automation": {
+    "n8n": {
+      "webhook_url": "https://deine-domain.com/webhook/",
+      "encryption_key": "YOUR_N8N_ENCRYPTION_KEY"
+    },
+    "zapier": {
+      "webhook_url": "YOUR_ZAPIER_WEBHOOK_URL"
+    },
+    "make": {
+      "webhook_url": "YOUR_MAKE_WEBHOOK_URL"
+    }
+  },
+  "storage": {
+    "aws_s3": {
+      "access_key_id": "YOUR_AWS_ACCESS_KEY_ID",
+      "secret_access_key": "YOUR_AWS_SECRET_ACCESS_KEY",
+      "bucket_name": "YOUR_S3_BUCKET_NAME",
+      "region": "eu-central-1"
+    },
+    "cloudinary": {
+      "cloud_name": "YOUR_CLOUDINARY_CLOUD_NAME",
+      "api_key": "YOUR_CLOUDINARY_API_KEY",
+      "api_secret": "YOUR_CLOUDINARY_API_SECRET"
+    }
+  },
+  "database": {
+    "postgres": {
+      "host": "localhost",
+      "port": 5432,
+      "database": "marketing_funnel_master",
+      "username": "n8n",
+      "password": "YOUR_DB_PASSWORD"
+    }
+  },
+  "monitoring": {
+    "slack": {
+      "webhook_url": "YOUR_SLACK_WEBHOOK_URL"
+    },
+    "discord": {
+      "webhook_url": "YOUR_DISCORD_WEBHOOK_URL"
+    },
+    "telegram": {
+      "bot_token": "YOUR_TELEGRAM_BOT_TOKEN",
+      "chat_id": "YOUR_TELEGRAM_CHAT_ID"
+    }
+  }
+} 

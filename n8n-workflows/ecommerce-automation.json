@@ -1,0 +1,343 @@
+{
+  "name": "E-Commerce Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      },
+      "id": "ecommerce-trigger",
+      "name": "E-Commerce Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "resource": "order",
+        "operation": "getAll",
+        "additionalFields": {
+          "status": "open",
+          "limit": 50
+        },
+        "options": {}
+      },
+      "id": "shopify-orders",
+      "name": "Shopify Orders",
+      "type": "n8n-nodes-base.shopify",
+      "typeVersion": 1,
+      "position": [460, 300],
+      "credentials": {
+        "shopifyApi": {
+          "id": "shopify-credentials",
+          "name": "Shopify API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "functionCode": "// Process new orders\nconst orders = $input.all();\nconst newOrders = orders.filter(order => {\n  const orderDate = new Date(order.json.created_at);\n  const now = new Date();\n  const diffHours = (now - orderDate) / (1000 * 60 * 60);\n  return diffHours <= 1; // Orders from last hour\n});\n\n// Create social media content for new orders\nconst socialContent = newOrders.map(order => {\n  const customer = order.json.customer;\n  const items = order.json.line_items;\n  \n  return {\n    orderId: order.json.id,\n    customerName: customer?.first_name || 'Kunde',\n    items: items.map(item => item.title).join(', '),\n    total: order.json.total_price,\n    currency: order.json.currency,\n    socialPost: `🎉 ${customer?.first_name || 'Ein Kunde'} hat gerade ${items.length} Produkt(e) gekauft! 💰 Gesamtwert: ${order.json.total_price} ${order.json.currency}`,\n    hashtags: '#Shopify #Ecommerce #Success #Customer #Sale',\n    platform: 'multi'\n  };\n});\n\nreturn socialContent.map(content => ({ json: content }));"
+      },
+      "id": "order-processor",
+      "name": "Order Processor",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "resource": "customer",
+        "operation": "getAll",
+        "additionalFields": {
+          "limit": 100
+        },
+        "options": {}
+      },
+      "id": "shopify-customers",
+      "name": "Shopify Customers",
+      "type": "n8n-nodes-base.shopify",
+      "typeVersion": 1,
+      "position": [680, 500],
+      "credentials": {
+        "shopifyApi": {
+          "id": "shopify-credentials",
+          "name": "Shopify API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "functionCode": "// Create customer segments\nconst customers = $input.all();\nconst segments = {\n  newCustomers: [],\n  returningCustomers: [],\n  highValueCustomers: [],\n  inactiveCustomers: []\n};\n\ncustomers.forEach(customer => {\n  const orderCount = customer.json.orders_count || 0;\n  const totalSpent = parseFloat(customer.json.total_spent || 0);\n  const lastOrderDate = customer.json.last_order_id ? new Date(customer.json.updated_at) : null;\n  const now = new Date();\n  \n  if (orderCount === 1) {\n    segments.newCustomers.push(customer.json);\n  } else if (orderCount > 1 && totalSpent > 100) {\n    segments.highValueCustomers.push(customer.json);\n  } else if (orderCount > 1) {\n    segments.returningCustomers.push(customer.json);\n  }\n  \n  if (lastOrderDate && (now - lastOrderDate) > (30 * 24 * 60 * 60 * 1000)) {\n    segments.inactiveCustomers.push(customer.json);\n  }\n});\n\nreturn Object.entries(segments).map(([segment, customers]) => ({\n  json: {\n    segment,\n    customerCount: customers.length,\n    customers: customers.slice(0, 10), // Limit for processing\n    action: segment === 'newCustomers' ? 'welcome_email' :\n            segment === 'highValueCustomers' ? 'upsell_offer' :\n            segment === 'inactiveCustomers' ? 'reactivation_campaign' : 'newsletter'\n  }\n}));"
+      },
+      "id": "customer-segmentation",
+      "name": "Customer Segmentation",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [900, 500]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "action",
+              "leftValue": "={{ $json.action }}",
+              "rightValue": "welcome_email",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "email-router",
+      "name": "Email Router",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1120, 500]
+    },
+    {
+      "parameters": {
+        "resource": "email",
+        "operation": "send",
+        "additionalFields": {
+          "to": "={{ $json.customers[0].email }}",
+          "subject": "Willkommen bei {{ $json.brandName }}! 🎉",
+          "html": "=<!DOCTYPE html><html><body><h1>Willkommen {{ $json.customers[0].first_name }}!</h1><p>Vielen Dank für deinen ersten Kauf!</p><p>Hier ist dein 10% Rabatt-Code: WELCOME10</p></body></html>"
+        },
+        "options": {}
+      },
+      "id": "welcome-email",
+      "name": "Welcome Email",
+      "type": "n8n-nodes-base.sendGrid",
+      "typeVersion": 1,
+      "position": [1340, 400],
+      "credentials": {
+        "sendGridApi": {
+          "id": "sendgrid-credentials",
+          "name": "SendGrid API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "email",
+        "operation": "send",
+        "additionalFields": {
+          "to": "={{ $json.customers[0].email }}",
+          "subject": "Exklusives Angebot nur für dich! 💎",
+          "html": "=<!DOCTYPE html><html><body><h1>Hallo {{ $json.customers[0].first_name }}!</h1><p>Als treuer Kunde bekommst du 20% Rabatt auf deine nächste Bestellung!</p><p>Code: VIP20</p></body></html>"
+        },
+        "options": {}
+      },
+      "id": "upsell-email",
+      "name": "Upsell Email",
+      "type": "n8n-nodes-base.sendGrid",
+      "typeVersion": 1,
+      "position": [1340, 600],
+      "credentials": {
+        "sendGridApi": {
+          "id": "sendgrid-credentials",
+          "name": "SendGrid API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "url": "https://api.mailchimp.com/3.0/lists/{{ $json.listId }}/members",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $json.mailchimpApiKey }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "email_address",
+              "value": "={{ $json.customers[0].email }}"
+            },
+            {
+              "name": "status",
+              "value": "subscribed"
+            },
+            {
+              "name": "merge_fields",
+              "value": "={\"FNAME\": \"{{ $json.customers[0].first_name }}\", \"LNAME\": \"{{ $json.customers[0].last_name }}\"}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "mailchimp-sync",
+      "name": "Mailchimp Sync",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1560, 500]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "url": "https://hooks.slack.com/services/YOUR_WEBHOOK_URL",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "🛒 E-Commerce Update!\n\nNeue Bestellungen: {{ $json.newOrders }}\nNeue Kunden: {{ $json.newCustomers }}\nE-Mails gesendet: {{ $json.emailsSent }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ecommerce-notification",
+      "name": "E-Commerce Notification",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1780, 400]
+    }
+  ],
+  "connections": {
+    "E-Commerce Trigger": {
+      "main": [
+        [
+          {
+            "node": "Shopify Orders",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Shopify Customers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Shopify Orders": {
+      "main": [
+        [
+          {
+            "node": "Order Processor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Shopify Customers": {
+      "main": [
+        [
+          {
+            "node": "Customer Segmentation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Customer Segmentation": {
+      "main": [
+        [
+          {
+            "node": "Email Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email Router": {
+      "main": [
+        [
+          {
+            "node": "Welcome Email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Upsell Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Welcome Email": {
+      "main": [
+        [
+          {
+            "node": "Mailchimp Sync",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsell Email": {
+      "main": [
+        [
+          {
+            "node": "Mailchimp Sync",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mailchimp Sync": {
+      "main": [
+        [
+          {
+            "node": "E-Commerce Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-01-28T10:00:00.000Z",
+      "updatedAt": "2025-01-28T10:00:00.000Z",
+      "id": "ecommerce",
+      "name": "E-Commerce"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-01-28T10:00:00.000Z",
+  "versionId": "1"
+} 

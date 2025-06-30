@@ -1,0 +1,334 @@
+{
+  "name": "KI Content Pipeline",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 4
+            }
+          ]
+        }
+      },
+      "id": "content-schedule",
+      "name": "Content Schedule",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "httpMethod": "GET",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $json.openaiApiKey }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "gpt-4"
+            },
+            {
+              "name": "messages",
+              "value": "=[{\"role\": \"system\", \"content\": \"Du bist ein KI-Content-Generator für Affiliate-Marketing. Erstelle viralen Content für Q-Money und Cash Maximus.\"}, {\"role\": \"user\", \"content\": \"Erstelle 5 Social-Media-Posts für heute mit Hashtags und Call-to-Actions.\"}]"
+            },
+            {
+              "name": "max_tokens",
+              "value": 1000
+            },
+            {
+              "name": "temperature",
+              "value": 0.8
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "openai-content-generator",
+      "name": "OpenAI Content Generator",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Parse OpenAI Response\nconst response = $input.first().json;\nconst content = response.choices[0].message.content;\n\n// Split into individual posts\nconst posts = content.split('---').filter(post => post.trim());\n\n// Format for different platforms\nconst formattedPosts = posts.map((post, index) => {\n  const lines = post.trim().split('\\n');\n  const title = lines[0];\n  const body = lines.slice(1, -2).join('\\n');\n  const hashtags = lines.slice(-2).join(' ');\n  \n  return {\n    id: `post_${index + 1}`,\n    title,\n    body,\n    hashtags,\n    platform: 'multi',\n    scheduledTime: new Date(Date.now() + (index * 2 * 60 * 60 * 1000)).toISOString(),\n    contentType: 'post'\n  };\n});\n\nreturn formattedPosts.map(post => ({ json: post }));"
+      },
+      "id": "content-parser",
+      "name": "Content Parser",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "url": "https://api.dalle.com/v1/images/generations",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $json.openaiApiKey }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "prompt",
+              "value": "={{ $json.imagePrompt }}"
+            },
+            {
+              "name": "n",
+              "value": 1
+            },
+            {
+              "name": "size",
+              "value": "1024x1024"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "image-generator",
+      "name": "DALL-E Image Generator",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [900, 200]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "xi-api-key",
+              "value": "{{ $json.elevenLabsApiKey }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "={{ $json.audioText }}"
+            },
+            {
+              "name": "model_id",
+              "value": "eleven_monolingual_v1"
+            },
+            {
+              "name": "voice_settings",
+              "value": "={\"stability\": 0.5, \"similarity_boost\": 0.5}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "audio-generator",
+      "name": "ElevenLabs Audio Generator",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [900, 400]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Combine content with media\nconst content = $input.first().json;\nconst image = $input.all()[1]?.json;\nconst audio = $input.all()[2]?.json;\n\n// Create platform-specific content\nconst platforms = ['facebook', 'instagram', 'tiktok'];\nconst formattedContent = platforms.map(platform => {\n  let platformContent = {\n    ...content,\n    platform,\n    media: {}\n  };\n  \n  if (image) {\n    platformContent.media.image = image.data[0].url;\n  }\n  \n  if (audio && platform === 'tiktok') {\n    platformContent.media.audio = audio.audio_url;\n  }\n  \n  return platformContent;\n});\n\nreturn formattedContent.map(item => ({ json: item }));"
+      },
+      "id": "content-combiner",
+      "name": "Content Combiner",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1120, 300]
+    },
+    {
+      "parameters": {
+        "resource": "database",
+        "operation": "insert",
+        "table": "content_queue",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "content_id": "={{ $json.id }}",
+            "platform": "={{ $json.platform }}",
+            "content": "={{ $json.body }}",
+            "media_urls": "={{ JSON.stringify($json.media) }}",
+            "scheduled_time": "={{ $json.scheduledTime }}",
+            "status": \"pending\""
+          }
+        },
+        "options": {}
+      },
+      "id": "content-queue",
+      "name": "Content Queue",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [1340, 300],
+      "credentials": {
+        "postgres": {
+          "id": "postgres-credentials",
+          "name": "PostgreSQL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "url": "https://hooks.slack.com/services/YOUR_WEBHOOK_URL",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "🎨 KI-Content generiert!\n\nAnzahl Posts: {{ $json.postCount }}\nPlattformen: {{ $json.platforms }}\nNächster Post: {{ $json.nextPostTime }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "content-notification",
+      "name": "Content Notification",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1560, 300]
+    }
+  ],
+  "connections": {
+    "Content Schedule": {
+      "main": [
+        [
+          {
+            "node": "OpenAI Content Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Content Generator": {
+      "main": [
+        [
+          {
+            "node": "Content Parser",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Content Parser": {
+      "main": [
+        [
+          {
+            "node": "Image Generator",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Audio Generator",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Content Combiner",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Image Generator": {
+      "main": [
+        [
+          {
+            "node": "Content Combiner",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audio Generator": {
+      "main": [
+        [
+          {
+            "node": "Content Combiner",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Content Combiner": {
+      "main": [
+        [
+          {
+            "node": "Content Queue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Content Queue": {
+      "main": [
+        [
+          {
+            "node": "Content Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-01-28T10:00:00.000Z",
+      "updatedAt": "2025-01-28T10:00:00.000Z",
+      "id": "ai-content",
+      "name": "AI Content"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-01-28T10:00:00.000Z",
+  "versionId": "1"
+} 

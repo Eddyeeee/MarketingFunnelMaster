@@ -1,0 +1,406 @@
+{
+  "name": "Q-Money & Cash Maximus Special Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 3
+            }
+          ]
+        }
+      },
+      "id": "special-trigger",
+      "name": "Special Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $json.openaiApiKey }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "gpt-4"
+            },
+            {
+              "name": "messages",
+              "value": "=[{\"role\": \"system\", \"content\": \"Du bist ein Experte für psychologische Verkaufshebel und Funnel-Marketing. Erstelle viralen Content für Q-Money und Cash Maximus Kurse. Fokus auf: Schmerzpunkte, Social Proof, Scarcity, Authority, Storytelling.\"}, {\"role\": \"user\", \"content\": \"Erstelle 3 Social-Media-Posts für heute mit psychologischen Verkaufshebeln für Q-Money/Cash Maximus. Verwende Storytelling, Social Proof und Scarcity.\"}]"
+            },
+            {
+              "name": "max_tokens",
+              "value": 1500
+            },
+            {
+              "name": "temperature",
+              "value": 0.9
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "psychological-content-generator",
+      "name": "Psychological Content Generator",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Parse psychological content\nconst response = $input.first().json;\nconst content = response.choices[0].message.content;\n\n// Split into individual posts\nconst posts = content.split('---').filter(post => post.trim());\n\n// Create psychological funnel content\nconst funnelContent = posts.map((post, index) => {\n  const lines = post.trim().split('\\n');\n  const title = lines[0];\n  const body = lines.slice(1, -2).join('\\n');\n  const hashtags = lines.slice(-2).join(' ');\n  \n  // Add psychological triggers\n  const psychologicalTriggers = {\n    scarcity: Math.random() > 0.5 ? '🔥 Nur noch 3 Plätze verfügbar!' : '',\n    socialProof: Math.random() > 0.5 ? '👥 Über 10.000+ erfolgreiche Teilnehmer' : '',\n    authority: Math.random() > 0.5 ? '🏆 Zertifizierter Experte' : '',\n    urgency: Math.random() > 0.5 ? '⚡ Angebot läuft in 24h ab' : ''\n  };\n  \n  // Determine funnel stage\n  const funnelStages = ['awareness', 'interest', 'desire', 'action'];\n  const funnelStage = funnelStages[index % funnelStages.length];\n  \n  // Add funnel-specific elements\n  let enhancedBody = body;\n  if (funnelStage === 'awareness') {\n    enhancedBody += '\\n\\n💡 Kennst du das Gefühl, dass du mehr verdienen könntest?';\n  } else if (funnelStage === 'interest') {\n    enhancedBody += '\\n\\n🎯 Was wäre, wenn du in 30 Tagen dein erstes passives Einkommen hättest?';\n  } else if (funnelStage === 'desire') {\n    enhancedBody += '\\n\\n💰 Stell dir vor, du verdienst 5.000€+ im Monat passiv...';\n  } else if (funnelStage === 'action') {\n    enhancedBody += '\\n\\n🚀 Jetzt ist der perfekte Zeitpunkt zu starten!';\n  }\n  \n  return {\n    id: `qmoney_post_${index + 1}`,\n    title,\n    body: enhancedBody,\n    hashtags: hashtags + ' #QMoney #CashMaximus #PassivesEinkommen #OnlineGeldVerdienen',\n    platform: 'multi',\n    funnelStage,\n    psychologicalTriggers,\n    scheduledTime: new Date(Date.now() + (index * 3 * 60 * 60 * 1000)).toISOString(),\n    contentType: 'psychological_funnel',\n    product: index % 2 === 0 ? 'qmoney' : 'cashmaximus'\n  };\n});\n\nreturn funnelContent.map(post => ({ json: post }));"
+      },
+      "id": "funnel-content-parser",
+      "name": "Funnel Content Parser",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "product",
+              "leftValue": "={{ $json.product }}",
+              "rightValue": "qmoney",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "qmoney-router",
+      "name": "Q-Money Router",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [900, 200]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "product",
+              "leftValue": "={{ $json.product }}",
+              "rightValue": "cashmaximus",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "cashmaximus-router",
+      "name": "Cash Maximus Router",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [900, 400]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "url": "https://graph.facebook.com/v18.0/{{ $json.facebookPageId }}/feed",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $json.facebookAccessToken }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "={{ $json.body }}\\n\\n{{ $json.psychologicalTriggers.scarcity }}\\n{{ $json.psychologicalTriggers.socialProof }}\\n{{ $json.psychologicalTriggers.authority }}\\n{{ $json.psychologicalTriggers.urgency }}\\n\\n{{ $json.hashtags }}\\n\\n🔗 Link in Bio für mehr Infos"
+            },
+            {
+              "name": "link",
+              "value": "={{ $json.qmoneyLandingPage }}"
+            },
+            {
+              "name": "scheduled_publish_time",
+              "value": "={{ $json.scheduledTime }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "qmoney-facebook-poster",
+      "name": "Q-Money Facebook Poster",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1120, 200]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "url": "https://graph.facebook.com/v18.0/{{ $json.facebookPageId }}/feed",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $json.facebookAccessToken }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "={{ $json.body }}\\n\\n{{ $json.psychologicalTriggers.scarcity }}\\n{{ $json.psychologicalTriggers.socialProof }}\\n{{ $json.psychologicalTriggers.authority }}\\n{{ $json.psychologicalTriggers.urgency }}\\n\\n{{ $json.hashtags }}\\n\\n🔗 Link in Bio für mehr Infos"
+            },
+            {
+              "name": "link",
+              "value": "={{ $json.cashmaximusLandingPage }}"
+            },
+            {
+              "name": "scheduled_publish_time",
+              "value": "={{ $json.scheduledTime }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "cashmaximus-facebook-poster",
+      "name": "Cash Maximus Facebook Poster",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1120, 400]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "url": "https://api.digistore24.com/api/v1/affiliate/register-sale",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $json.digistoreApiKey }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "product_id",
+              "value": "={{ $json.productId }}"
+            },
+            {
+              "name": "customer_email",
+              "value": "={{ $json.customerEmail }}"
+            },
+            {
+              "name": "affiliate_id",
+              "value": "={{ $json.affiliateId }}"
+            },
+            {
+              "name": "commission_rate",
+              "value": "={{ $json.commissionRate }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "digistore-commission-tracker",
+      "name": "Digistore Commission Tracker",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1340, 300]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "url": "https://hooks.slack.com/services/YOUR_WEBHOOK_URL",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "💰 Q-Money/Cash Maximus Update!\n\nProduct: {{ $json.product }}\nFunnel Stage: {{ $json.funnelStage }}\nPsychological Triggers: {{ Object.keys($json.psychologicalTriggers).join(', ') }}\nCommission Rate: {{ $json.commissionRate }}%\n\n🚀 Post erfolgreich veröffentlicht!"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "qmoney-notification",
+      "name": "Q-Money Notification",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1560, 300]
+    }
+  ],
+  "connections": {
+    "Special Trigger": {
+      "main": [
+        [
+          {
+            "node": "Psychological Content Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Psychological Content Generator": {
+      "main": [
+        [
+          {
+            "node": "Funnel Content Parser",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Funnel Content Parser": {
+      "main": [
+        [
+          {
+            "node": "Q-Money Router",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Cash Maximus Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Q-Money Router": {
+      "main": [
+        [
+          {
+            "node": "Q-Money Facebook Poster",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cash Maximus Router": {
+      "main": [
+        [
+          {
+            "node": "Cash Maximus Facebook Poster",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Q-Money Facebook Poster": {
+      "main": [
+        [
+          {
+            "node": "Digistore Commission Tracker",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cash Maximus Facebook Poster": {
+      "main": [
+        [
+          {
+            "node": "Digistore Commission Tracker",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Digistore Commission Tracker": {
+      "main": [
+        [
+          {
+            "node": "Q-Money Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-01-28T10:00:00.000Z",
+      "updatedAt": "2025-01-28T10:00:00.000Z",
+      "id": "qmoney-special",
+      "name": "Q-Money Special"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-01-28T10:00:00.000Z",
+  "versionId": "1"
+} 
