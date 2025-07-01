@@ -1,25 +1,26 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { PaymentForm } from '../components/PaymentForm';
 import { useToast } from '../hooks/use-toast';
 import { useAnalytics } from '../hooks/use-analytics';
 
 // Mock hooks
-jest.mock('../hooks/use-toast');
-jest.mock('../hooks/use-analytics');
+vi.mock('../hooks/use-toast');
+vi.mock('../hooks/use-analytics');
 
 // Mock fetch
-global.fetch = jest.fn();
+global.fetch = vi.fn();
 
 const mockToast = {
-  toast: jest.fn()
+  toast: vi.fn()
 };
 
 const mockAnalytics = {
-  trackEvent: jest.fn()
+  trackEvent: vi.fn()
 };
 
-(useToast as jest.Mock).mockReturnValue(mockToast);
-(useAnalytics as jest.Mock).mockReturnValue(mockAnalytics);
+(useToast as any).mockReturnValue(mockToast);
+(useAnalytics as any).mockReturnValue(mockAnalytics);
 
 describe('PaymentForm', () => {
   const defaultProps = {
@@ -30,13 +31,13 @@ describe('PaymentForm', () => {
       firstName: 'Max',
       lastName: 'Mustermann'
     },
-    onSuccess: jest.fn(),
-    onError: jest.fn()
+    onSuccess: vi.fn(),
+    onError: vi.fn()
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
-    (fetch as jest.Mock).mockClear();
+    vi.clearAllMocks();
+    (fetch as any).mockClear();
   });
 
   it('renders payment form with product selection', async () => {
@@ -62,7 +63,7 @@ describe('PaymentForm', () => {
       }
     ];
 
-    (fetch as jest.Mock)
+    (fetch as any)
       .mockResolvedValueOnce({
         json: async () => ({ success: true, products: mockProducts })
       })
@@ -102,7 +103,7 @@ describe('PaymentForm', () => {
       }
     ];
 
-    (fetch as jest.Mock)
+    (fetch as any)
       .mockResolvedValueOnce({
         json: async () => ({ success: true, products: mockProducts })
       })
@@ -146,7 +147,7 @@ describe('PaymentForm', () => {
       status: 'requires_payment_method'
     };
 
-    (fetch as jest.Mock)
+    (fetch as any)
       .mockResolvedValueOnce({
         json: async () => ({ success: true, products: mockProducts })
       })
@@ -214,7 +215,7 @@ describe('PaymentForm', () => {
 
     const mockCheckoutUrl = 'https://checkout.stripe.com/test';
 
-    (fetch as jest.Mock)
+    (fetch as any)
       .mockResolvedValueOnce({
         json: async () => ({ success: true, products: mockProducts })
       })
@@ -290,7 +291,7 @@ describe('PaymentForm', () => {
       }
     ];
 
-    (fetch as jest.Mock)
+    (fetch as any)
       .mockResolvedValueOnce({
         json: async () => ({ success: true, products: mockProducts })
       })
@@ -345,7 +346,7 @@ describe('PaymentForm', () => {
       status: 'requires_payment_method'
     };
 
-    (fetch as jest.Mock)
+    (fetch as any)
       .mockResolvedValueOnce({
         json: async () => ({ success: true, products: mockProducts })
       })
@@ -396,7 +397,7 @@ describe('PaymentForm', () => {
       }
     ];
 
-    (fetch as jest.Mock)
+    (fetch as any)
       .mockResolvedValueOnce({
         json: async () => ({ success: true, products: mockProducts })
       })
@@ -433,7 +434,7 @@ describe('PaymentForm', () => {
       }
     ];
 
-    (fetch as jest.Mock)
+    (fetch as any)
       .mockResolvedValueOnce({
         json: async () => ({ success: true, products: mockProducts })
       })
@@ -463,7 +464,7 @@ describe('PaymentForm', () => {
       }
     ];
 
-    (fetch as jest.Mock)
+    (fetch as any)
       .mockResolvedValueOnce({
         json: async () => ({ success: true, products: [] })
       })

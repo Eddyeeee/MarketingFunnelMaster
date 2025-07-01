@@ -62,28 +62,22 @@ Object.defineProperty(window, 'navigator', {
   }
 })
 
-// Mock für window.document
-Object.defineProperty(window, 'document', {
+// Mock für DOM Animation support
+Object.defineProperty(window.document, 'documentElement', {
   writable: true,
   value: {
-    referrer: 'https://google.com',
-    title: 'Test Page',
-    cookie: '',
-    createElement: vi.fn(() => ({
-      setAttribute: vi.fn(),
-      getAttribute: vi.fn(),
-      appendChild: vi.fn(),
-      removeChild: vi.fn(),
-      addEventListener: vi.fn(),
-      removeEventListener: vi.fn()
-    })),
-    getElementById: vi.fn(),
-    querySelector: vi.fn(),
-    querySelectorAll: vi.fn(),
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn()
+    style: {
+      WebkitAnimation: '',
+      animation: '',
+      WebkitTransition: '',
+      transition: ''
+    }
   }
-})
+});
+
+// Mock für Animation related properties
+(window as any).WebkitAnimation = '';
+(window as any).Animation = '';
 
 // Mock für window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
