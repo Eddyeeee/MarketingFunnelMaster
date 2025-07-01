@@ -1,0 +1,152 @@
+{
+  "name": "marketing-funnel-intelligence-system",
+  "version": "1.0.0",
+  "description": "Opportunistic Intelligence System for automated discovery and analysis of profitable marketing opportunities",
+  "main": "core/opportunity-scanner.js",
+  "scripts": {
+    "start": "node examples/basic-usage.js",
+    "dev": "nodemon examples/basic-usage.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "setup": "node scripts/setup.js",
+    "init-db": "node scripts/init-database.js",
+    "backup-db": "node scripts/backup-database.js",
+    "scan": "node scripts/run-scan.js",
+    "analyze": "node scripts/run-analysis.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "validate-config": "node scripts/validate-config.js",
+    "export-data": "node scripts/export-data.js",
+    "health-check": "node scripts/health-check.js"
+  },
+  "keywords": [
+    "marketing",
+    "intelligence",
+    "automation",
+    "affiliate-marketing",
+    "social-trends",
+    "opportunity-detection",
+    "profitability-analysis",
+    "campaign-strategy",
+    "n8n",
+    "webhooks",
+    "business-intelligence"
+  ],
+  "author": "MarketingFunnelMaster Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "sqlite3": "^5.1.6",
+    "node-cron": "^3.0.3",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0",
+    "dotenv": "^16.3.1",
+    "joi": "^17.11.0",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4",
+    "uuid": "^9.0.1",
+    "winston": "^3.11.0",
+    "ws": "^8.14.2"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.1",
+    "eslint": "^8.53.0",
+    "prettier": "^3.0.3",
+    "supertest": "^6.3.3",
+    "@types/node": "^20.8.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "**/*.js",
+      "!node_modules/**",
+      "!coverage/**",
+      "!examples/**",
+      "!scripts/**"
+    ],
+    "coverageReporters": [
+      "text",
+      "lcov",
+      "html"
+    ],
+    "testMatch": [
+      "**/__tests__/**/*.js",
+      "**/?(*.)+(spec|test).js"
+    ]
+  },
+  "eslintConfig": {
+    "env": {
+      "node": true,
+      "es6": true,
+      "jest": true
+    },
+    "extends": [
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 2022,
+      "sourceType": "module"
+    },
+    "rules": {
+      "no-console": "warn",
+      "no-unused-vars": "error",
+      "no-undef": "error",
+      "semi": [
+        "error",
+        "always"
+      ],
+      "quotes": [
+        "error",
+        "single"
+      ]
+    }
+  },
+  "prettier": {
+    "semi": true,
+    "trailingComma": "es5",
+    "singleQuote": true,
+    "printWidth": 100,
+    "tabWidth": 2,
+    "useTabs": false
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-username/marketing-funnel-intelligence.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/marketing-funnel-intelligence/issues"
+  },
+  "homepage": "https://github.com/your-username/marketing-funnel-intelligence#readme",
+  "config": {
+    "system": {
+      "scan_interval": 300000,
+      "max_concurrent_scans": 5,
+      "min_opportunity_score": 70,
+      "backup_retention_days": 30
+    },
+    "api": {
+      "port": 3000,
+      "host": "localhost",
+      "rate_limit": "100/hour",
+      "timeout": 30000
+    },
+    "webhooks": {
+      "enabled": true,
+      "retry_attempts": 3,
+      "retry_delay": 5000
+    }
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://github.com/sponsors/your-username"
+  }
+}

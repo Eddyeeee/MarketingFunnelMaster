@@ -1,0 +1,397 @@
+{
+  "tracked_keywords": [
+    {
+      "keyword": "passive income",
+      "category": "finance",
+      "platforms": ["twitter", "instagram", "youtube", "reddit"],
+      "is_active": true,
+      "min_engagement": 1000
+    },
+    {
+      "keyword": "side hustle",
+      "category": "business",
+      "platforms": ["twitter", "tiktok", "youtube"],
+      "is_active": true,
+      "min_engagement": 1500
+    },
+    {
+      "keyword": "online business",
+      "category": "business",
+      "platforms": ["twitter", "instagram", "youtube", "reddit"],
+      "is_active": true,
+      "min_engagement": 2000
+    },
+    {
+      "keyword": "financial freedom",
+      "category": "finance",
+      "platforms": ["twitter", "instagram", "youtube"],
+      "is_active": true,
+      "min_engagement": 1200
+    },
+    {
+      "keyword": "investing for beginners",
+      "category": "finance",
+      "platforms": ["youtube", "reddit", "twitter"],
+      "is_active": true,
+      "min_engagement": 800
+    },
+    {
+      "keyword": "make money online",
+      "category": "business",
+      "platforms": ["twitter", "tiktok", "youtube"],
+      "is_active": true,
+      "min_engagement": 2500
+    },
+    {
+      "keyword": "cryptocurrency",
+      "category": "finance",
+      "platforms": ["twitter", "reddit", "youtube"],
+      "is_active": true,
+      "min_engagement": 3000
+    },
+    {
+      "keyword": "remote work",
+      "category": "lifestyle",
+      "platforms": ["twitter", "instagram", "youtube"],
+      "is_active": true,
+      "min_engagement": 1800
+    },
+    {
+      "keyword": "digital marketing",
+      "category": "business",
+      "platforms": ["twitter", "instagram", "youtube", "reddit"],
+      "is_active": true,
+      "min_engagement": 1500
+    },
+    {
+      "keyword": "personal finance",
+      "category": "finance",
+      "platforms": ["twitter", "youtube", "reddit"],
+      "is_active": true,
+      "min_engagement": 1000
+    }
+  ],
+  "n8n_workflows": [
+    {
+      "workflow_name": "High Score Opportunity Alert",
+      "workflow_id": "high_score_alert_001",
+      "trigger_type": "high_score",
+      "min_score": 85,
+      "required_categories": ["finance", "business"],
+      "required_sources": [],
+      "trigger_conditions": {
+        "score_threshold": 85,
+        "max_age_hours": 2,
+        "exclude_expired": true
+      },
+      "webhook_url": "https://n8n.yourdomain.com/webhook/high-score-alert",
+      "is_active": true
+    },
+    {
+      "workflow_name": "Affiliate Product Notification",
+      "workflow_id": "affiliate_notification_001",
+      "trigger_type": "opportunity_found",
+      "min_score": 70,
+      "required_categories": [],
+      "required_sources": ["affiliate_scanner"],
+      "trigger_conditions": {
+        "min_commission_rate": 0.3,
+        "min_gravity": 10,
+        "exclude_networks": []
+      },
+      "webhook_url": "https://n8n.yourdomain.com/webhook/affiliate-alert",
+      "is_active": true
+    },
+    {
+      "workflow_name": "Social Trend Alert",
+      "workflow_id": "social_trend_001",
+      "trigger_type": "trending_topic",
+      "min_score": 75,
+      "required_categories": [],
+      "required_sources": ["social_trend_scanner"],
+      "trigger_conditions": {
+        "min_trend_velocity": 0.3,
+        "min_engagement": 5000,
+        "sentiment": ["positive", "neutral"]
+      },
+      "webhook_url": "https://n8n.yourdomain.com/webhook/social-trend-alert",
+      "is_active": true
+    },
+    {
+      "workflow_name": "Seasonal Opportunity Prep",
+      "workflow_id": "seasonal_prep_001",
+      "trigger_type": "seasonal",
+      "min_score": 70,
+      "required_categories": ["finance", "business"],
+      "required_sources": ["seasonal_scanner", "timing_optimizer"],
+      "trigger_conditions": {
+        "days_before_event": 14,
+        "min_historical_performance": 70,
+        "max_competition_level": 80
+      },
+      "webhook_url": "https://n8n.yourdomain.com/webhook/seasonal-prep",
+      "is_active": true
+    },
+    {
+      "workflow_name": "Content Generation Trigger",
+      "workflow_id": "content_gen_001",
+      "trigger_type": "opportunity_found",
+      "min_score": 80,
+      "required_categories": [],
+      "required_sources": [],
+      "trigger_conditions": {
+        "content_gap": true,
+        "viral_potential": 0.5
+      },
+      "webhook_url": "https://n8n.yourdomain.com/webhook/content-generation",
+      "is_active": true
+    }
+  ],
+  "sample_opportunities": [
+    {
+      "id": "demo_affiliate_crypto_course_001",
+      "title": "Cryptocurrency Trading Master Course - High Commission",
+      "description": "Comprehensive crypto trading course with 45% commission rate and strong conversion metrics",
+      "source": "affiliate_scanner",
+      "type": "affiliate_product",
+      "category": "finance",
+      "score": 87,
+      "status": "active",
+      "metadata": {
+        "network": "digistore24",
+        "product_id": "crypto_master_2024",
+        "vendor": "TradingPro Academy",
+        "last_api_check": "2024-01-15T10:30:00Z"
+      },
+      "metrics": {
+        "commission_rate": 0.45,
+        "price": 297,
+        "currency": "EUR",
+        "gravity": 85,
+        "conversion_rate": 0.08,
+        "sales_count": 1250,
+        "refund_rate": 0.05
+      },
+      "tags": ["crypto", "trading", "high-commission", "trending"]
+    },
+    {
+      "id": "demo_social_passive_income_twitter_001",
+      "title": "Passive Income Trending on Twitter",
+      "description": "High engagement around passive income strategies with 15k mentions in 24h",
+      "source": "social_trend_scanner",
+      "type": "trending_topic",
+      "category": "finance",
+      "score": 82,
+      "status": "active",
+      "metadata": {
+        "platform": "twitter",
+        "keyword": "passive income",
+        "hashtags": ["#passiveincome", "#financialfreedom", "#investing"],
+        "scan_timestamp": "2024-01-15T12:00:00Z"
+      },
+      "metrics": {
+        "total_engagement": 45000,
+        "average_engagement": 3000,
+        "trend_velocity": 0.65,
+        "sentiment": "positive",
+        "influencer_mentions": 8,
+        "viral_potential": 0.72
+      },
+      "tags": ["twitter", "trending", "finance", "viral-potential"]
+    },
+    {
+      "id": "demo_seasonal_tax_season_2024",
+      "title": "Tax Season Preparation Opportunity",
+      "description": "Annual tax season presents high-value opportunity for financial products and services",
+      "source": "seasonal_scanner",
+      "type": "seasonal_timing",
+      "category": "finance",
+      "score": 89,
+      "status": "active",
+      "metadata": {
+        "season_type": "tax_season",
+        "region": "US",
+        "event_name": "Tax Filing Deadline 2024",
+        "preparation_phase": true
+      },
+      "metrics": {
+        "historical_performance": 92,
+        "competition_level": 75,
+        "market_demand": 95,
+        "days_until_peak": 45,
+        "estimated_duration_days": 90
+      },
+      "tags": ["seasonal", "tax-season", "finance", "high-demand"]
+    },
+    {
+      "id": "demo_timing_market_activity_001",
+      "title": "High Global Market Activity Window",
+      "description": "Optimal timing window with 85% global market activity across US and EU markets",
+      "source": "timing_optimizer",
+      "type": "market_timing",
+      "category": "business",
+      "score": 78,
+      "status": "active",
+      "metadata": {
+        "timing_type": "market_activity",
+        "global_activity_level": 85,
+        "active_markets": ["US", "EU"],
+        "optimal_duration": "4 hours"
+      },
+      "metrics": {
+        "market_activity_us": 90,
+        "market_activity_eu": 80,
+        "weekend_factor": false,
+        "holiday_factor": false,
+        "optimal_end_time": "2024-01-15T20:00:00Z"
+      },
+      "tags": ["timing", "market-activity", "immediate", "short-duration"]
+    }
+  ],
+  "sample_market_conditions": [
+    {
+      "condition_date": "2024-01-15",
+      "market_sentiment": "bullish",
+      "volatility_index": 0.25,
+      "consumer_confidence": 0.72,
+      "social_media_activity": 0.68,
+      "trending_topics": ["cryptocurrency", "investing", "side-hustle", "AI", "remote-work"],
+      "viral_content_count": 15,
+      "seasonal_multiplier": 1.2,
+      "holiday_factor": 1.0,
+      "weekend_factor": 1.0,
+      "global_market_activity": 75,
+      "optimal_posting_hours": {
+        "US_EST": [9, 10, 11, 14, 15, 16, 19, 20],
+        "EU_CET": [9, 10, 11, 14, 15, 16, 18, 19],
+        "DE_CET": [9, 10, 11, 14, 15, 16, 18, 19]
+      }
+    }
+  ],
+  "api_configurations": {
+    "networks": {
+      "digistore24": {
+        "baseUrl": "https://www.digistore24.com",
+        "rateLimit": 60,
+        "cacheTTL": 900,
+        "timeout": 30000
+      },
+      "clickbank": {
+        "baseUrl": "https://api.clickbank.com",
+        "rateLimit": 100,
+        "cacheTTL": 600,
+        "timeout": 25000
+      },
+      "twitter": {
+        "baseUrl": "https://api.twitter.com",
+        "rateLimit": 300,
+        "cacheTTL": 300,
+        "timeout": 15000
+      },
+      "instagram": {
+        "baseUrl": "https://graph.instagram.com",
+        "rateLimit": 200,
+        "cacheTTL": 600,
+        "timeout": 20000
+      },
+      "youtube": {
+        "baseUrl": "https://www.googleapis.com/youtube/v3",
+        "rateLimit": 10000,
+        "cacheTTL": 1800,
+        "timeout": 20000
+      },
+      "reddit": {
+        "baseUrl": "https://www.reddit.com",
+        "rateLimit": 60,
+        "cacheTTL": 600,
+        "timeout": 15000
+      }
+    }
+  },
+  "scanner_configurations": {
+    "affiliate_scanner": {
+      "scan_interval": 300000,
+      "min_commission_rate": 0.1,
+      "max_requests_per_minute": 60,
+      "enabled_networks": ["digistore24", "clickbank", "shareasale"],
+      "categories": ["business", "finance", "marketing", "education"],
+      "min_gravity": 5
+    },
+    "social_trend_scanner": {
+      "scan_interval": 900000,
+      "min_engagement": 1000,
+      "trend_threshold": 0.2,
+      "platforms": ["twitter", "instagram", "tiktok", "youtube", "reddit"],
+      "keywords": ["money", "business", "investing", "passive income", "side hustle", "cryptocurrency", "trading"],
+      "sentiment_analysis": true
+    },
+    "seasonal_scanner": {
+      "scan_interval": 3600000,
+      "look_ahead_days": 90,
+      "min_seasonal_score": 60,
+      "regions": ["US", "EU", "DE"],
+      "categories": ["finance", "business", "education", "lifestyle"],
+      "include_holidays": true,
+      "include_weather": true
+    },
+    "timing_optimizer": {
+      "scan_interval": 600000,
+      "time_zones": ["Europe/Berlin", "America/New_York", "America/Los_Angeles"],
+      "weekend_factor": 0.3,
+      "holiday_factor": 0.2,
+      "min_activity_threshold": 50
+    }
+  },
+  "scoring_weights": {
+    "default": {
+      "profitability": 0.4,
+      "trend_velocity": 0.3,
+      "timing": 0.2,
+      "competition": 0.1
+    },
+    "affiliate_focused": {
+      "profitability": 0.6,
+      "trend_velocity": 0.2,
+      "timing": 0.1,
+      "competition": 0.1
+    },
+    "trend_focused": {
+      "profitability": 0.2,
+      "trend_velocity": 0.5,
+      "timing": 0.2,
+      "competition": 0.1
+    },
+    "timing_focused": {
+      "profitability": 0.3,
+      "trend_velocity": 0.2,
+      "timing": 0.4,
+      "competition": 0.1
+    }
+  },
+  "notification_templates": {
+    "high_score_opportunity": {
+      "title": "🎯 High-Score Opportunity Detected",
+      "message": "New opportunity '{title}' scored {score}/100 in {category}",
+      "fields": ["title", "score", "category", "source", "description"],
+      "urgency": "high"
+    },
+    "trending_topic": {
+      "title": "📈 Trending Topic Alert",
+      "message": "'{keyword}' is trending on {platform} with {engagement} engagement",
+      "fields": ["keyword", "platform", "engagement", "trend_velocity", "sentiment"],
+      "urgency": "medium"
+    },
+    "seasonal_prep": {
+      "title": "🗓️ Seasonal Opportunity Approaching",
+      "message": "Prepare for {event_name} - {days_until} days remaining",
+      "fields": ["event_name", "days_until", "historical_performance", "preparation_tips"],
+      "urgency": "medium"
+    },
+    "affiliate_discovery": {
+      "title": "💰 New Affiliate Opportunity",
+      "message": "Product '{title}' offers {commission_rate}% commission with {gravity} gravity",
+      "fields": ["title", "commission_rate", "gravity", "network", "price"],
+      "urgency": "low"
+    }
+  }
+}
