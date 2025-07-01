@@ -1,0 +1,87 @@
+{
+  "domain": "highconvertingfitnesmaster.com",
+  "niche": "high-converting-fitness-product",
+  "title": "High-Converting Fitness Product",
+  "description": "Fitness product with 50% commission",
+  "keywords": "high-converting,fitness,product",
+  "monetization": [
+    {
+      "type": "affiliate",
+      "network": "digistore24",
+      "productId": "default",
+      "commission": "50%"
+    },
+    {
+      "type": "adsense",
+      "placement": "automatic"
+    },
+    {
+      "type": "email",
+      "provider": "convertkit",
+      "leadMagnet": "free-guide"
+    }
+  ],
+  "content": {
+    "homepage": {
+      "hero": {
+        "headline": "Master High-Converting Fitness Product Today",
+        "subheadline": "Fitness product with 50% commission",
+        "cta": "Get Started Now"
+      },
+      "sections": [
+        {
+          "type": "benefits",
+          "title": "Why Choose Us",
+          "items": [
+            "Expert guidance and support",
+            "Proven strategies that work",
+            "Money-back guarantee"
+          ]
+        },
+        {
+          "type": "testimonials",
+          "title": "Success Stories",
+          "items": [
+            {
+              "name": "Sarah M.",
+              "text": "This changed my life! Highly recommended.",
+              "rating": 5
+            },
+            {
+              "name": "John D.",
+              "text": "This changed my life! Highly recommended.",
+              "rating": 5
+            },
+            {
+              "name": "Lisa K.",
+              "text": "This changed my life! Highly recommended.",
+              "rating": 5
+            }
+          ]
+        },
+        {
+          "type": "cta",
+          "title": "Ready to Start?",
+          "button": "Click Here to Begin"
+        }
+      ]
+    },
+    "pages": [
+      {
+        "slug": "about",
+        "title": "About Us",
+        "content": "Leading experts in High-Converting Fitness Product"
+      },
+      {
+        "slug": "guide",
+        "title": "Complete Guide",
+        "content": "# The Ultimate Guide to High-Converting Fitness Product\n\n## Introduction\nWelcome to your comprehensive guide on High-Converting Fitness Product.\n\n## Chapter 1: Getting Started\nLearn the fundamentals...\n\n## Chapter 2: Advanced Strategies\nTake your skills to the next level...\n\n## Chapter 3: Success Tips\nInsider secrets for maximum results...\n\n## Conclusion\nStart your journey today!"
+      }
+    ]
+  },
+  "design": {
+    "name": "bold",
+    "primaryColor": "#EF4444",
+    "style": "energetic"
+  }
+}

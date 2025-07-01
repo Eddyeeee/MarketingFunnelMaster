@@ -1,0 +1,207 @@
+{
+  "name": "Opportunity Intelligence Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "opportunity-webhook",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Opportunity Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3000/webhook/new-opportunity",
+        "sendBody": true,
+        "bodyContentType": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "send-to-intelligence",
+      "name": "Send to Intelligence System",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json.opportunity.potential_revenue }}",
+              "operation": "larger",
+              "value2": 5000
+            }
+          ]
+        }
+      },
+      "id": "high-value-filter",
+      "name": "High Value Opportunity?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3000/webhook/generate-content",
+        "sendBody": true,
+        "bodyContentType": "json",
+        "jsonBody": "={{ JSON.stringify({opportunityId: $json.opportunityId, contentType: 'priority'}) }}",
+        "options": {}
+      },
+      "id": "generate-priority-content",
+      "name": "Generate Priority Content",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [900, 200]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3000/webhook/deploy-website",
+        "sendBody": true,
+        "bodyContentType": "json",
+        "jsonBody": "={{ JSON.stringify({opportunityId: $json.opportunityId, domain: $json.domain}) }}",
+        "options": {}
+      },
+      "id": "deploy-website",
+      "name": "Deploy Website",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [1120, 200]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3000/webhook/distribute-social",
+        "sendBody": true,
+        "bodyContentType": "json",
+        "jsonBody": "={{ JSON.stringify({content: $json.content, platforms: ['twitter', 'linkedin', 'instagram']}) }}",
+        "options": {}
+      },
+      "id": "social-distribution",
+      "name": "Social Media Distribution",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [900, 400]
+    },
+    {
+      "parameters": {
+        "to": "success@yourdomain.com",
+        "subject": "🚀 New High-Value Opportunity Processed",
+        "emailFormat": "html",
+        "message": "<h2>Opportunity Alert</h2><p>A new high-value opportunity has been automatically processed:</p><ul><li><strong>Title:</strong> {{ $json.opportunity.title }}</li><li><strong>Revenue Potential:</strong> ${{ $json.opportunity.potential_revenue }}</li><li><strong>Competition:</strong> {{ $json.opportunity.competition_level }}</li></ul><p>Actions taken:<br>✅ Content generated<br>✅ Website deployed<br>✅ Social media distribution started</p>",
+        "options": {}
+      },
+      "id": "email-notification",
+      "name": "Email Notification",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 1,
+      "position": [1340, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({success: true, message: 'Opportunity processed successfully', opportunityId: $json.opportunityId}) }}"
+      },
+      "id": "response",
+      "name": "Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1560, 300]
+    }
+  ],
+  "connections": {
+    "Opportunity Webhook": {
+      "main": [
+        [
+          {
+            "node": "Send to Intelligence System",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send to Intelligence System": {
+      "main": [
+        [
+          {
+            "node": "High Value Opportunity?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "High Value Opportunity?": {
+      "main": [
+        [
+          {
+            "node": "Generate Priority Content",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Social Media Distribution",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Priority Content": {
+      "main": [
+        [
+          {
+            "node": "Deploy Website",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deploy Website": {
+      "main": [
+        [
+          {
+            "node": "Email Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Social Media Distribution": {
+      "main": [
+        [
+          {
+            "node": "Email Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email Notification": {
+      "main": [
+        [
+          {
+            "node": "Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {},
+  "versionId": "1",
+  "id": "opportunity-intelligence-workflow"
+}
