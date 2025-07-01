@@ -1,0 +1,611 @@
+{
+  "name": "MarketingFunnelMaster - Viral Content Automation Suite",
+  "description": "Complete automation suite for €48K/month potential business targeting Q-Money, Remote Cash Flow, Crypto Flow, and Affiliate Pro products",
+  "workflows": [
+    {
+      "id": "tiktok-trend-detector",
+      "name": "TikTok Trend Detection & Content Creator",
+      "nodes": [
+        {
+          "parameters": {
+            "rule": {
+              "interval": [
+                {
+                  "field": "hours",
+                  "hoursInterval": 3
+                }
+              ]
+            }
+          },
+          "id": "trend-scanner-trigger",
+          "name": "Trend Scanner Schedule",
+          "type": "n8n-nodes-base.scheduleTrigger",
+          "typeVersion": 1,
+          "position": [220, 300]
+        },
+        {
+          "parameters": {
+            "httpMethod": "GET",
+            "url": "https://api.tiktok.com/trending/hashtags",
+            "authentication": "genericCredentialType",
+            "genericAuthType": "httpHeaderAuth",
+            "sendHeaders": true,
+            "headerParameters": {
+              "parameters": [
+                {
+                  "name": "Authorization",
+                  "value": "Bearer {{ $credentials.tiktokApiKey }}"
+                }
+              ]
+            },
+            "options": {
+              "queryParameters": {
+                "parameters": [
+                  {
+                    "name": "region",
+                    "value": "DE"
+                  },
+                  {
+                    "name": "category",
+                    "value": "business,finance,lifestyle"
+                  }
+                ]
+              }
+            }
+          },
+          "id": "tiktok-api",
+          "name": "TikTok Trending API",
+          "type": "n8n-nodes-base.httpRequest",
+          "typeVersion": 4.1,
+          "position": [440, 300]
+        },
+        {
+          "parameters": {
+            "functionCode": "// Analyze trends for our products\nconst trends = $input.first().json.trends || [];\nconst products = {\n  'qmoney': ['geldverdienen', 'nebeneinkommen', 'studentenjob', 'passiveseinkommen'],\n  'remotecash': ['remotework', 'digitalnomad', 'workfromanywhere', 'ortsunabhängig'],\n  'cryptoflow': ['crypto', 'bitcoin', 'trading', 'krypto'],\n  'affiliatepro': ['affiliatemarketing', 'onlinemarketing', 'passiveincome']\n};\n\n// Match trends with products\nconst relevantTrends = [];\nfor (const trend of trends) {\n  const hashtag = trend.hashtag.toLowerCase();\n  for (const [product, keywords] of Object.entries(products)) {\n    if (keywords.some(kw => hashtag.includes(kw))) {\n      relevantTrends.push({\n        hashtag: trend.hashtag,\n        views: trend.views,\n        product: product,\n        engagement: trend.engagement_rate,\n        priority: trend.views > 1000000 ? 'high' : 'medium'\n      });\n    }\n  }\n}\n\nreturn relevantTrends.map(trend => ({ json: trend }));"
+          },
+          "id": "trend-analyzer",
+          "name": "Trend Analyzer",
+          "type": "n8n-nodes-base.function",
+          "typeVersion": 1,
+          "position": [660, 300]
+        },
+        {
+          "parameters": {
+            "method": "POST",
+            "url": "https://api.openai.com/v1/chat/completions",
+            "authentication": "genericCredentialType",
+            "genericAuthType": "httpHeaderAuth",
+            "sendHeaders": true,
+            "headerParameters": {
+              "parameters": [
+                {
+                  "name": "Authorization",
+                  "value": "Bearer {{ $credentials.openaiApiKey }}"
+                },
+                {
+                  "name": "Content-Type",
+                  "value": "application/json"
+                }
+              ]
+            },
+            "sendBody": true,
+            "bodyParameters": {
+              "parameters": [
+                {
+                  "name": "model",
+                  "value": "gpt-4"
+                },
+                {
+                  "name": "messages",
+                  "value": "=[{\n  \"role\": \"system\",\n  \"content\": \"Du bist ein TikTok Content Creator für digitale Produkte. Erstelle virale Scripts basierend auf aktuellen Trends. Zielgruppe: {{ $json.product === 'qmoney' ? 'Studenten (18-25)' : $json.product === 'remotecash' ? 'Angestellte (25-45)' : $json.product === 'cryptoflow' ? 'Crypto-Interessierte' : 'Online Marketer' }}. Produkt: {{ $json.product }}. Preis: {{ $json.product === 'qmoney' ? '€297-597' : $json.product === 'remotecash' ? '€397-797' : $json.product === 'cryptoflow' ? '€497-997' : '€347-747' }}\"\n},\n{\n  \"role\": \"user\",\n  \"content\": \"Erstelle ein 30-60 Sekunden TikTok Script für den Trend #{{ $json.hashtag }}. Include: Hook (3 Sek), Problem (10 Sek), Lösung (15 Sek), CTA (7 Sek). Verwende Storytelling und Pattern Interrupt.\"\n}]"
+                },
+                {
+                  "name": "max_tokens",
+                  "value": 500
+                },
+                {
+                  "name": "temperature",
+                  "value": 0.9
+                }
+              ]
+            }
+          },
+          "id": "content-generator",
+          "name": "AI TikTok Script Generator",
+          "type": "n8n-nodes-base.httpRequest",
+          "typeVersion": 4.1,
+          "position": [880, 300]
+        },
+        {
+          "parameters": {
+            "method": "POST",
+            "url": "https://api.heygen.com/v2/video/generate",
+            "authentication": "genericCredentialType",
+            "genericAuthType": "httpHeaderAuth",
+            "sendHeaders": true,
+            "headerParameters": {
+              "parameters": [
+                {
+                  "name": "X-Api-Key",
+                  "value": "{{ $credentials.heygenApiKey }}"
+                }
+              ]
+            },
+            "sendBody": true,
+            "bodyParameters": {
+              "parameters": [
+                {
+                  "name": "video_inputs",
+                  "value": "=[{\n  \"character\": {\n    \"type\": \"avatar\",\n    \"avatar_id\": \"{{ $json.product === 'qmoney' ? 'young_professional' : 'business_expert' }}\",\n    \"voice_id\": \"de_DE_male_professional\"\n  },\n  \"script\": {\n    \"type\": \"text\",\n    \"content\": \"{{ $json.script }}\"\n  },\n  \"background\": {\n    \"type\": \"color\",\n    \"value\": \"#1a1a1a\"\n  }\n}]",
+                  "dimension": {\n    \"width\": 1080,\n    \"height\": 1920\n  },\n  \"aspect_ratio\": \"9:16\",\n  \"title\": \"{{ $json.product }}_{{ $json.hashtag }}_{{ $now.toFormat('yyyyMMdd') }}\"\n]"
+                }
+              ]
+            }
+          },
+          "id": "video-generator",
+          "name": "AI Video Generator",
+          "type": "n8n-nodes-base.httpRequest",
+          "typeVersion": 4.1,
+          "position": [1100, 300]
+        },
+        {
+          "parameters": {
+            "resource": "post",
+            "operation": "create",
+            "caption": "={{ $json.caption }}",
+            "mediaUrl": "={{ $json.video_url }}",
+            "hashtags": "={{ $json.hashtags }}",
+            "scheduledTime": "={{ $json.optimal_posting_time }}"
+          },
+          "id": "tiktok-publisher",
+          "name": "TikTok Publisher",
+          "type": "n8n-nodes-base.tiktok",
+          "typeVersion": 1,
+          "position": [1320, 300]
+        }
+      ]
+    },
+    {
+      "id": "blog-seo-automation",
+      "name": "Blog Post Automation with SEO Optimization",
+      "nodes": [
+        {
+          "parameters": {
+            "rule": {
+              "interval": [
+                {
+                  "field": "days",
+                  "daysInterval": 1,
+                  "triggerAtHour": 8
+                }
+              ]
+            }
+          },
+          "id": "blog-schedule",
+          "name": "Daily Blog Schedule",
+          "type": "n8n-nodes-base.scheduleTrigger",
+          "typeVersion": 1,
+          "position": [220, 500]
+        },
+        {
+          "parameters": {
+            "httpMethod": "GET",
+            "url": "https://api.semrush.com/v3/keyword/trends",
+            "authentication": "genericCredentialType",
+            "genericAuthType": "httpQueryAuth",
+            "sendQuery": true,
+            "queryParameters": {
+              "parameters": [
+                {
+                  "name": "key",
+                  "value": "{{ $credentials.semrushApiKey }}"
+                },
+                {
+                  "name": "phrase",
+                  "value": "online geld verdienen,remote arbeiten,krypto trading,affiliate marketing"
+                },
+                {
+                  "name": "database",
+                  "value": "de"
+                }
+              ]
+            }
+          },
+          "id": "keyword-research",
+          "name": "SEMrush Keyword Research",
+          "type": "n8n-nodes-base.httpRequest",
+          "typeVersion": 4.1,
+          "position": [440, 500]
+        },
+        {
+          "parameters": {
+            "functionCode": "// Process keywords for each product\nconst keywords = $input.first().json.data || [];\nconst productKeywords = {\n  'qmoney': keywords.filter(kw => kw.keyword.includes('geld verdienen') || kw.keyword.includes('nebeneinkommen')),\n  'remotecash': keywords.filter(kw => kw.keyword.includes('remote') || kw.keyword.includes('ortsunabhängig')),\n  'cryptoflow': keywords.filter(kw => kw.keyword.includes('krypto') || kw.keyword.includes('bitcoin')),\n  'affiliatepro': keywords.filter(kw => kw.keyword.includes('affiliate') || kw.keyword.includes('provision'))\n};\n\n// Select best keyword for each product\nconst selectedTopics = [];\nfor (const [product, kwList] of Object.entries(productKeywords)) {\n  if (kwList.length > 0) {\n    const bestKw = kwList.sort((a, b) => b.search_volume - a.search_volume)[0];\n    selectedTopics.push({\n      product: product,\n      keyword: bestKw.keyword,\n      volume: bestKw.search_volume,\n      difficulty: bestKw.keyword_difficulty,\n      persona: product === 'qmoney' ? 'student' : product === 'remotecash' ? 'employee' : 'parent'\n    });\n  }\n}\n\nreturn selectedTopics.map(topic => ({ json: topic }));"
+          },
+          "id": "keyword-selector",
+          "name": "Keyword Selector",
+          "type": "n8n-nodes-base.function",
+          "typeVersion": 1,
+          "position": [660, 500]
+        },
+        {
+          "parameters": {
+            "method": "POST",
+            "url": "https://api.openai.com/v1/chat/completions",
+            "authentication": "genericCredentialType",
+            "genericAuthType": "httpHeaderAuth",
+            "sendHeaders": true,
+            "headerParameters": {
+              "parameters": [
+                {
+                  "name": "Authorization",
+                  "value": "Bearer {{ $credentials.openaiApiKey }}"
+                }
+              ]
+            },
+            "sendBody": true,
+            "bodyParameters": {
+              "parameters": [
+                {
+                  "name": "model",
+                  "value": "gpt-4"
+                },
+                {
+                  "name": "messages",
+                  "value": "=[{\n  \"role\": \"system\",\n  \"content\": \"Du bist ein SEO-Experte für Affiliate Marketing Content. Schreibe hochwertige, conversion-optimierte Blogartikel für deutsche Leser. Persona: {{ $json.persona }}. Produkt: {{ $json.product }}.\"\n},\n{\n  \"role\": \"user\",\n  \"content\": \"Schreibe einen 1500+ Wörter SEO-optimierten Blogartikel für das Keyword '{{ $json.keyword }}'. Struktur: 1) Fesselnde Einleitung mit Problem-Agitation 2) 5-7 H2 Überschriften 3) Persönliche Geschichte/Case Study 4) Praktische Tipps 5) CTA zu {{ $json.product }} (€{{ $json.product === 'qmoney' ? '297' : $json.product === 'remotecash' ? '397' : '497' }}). Verwende LSI Keywords, interne Links, und optimiere für Featured Snippets.\"\n}]"
+                },
+                {
+                  "name": "max_tokens",
+                  "value": 3000
+                }
+              ]
+            }
+          },
+          "id": "blog-writer",
+          "name": "AI Blog Writer",
+          "type": "n8n-nodes-base.httpRequest",
+          "typeVersion": 4.1,
+          "position": [880, 500]
+        },
+        {
+          "parameters": {
+            "method": "POST",
+            "url": "https://api.wordpress.com/rest/v1.1/sites/{{ $credentials.wordpressSiteId }}/posts/new",
+            "authentication": "genericCredentialType",
+            "genericAuthType": "httpHeaderAuth",
+            "sendHeaders": true,
+            "headerParameters": {
+              "parameters": [
+                {
+                  "name": "Authorization",
+                  "value": "Bearer {{ $credentials.wordpressToken }}"
+                }
+              ]
+            },
+            "sendBody": true,
+            "bodyParameters": {
+              "parameters": [
+                {
+                  "name": "title",
+                  "value": "={{ $json.title }}"
+                },
+                {
+                  "name": "content",
+                  "value": "={{ $json.content }}"
+                },
+                {
+                  "name": "status",
+                  "value": "publish"
+                },
+                {
+                  "name": "categories",
+                  "value": "={{ $json.product }}"
+                },
+                {
+                  "name": "tags",
+                  "value": "={{ $json.tags }}"
+                },
+                {
+                  "name": "metadata",
+                  "value": "=[{\n  \"key\": \"_yoast_wpseo_metadesc\",\n  \"value\": \"{{ $json.meta_description }}\"\n},\n{\n  \"key\": \"_yoast_wpseo_focuskw\",\n  \"value\": \"{{ $json.keyword }}\"\n}]"
+                }
+              ]
+            }
+          },
+          "id": "wordpress-publisher",
+          "name": "WordPress Publisher",
+          "type": "n8n-nodes-base.httpRequest",
+          "typeVersion": 4.1,
+          "position": [1100, 500]
+        }
+      ]
+    },
+    {
+      "id": "email-sequence-optimizer",
+      "name": "Email Sequence & Conversion Optimizer",
+      "nodes": [
+        {
+          "parameters": {
+            "resource": "lead",
+            "operation": "getAll",
+            "filters": {
+              "email_sent": false,
+              "created_at": "last_24_hours"
+            }
+          },
+          "id": "new-leads",
+          "name": "Get New Leads",
+          "type": "n8n-nodes-base.postgres",
+          "typeVersion": 2.4,
+          "position": [220, 700]
+        },
+        {
+          "parameters": {
+            "functionCode": "// Segment leads by persona and product interest\nconst leads = $input.all();\nconst segmentedLeads = [];\n\nfor (const lead of leads) {\n  const leadData = lead.json;\n  const persona = JSON.parse(leadData.persona || '{}');\n  \n  // Determine best product match\n  let recommendedProduct = 'qmoney'; // default\n  let emailSequence = 'student_welcome';\n  \n  if (persona.type === 'student') {\n    recommendedProduct = 'qmoney';\n    emailSequence = 'student_welcome';\n  } else if (persona.type === 'employee') {\n    if (persona.interests?.includes('remote')) {\n      recommendedProduct = 'remotecash';\n      emailSequence = 'employee_remote';\n    } else if (persona.interests?.includes('crypto')) {\n      recommendedProduct = 'cryptoflow';\n      emailSequence = 'employee_crypto';\n    } else {\n      recommendedProduct = 'affiliatepro';\n      emailSequence = 'employee_affiliate';\n    }\n  } else if (persona.type === 'parent') {\n    recommendedProduct = 'qmoney';\n    emailSequence = 'parent_flexibility';\n  }\n  \n  segmentedLeads.push({\n    ...leadData,\n    recommendedProduct,\n    emailSequence,\n    personaScore: persona.score || 0\n  });\n}\n\nreturn segmentedLeads.map(lead => ({ json: lead }));"
+          },
+          "id": "lead-segmenter",
+          "name": "Lead Segmenter",
+          "type": "n8n-nodes-base.function",
+          "typeVersion": 1,
+          "position": [440, 700]
+        },
+        {
+          "parameters": {
+            "method": "POST",
+            "url": "https://api.openai.com/v1/chat/completions",
+            "authentication": "genericCredentialType",
+            "genericAuthType": "httpHeaderAuth",
+            "sendHeaders": true,
+            "headerParameters": {
+              "parameters": [
+                {
+                  "name": "Authorization",
+                  "value": "Bearer {{ $credentials.openaiApiKey }}"
+                }
+              ]
+            },
+            "sendBody": true,
+            "bodyParameters": {
+              "parameters": [
+                {
+                  "name": "model",
+                  "value": "gpt-4"
+                },
+                {
+                  "name": "messages",
+                  "value": "=[{\n  \"role\": \"system\",\n  \"content\": \"Du bist ein Email Marketing Experte für Conversion-Optimierung. Erstelle personalisierte Email-Sequenzen basierend auf Persona-Daten. Ziel: Conversion zu {{ $json.recommendedProduct }} (Preis: {{ $json.recommendedProduct === 'qmoney' ? '€297' : $json.recommendedProduct === 'remotecash' ? '€397' : $json.recommendedProduct === 'cryptoflow' ? '€497' : '€347' }}).\"\n},\n{\n  \"role\": \"user\",\n  \"content\": \"Erstelle eine 5-teilige Email-Sequenz für {{ $json.firstName || 'den Lead' }} (Persona: {{ $json.persona.type }}). Email 1: Willkommen & Quick Win. Email 2: Problem-Agitation & Story. Email 3: Lösung & Social Proof. Email 4: Einwandbehandlung & FAQ. Email 5: Deadline & Bonus. Jede Email sollte max 300 Wörter haben. Verwende Storytelling, Urgency und personalisierte Ansprache.\"\n}]"
+                },
+                {
+                  "name": "max_tokens",
+                  "value": 2000
+                }
+              ]
+            }
+          },
+          "id": "email-creator",
+          "name": "AI Email Sequence Creator",
+          "type": "n8n-nodes-base.httpRequest",
+          "typeVersion": 4.1,
+          "position": [660, 700]
+        },
+        {
+          "parameters": {
+            "resource": "contact",
+            "operation": "create",
+            "email": "={{ $json.email }}",
+            "firstName": "={{ $json.firstName }}",
+            "lastName": "={{ $json.lastName }}",
+            "customFields": {
+              "persona": "={{ $json.persona.type }}",
+              "product_interest": "={{ $json.recommendedProduct }}",
+              "lead_score": "={{ $json.personaScore }}"
+            },
+            "tags": "={{ $json.recommendedProduct }},{{ $json.persona.type }},new_lead"
+          },
+          "id": "activecampaign-contact",
+          "name": "ActiveCampaign Contact",
+          "type": "n8n-nodes-base.activeCampaign",
+          "typeVersion": 1,
+          "position": [880, 700]
+        },
+        {
+          "parameters": {
+            "resource": "automation",
+            "operation": "addContact",
+            "automationId": "={{ $json.emailSequence }}",
+            "contactId": "={{ $json.activecampaign_id }}"
+          },
+          "id": "start-automation",
+          "name": "Start Email Automation",
+          "type": "n8n-nodes-base.activeCampaign",
+          "typeVersion": 1,
+          "position": [1100, 700]
+        }
+      ]
+    },
+    {
+      "id": "social-proof-builder",
+      "name": "Social Proof Automation & Trust Builder",
+      "nodes": [
+        {
+          "parameters": {
+            "rule": {
+              "interval": [
+                {
+                  "field": "hours",
+                  "hoursInterval": 6
+                }
+              ]
+            }
+          },
+          "id": "proof-schedule",
+          "name": "Social Proof Schedule",
+          "type": "n8n-nodes-base.scheduleTrigger",
+          "typeVersion": 1,
+          "position": [220, 900]
+        },
+        {
+          "parameters": {
+            "functionCode": "// Generate realistic testimonials and social proof\nconst proofTypes = ['testimonial', 'sale_notification', 'visitor_count', 'success_story'];\nconst products = ['qmoney', 'remotecash', 'cryptoflow', 'affiliatepro'];\nconst personas = ['student', 'employee', 'parent'];\n\nconst socialProof = [];\n\n// Generate different types of social proof\nfor (let i = 0; i < 5; i++) {\n  const proofType = proofTypes[Math.floor(Math.random() * proofTypes.length)];\n  const product = products[Math.floor(Math.random() * products.length)];\n  const persona = personas[Math.floor(Math.random() * personas.length)];\n  \n  socialProof.push({\n    type: proofType,\n    product: product,\n    persona: persona,\n    timestamp: new Date().toISOString(),\n    display_duration: proofType === 'sale_notification' ? 5000 : 10000\n  });\n}\n\nreturn socialProof.map(proof => ({ json: proof }));"
+          },
+          "id": "proof-generator",
+          "name": "Social Proof Generator",
+          "type": "n8n-nodes-base.function",
+          "typeVersion": 1,
+          "position": [440, 900]
+        },
+        {
+          "parameters": {
+            "method": "POST",
+            "url": "https://api.openai.com/v1/chat/completions",
+            "authentication": "genericCredentialType",
+            "genericAuthType": "httpHeaderAuth",
+            "sendHeaders": true,
+            "headerParameters": {
+              "parameters": [
+                {
+                  "name": "Authorization",
+                  "value": "Bearer {{ $credentials.openaiApiKey }}"
+                }
+              ]
+            },
+            "sendBody": true,
+            "bodyParameters": {
+              "parameters": [
+                {
+                  "name": "model",
+                  "value": "gpt-4"
+                },
+                {
+                  "name": "messages",
+                  "value": "=[{\n  \"role\": \"system\",\n  \"content\": \"Erstelle realistische Social Proof Elemente für {{ $json.product }}. Typ: {{ $json.type }}. Persona: {{ $json.persona }}.\"\n},\n{\n  \"role\": \"user\",\n  \"content\": \"{{ $json.type === 'testimonial' ? 'Erstelle ein authentisches Testimonial (50-100 Wörter) von einem zufriedenen Kunden.' : $json.type === 'sale_notification' ? 'Erstelle eine Verkaufsbenachrichtigung (z.B. \"Max aus München hat gerade Q-Money gekauft\")' : $json.type === 'visitor_count' ? 'Erstelle eine Besucherzahl-Nachricht (z.B. \"237 Personen schauen sich gerade dieses Angebot an\")' : 'Erstelle eine kurze Erfolgsgeschichte (100 Wörter) mit konkreten Zahlen.' }}\"\n}]"
+                },
+                {
+                  "name": "max_tokens",
+                  "value": 200
+                }
+              ]
+            }
+          },
+          "id": "proof-content-creator",
+          "name": "AI Proof Content Creator",
+          "type": "n8n-nodes-base.httpRequest",
+          "typeVersion": 4.1,
+          "position": [660, 900]
+        },
+        {
+          "parameters": {
+            "resource": "notification",
+            "operation": "create",
+            "websiteId": "={{ $credentials.proofFactorWebsiteId }}",
+            "notificationType": "={{ $json.type }}",
+            "content": "={{ $json.content }}",
+            "displaySettings": {
+              "position": "bottom-left",
+              "animation": "slide-in",
+              "duration": "={{ $json.display_duration }}",
+              "delay": 3000
+            },
+            "targeting": {
+              "pages": ["/quiz", "/vsl", "/bridge", "/payment"],
+              "device": "all"
+            }
+          },
+          "id": "proof-factor",
+          "name": "ProofFactor Publisher",
+          "type": "n8n-nodes-base.httpRequest",
+          "typeVersion": 4.1,
+          "position": [880, 900]
+        },
+        {
+          "parameters": {
+            "resource": "analytics",
+            "operation": "track",
+            "eventName": "social_proof_displayed",
+            "properties": {
+              "proof_type": "={{ $json.type }}",
+              "product": "={{ $json.product }}",
+              "content": "={{ $json.content.substring(0, 50) }}..."
+            }
+          },
+          "id": "analytics-tracker",
+          "name": "Analytics Tracker",
+          "type": "n8n-nodes-base.mixpanel",
+          "typeVersion": 1,
+          "position": [1100, 900]
+        }
+      ]
+    }
+  ],
+  "connections": {
+    "Trend Scanner Schedule": {
+      "main": [[{ "node": "TikTok Trending API", "type": "main", "index": 0 }]]
+    },
+    "TikTok Trending API": {
+      "main": [[{ "node": "Trend Analyzer", "type": "main", "index": 0 }]]
+    },
+    "Trend Analyzer": {
+      "main": [[{ "node": "AI TikTok Script Generator", "type": "main", "index": 0 }]]
+    },
+    "AI TikTok Script Generator": {
+      "main": [[{ "node": "AI Video Generator", "type": "main", "index": 0 }]]
+    },
+    "AI Video Generator": {
+      "main": [[{ "node": "TikTok Publisher", "type": "main", "index": 0 }]]
+    },
+    "Daily Blog Schedule": {
+      "main": [[{ "node": "SEMrush Keyword Research", "type": "main", "index": 0 }]]
+    },
+    "SEMrush Keyword Research": {
+      "main": [[{ "node": "Keyword Selector", "type": "main", "index": 0 }]]
+    },
+    "Keyword Selector": {
+      "main": [[{ "node": "AI Blog Writer", "type": "main", "index": 0 }]]
+    },
+    "AI Blog Writer": {
+      "main": [[{ "node": "WordPress Publisher", "type": "main", "index": 0 }]]
+    },
+    "Get New Leads": {
+      "main": [[{ "node": "Lead Segmenter", "type": "main", "index": 0 }]]
+    },
+    "Lead Segmenter": {
+      "main": [[{ "node": "AI Email Sequence Creator", "type": "main", "index": 0 }]]
+    },
+    "AI Email Sequence Creator": {
+      "main": [[{ "node": "ActiveCampaign Contact", "type": "main", "index": 0 }]]
+    },
+    "ActiveCampaign Contact": {
+      "main": [[{ "node": "Start Email Automation", "type": "main", "index": 0 }]]
+    },
+    "Social Proof Schedule": {
+      "main": [[{ "node": "Social Proof Generator", "type": "main", "index": 0 }]]
+    },
+    "Social Proof Generator": {
+      "main": [[{ "node": "AI Proof Content Creator", "type": "main", "index": 0 }]]
+    },
+    "AI Proof Content Creator": {
+      "main": [[{ "node": "ProofFactor Publisher", "type": "main", "index": 0 }]]
+    },
+    "ProofFactor Publisher": {
+      "main": [[{ "node": "Analytics Tracker", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "maxExecutionDuration": 3600
+  },
+  "tags": [
+    {
+      "name": "MarketingFunnelMaster",
+      "createdAt": "2025-01-28T12:00:00.000Z"
+    },
+    {
+      "name": "Viral Content",
+      "createdAt": "2025-01-28T12:00:00.000Z"
+    },
+    {
+      "name": "€48K Potential",
+      "createdAt": "2025-01-28T12:00:00.000Z"
+    }
+  ]
+}

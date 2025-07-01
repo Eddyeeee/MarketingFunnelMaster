@@ -1,0 +1,206 @@
+{
+  "name": "MarketingFunnelMaster - Performance Monitoring Dashboard",
+  "description": "Real-time monitoring of all viral content automation workflows with alerts and optimization triggers",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 1
+            }
+          ]
+        }
+      },
+      "id": "hourly-monitor",
+      "name": "Hourly Performance Check",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [220, 300]
+    },
+    {
+      "parameters": {
+        "resource": "query",
+        "operation": "executeQuery",
+        "query": "SELECT \n  COUNT(DISTINCT session_id) as unique_visitors,\n  COUNT(CASE WHEN event = 'quiz_completed' THEN 1 END) as quiz_completions,\n  COUNT(CASE WHEN event = 'payment_initiated' THEN 1 END) as payment_attempts,\n  COUNT(CASE WHEN event = 'purchase_completed' THEN 1 END) as sales,\n  SUM(CASE WHEN event = 'purchase_completed' THEN CAST(data->>'amount' AS DECIMAL) END) as revenue,\n  AVG(CASE WHEN event = 'vsl_watch_time' THEN CAST(data->>'duration' AS INTEGER) END) as avg_vsl_time\nFROM analytics \nWHERE created_at >= NOW() - INTERVAL '1 hour'\nGROUP BY DATE_TRUNC('hour', created_at);"
+      },
+      "id": "analytics-query",
+      "name": "Analytics Database Query",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [440, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Calculate conversion rates and performance metrics\nconst data = $input.first().json;\n\nconst metrics = {\n  // Traffic Metrics\n  unique_visitors: data.unique_visitors || 0,\n  \n  // Conversion Funnel\n  quiz_completion_rate: data.unique_visitors > 0 ? \n    (data.quiz_completions / data.unique_visitors * 100).toFixed(2) : 0,\n  \n  payment_intent_rate: data.quiz_completions > 0 ?\n    (data.payment_attempts / data.quiz_completions * 100).toFixed(2) : 0,\n    \n  sales_conversion_rate: data.payment_attempts > 0 ?\n    (data.sales / data.payment_attempts * 100).toFixed(2) : 0,\n    \n  overall_conversion_rate: data.unique_visitors > 0 ?\n    (data.sales / data.unique_visitors * 100).toFixed(2) : 0,\n  \n  // Revenue Metrics  \n  total_sales: data.sales || 0,\n  total_revenue: data.revenue || 0,\n  average_order_value: data.sales > 0 ? \n    (data.revenue / data.sales).toFixed(2) : 0,\n  revenue_per_visitor: data.unique_visitors > 0 ?\n    (data.revenue / data.unique_visitors).toFixed(2) : 0,\n    \n  // Engagement Metrics\n  avg_vsl_watch_time: data.avg_vsl_time || 0,\n  \n  // Performance Status\n  performance_status: 'normal',\n  alerts: []\n};\n\n// Check for alerts\nif (metrics.unique_visitors < 10) {\n  metrics.alerts.push('⚠️ Low traffic alert');\n  metrics.performance_status = 'warning';\n}\n\nif (metrics.quiz_completion_rate < 20) {\n  metrics.alerts.push('⚠️ Low quiz completion rate');\n  metrics.performance_status = 'warning';\n}\n\nif (metrics.sales_conversion_rate < 1) {\n  metrics.alerts.push('🚨 Low sales conversion');\n  metrics.performance_status = 'critical';\n}\n\nif (metrics.total_revenue < 100) {\n  metrics.alerts.push('💰 Revenue below target');\n}\n\n// Calculate hourly run rate\nmetrics.hourly_revenue_rate = metrics.total_revenue;\nmetrics.daily_revenue_projection = metrics.hourly_revenue_rate * 24;\nmetrics.monthly_revenue_projection = metrics.daily_revenue_projection * 30;\n\nreturn [{ json: metrics }];"
+      },
+      "id": "metrics-calculator",
+      "name": "Performance Metrics Calculator",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [660, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "critical",
+              "leftValue": "={{ $json.performance_status }}",
+              "rightValue": "critical",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "warning",
+              "leftValue": "={{ $json.performance_status }}",
+              "rightValue": "warning",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ]
+        }
+      },
+      "id": "alert-router",
+      "name": "Alert Router",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [880, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "{{ $credentials.slackWebhookUrl }}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "🚨 *CRITICAL PERFORMANCE ALERT*\n\n*Hourly Metrics:*\n• Visitors: {{ $json.unique_visitors }}\n• Sales: {{ $json.total_sales }}\n• Revenue: €{{ $json.total_revenue }}\n• Conversion: {{ $json.overall_conversion_rate }}%\n\n*Alerts:*\n{{ $json.alerts.join('\\n') }}\n\n*Projections:*\n• Daily: €{{ $json.daily_revenue_projection }}\n• Monthly: €{{ $json.monthly_revenue_projection }}\n\n_Immediate action required!_"
+            }
+          ]
+        }
+      },
+      "id": "critical-alert",
+      "name": "Send Critical Alert",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1100, 200]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "spreadsheet",
+        "operation": "appendData",
+        "documentId": "{{ $credentials.performanceSpreadsheetId }}",
+        "sheetName": "Performance Log",
+        "dataStartRow": 2,
+        "keyRow": 1,
+        "options": {
+          "valueInputMode": "USER_ENTERED"
+        },
+        "data": {
+          "timestamp": "={{ $now.toISO() }}",
+          "visitors": "={{ $json.unique_visitors }}",
+          "quiz_completions": "={{ $json.quiz_completions }}",
+          "sales": "={{ $json.total_sales }}",
+          "revenue": "={{ $json.total_revenue }}",
+          "conversion_rate": "={{ $json.overall_conversion_rate }}",
+          "avg_order_value": "={{ $json.average_order_value }}",
+          "monthly_projection": "={{ $json.monthly_revenue_projection }}"
+        }
+      },
+      "id": "performance-logger",
+      "name": "Log to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [1100, 400]
+    },
+    {
+      "parameters": {
+        "content": "## 📊 Real-Time Performance Dashboard\n\n### Current Hour Metrics\n- **Visitors**: {{ $json.unique_visitors }}\n- **Quiz Completions**: {{ $json.quiz_completions }} ({{ $json.quiz_completion_rate }}%)\n- **Sales**: {{ $json.total_sales }}\n- **Revenue**: €{{ $json.total_revenue }}\n- **AOV**: €{{ $json.average_order_value }}\n\n### Conversion Funnel\n1. Landing → Quiz: {{ $json.quiz_completion_rate }}%\n2. Quiz → Payment: {{ $json.payment_intent_rate }}%\n3. Payment → Sale: {{ $json.sales_conversion_rate }}%\n4. **Overall**: {{ $json.overall_conversion_rate }}%\n\n### Revenue Projections\n- **Daily**: €{{ $json.daily_revenue_projection }}\n- **Monthly**: €{{ $json.monthly_revenue_projection }}\n\n### Status: {{ $json.performance_status === 'normal' ? '✅ All Systems Operational' : $json.performance_status === 'warning' ? '⚠️ Warning - Check Metrics' : '🚨 Critical - Immediate Action Required' }}",
+        "operation": "markdown"
+      },
+      "id": "dashboard-display",
+      "name": "Performance Dashboard",
+      "type": "n8n-nodes-base.markdown",
+      "typeVersion": 1,
+      "position": [1320, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Automated optimization triggers based on performance\nconst metrics = $input.first().json;\nconst optimizations = [];\n\n// Traffic Optimization\nif (metrics.unique_visitors < 50) {\n  optimizations.push({\n    type: 'traffic_boost',\n    action: 'increase_content_frequency',\n    params: {\n      tiktok_posts: 'double',\n      blog_posts: 'add_trending_topics'\n    }\n  });\n}\n\n// Conversion Optimization\nif (metrics.quiz_completion_rate < 30) {\n  optimizations.push({\n    type: 'quiz_optimization',\n    action: 'ab_test_questions',\n    params: {\n      test_shorter_quiz: true,\n      add_progress_bar: true\n    }\n  });\n}\n\n// Sales Optimization\nif (metrics.sales_conversion_rate < 2) {\n  optimizations.push({\n    type: 'sales_optimization',\n    action: 'adjust_pricing',\n    params: {\n      add_payment_plans: true,\n      increase_urgency: true,\n      add_guarantee: true\n    }\n  });\n}\n\n// Revenue Optimization\nif (metrics.average_order_value < 400) {\n  optimizations.push({\n    type: 'aov_optimization',\n    action: 'push_premium_products',\n    params: {\n      highlight_premium: true,\n      add_bundles: true,\n      upsell_intensity: 'high'\n    }\n  });\n}\n\nreturn optimizations.map(opt => ({ json: opt }));"
+      },
+      "id": "optimization-engine",
+      "name": "Optimization Engine",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [880, 500]
+    },
+    {
+      "parameters": {
+        "resource": "workflow",
+        "operation": "update",
+        "workflowId": "={{ $json.type === 'traffic_boost' ? 'tiktok-trend-detector' : $json.type === 'quiz_optimization' ? 'quiz-workflow' : 'email-sequence-optimizer' }}",
+        "updateData": {
+          "settings": "={{ $json.params }}"
+        }
+      },
+      "id": "workflow-updater",
+      "name": "Update Workflow Settings",
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [1100, 600]
+    }
+  ],
+  "connections": {
+    "Hourly Performance Check": {
+      "main": [[{ "node": "Analytics Database Query", "type": "main", "index": 0 }]]
+    },
+    "Analytics Database Query": {
+      "main": [[{ "node": "Performance Metrics Calculator", "type": "main", "index": 0 }]]
+    },
+    "Performance Metrics Calculator": {
+      "main": [[
+        { "node": "Alert Router", "type": "main", "index": 0 },
+        { "node": "Performance Dashboard", "type": "main", "index": 0 },
+        { "node": "Log to Google Sheets", "type": "main", "index": 0 },
+        { "node": "Optimization Engine", "type": "main", "index": 0 }
+      ]]
+    },
+    "Alert Router": {
+      "main": [
+        [{ "node": "Send Critical Alert", "type": "main", "index": 0 }],
+        [{ "node": "Send Warning Alert", "type": "main", "index": 0 }]
+      ]
+    },
+    "Optimization Engine": {
+      "main": [[{ "node": "Update Workflow Settings", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "maxExecutionDuration": 300
+  },
+  "tags": [
+    {
+      "name": "Monitoring",
+      "createdAt": "2025-01-28T12:00:00.000Z"
+    },
+    {
+      "name": "Performance",
+      "createdAt": "2025-01-28T12:00:00.000Z"
+    }
+  ]
+}
