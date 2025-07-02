@@ -4,7 +4,9 @@
   "description": "Opportunistic Intelligence System for automated discovery and analysis of profitable marketing opportunities",
   "main": "core/opportunity-scanner.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node start_enhanced_system.js",
+    "start:basic": "node index.js",
+    "start:enhanced": "node start_enhanced_system.js",
     "dev": "nodemon examples/basic-usage.js",
     "test": "jest",
     "test:watch": "jest --watch",

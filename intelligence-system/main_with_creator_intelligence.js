@@ -13,7 +13,7 @@ const sqlite3 = require('sqlite3').verbose();
 const cron = require('node-cron');
 
 // Import existing intelligence system components
-const { startIntelligenceSystem } = require('./main');
+const { startIntelligenceSystem } = require('./index');
 
 // Import Creator Intelligence components
 const CreatorIntelligenceBridge = require('./integrations/creator_intelligence_bridge');
