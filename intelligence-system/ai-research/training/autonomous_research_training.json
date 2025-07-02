@@ -1,0 +1,150 @@
+{
+  "training_date": "2025-07-02T12:06:57.734722",
+  "metrics": {
+    "patterns_analyzed": 19,
+    "capabilities_trained": 5,
+    "accuracy_scores": [],
+    "automation_readiness": 0.7799999999999999
+  },
+  "capabilities": [
+    {
+      "name": "autonomous_influencer_analysis",
+      "description": "AI-powered comprehensive influencer analysis and pattern detection",
+      "automation_level": "semi_auto",
+      "confidence_threshold": 0.8,
+      "input_sources": [
+        "social_media_profiles",
+        "content_history",
+        "engagement_metrics",
+        "funnel_structures",
+        "pricing_information"
+      ],
+      "analysis_methods": [
+        "content_theme_extraction",
+        "engagement_pattern_analysis",
+        "funnel_structure_mapping",
+        "pricing_strategy_categorization",
+        "success_factor_identification"
+      ],
+      "output_formats": [
+        "detailed_influencer_report",
+        "competitive_analysis",
+        "strategy_recommendations",
+        "market_positioning_analysis"
+      ]
+    },
+    {
+      "name": "autonomous_hook_generation",
+      "description": "AI-powered hook generation with psychological trigger optimization",
+      "automation_level": "full_auto",
+      "confidence_threshold": 0.85,
+      "input_sources": [
+        "target_audience_data",
+        "niche_keywords",
+        "competitor_hooks",
+        "performance_metrics",
+        "psychological_profiles"
+      ],
+      "analysis_methods": [
+        "pattern_based_generation",
+        "psychological_trigger_mapping",
+        "effectiveness_prediction",
+        "a_b_test_optimization",
+        "sentiment_analysis"
+      ],
+      "output_formats": [
+        "hook_variants_list",
+        "effectiveness_scores",
+        "psychological_trigger_breakdown",
+        "platform_optimized_versions",
+        "a_b_test_recommendations"
+      ]
+    },
+    {
+      "name": "autonomous_strategy_optimization",
+      "description": "AI-powered marketing strategy optimization and recommendation engine",
+      "automation_level": "semi_auto",
+      "confidence_threshold": 0.75,
+      "input_sources": [
+        "current_campaign_data",
+        "market_trends",
+        "competitor_strategies",
+        "performance_metrics",
+        "audience_insights"
+      ],
+      "analysis_methods": [
+        "strategy_effectiveness_analysis",
+        "trend_correlation_mapping",
+        "competitive_gap_analysis",
+        "roi_optimization",
+        "risk_assessment"
+      ],
+      "output_formats": [
+        "optimization_recommendations",
+        "strategy_roadmap",
+        "performance_predictions",
+        "risk_mitigation_plan",
+        "implementation_timeline"
+      ]
+    },
+    {
+      "name": "autonomous_trend_prediction",
+      "description": "AI-powered market trend prediction and opportunity identification",
+      "automation_level": "semi_auto",
+      "confidence_threshold": 0.7,
+      "input_sources": [
+        "historical_trend_data",
+        "social_media_signals",
+        "search_volume_data",
+        "influencer_activity",
+        "economic_indicators"
+      ],
+      "analysis_methods": [
+        "time_series_analysis",
+        "sentiment_trend_analysis",
+        "signal_correlation",
+        "pattern_recognition",
+        "predictive_modeling"
+      ],
+      "output_formats": [
+        "trend_predictions",
+        "opportunity_scores",
+        "timing_recommendations",
+        "risk_assessments",
+        "market_entry_strategies"
+      ]
+    },
+    {
+      "name": "autonomous_competitive_analysis",
+      "description": "AI-powered competitive intelligence and gap analysis",
+      "automation_level": "semi_auto",
+      "confidence_threshold": 0.8,
+      "input_sources": [
+        "competitor_profiles",
+        "content_analysis",
+        "pricing_data",
+        "market_positioning",
+        "performance_benchmarks"
+      ],
+      "analysis_methods": [
+        "competitive_gap_analysis",
+        "positioning_map_creation",
+        "pricing_strategy_analysis",
+        "content_differentiation",
+        "market_share_estimation"
+      ],
+      "output_formats": [
+        "competitive_landscape_report",
+        "opportunity_matrix",
+        "differentiation_strategies",
+        "pricing_recommendations",
+        "market_positioning_advice"
+      ]
+    }
+  ],
+  "learned_patterns_summary": {
+    "hooks_count": 10,
+    "strategies_count": 4,
+    "influencers_count": 5
+  }
+}
