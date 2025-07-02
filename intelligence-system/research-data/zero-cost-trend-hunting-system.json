@@ -1,0 +1,531 @@
+
+{
+  "system_name": "Zero-Cost Viral Trend Hunting System",
+  "description": "A comprehensive blueprint for building and operating a real-time viral trend and product intelligence system with €0/month operational cost, leveraging free APIs, open-source tools, and smart automation.",
+  "analysis_date": "2025-01-01",
+  "simulated_viral_products": {
+    "dach_market": [
+      {
+        "product_name": "Heated Eye Massager with Bluetooth",
+        "platforms_viral": ["TikTok (DE)", "Instagram Reels (AT)", "Amazon.de"],
+        "price_range": "€40-€80",
+        "supplier_sources": ["Alibaba (OEM)", "AliExpress"],
+        "days_since_viral": 45,
+        "saturation_level": 6,
+        "best_monetization": "Dropshipping, Amazon FBA (private label)",
+        "profit_potential": "High (40-60% margin)",
+        "entry_urgency": "Act Now (Q1 peak)"
+      },
+      {
+        "product_name": "Mini Portable Projector (Smart TV Function)",
+        "platforms_viral": ["YouTube (DE)", "TikTok (CH)", "Otto.de"],
+        "price_range": "€80-€150",
+        "supplier_sources": ["Alibaba", "Banggood"],
+        "days_since_viral": 60,
+        "saturation_level": 5,
+        "best_monetization": "Dropshipping, Affiliate (tech blogs)",
+        "profit_potential": "Medium (30-50% margin)",
+        "entry_urgency": "This Week"
+      },
+      {
+        "product_name": "Reusable Silicone Food Storage Bags (Airtight)",
+        "platforms_viral": ["Instagram (DE)", "Pinterest (AT)", "Amazon.de"],
+        "price_range": "€15-€30 (set)",
+        "supplier_sources": ["Alibaba", "Eco-friendly suppliers"],
+        "days_since_viral": 90,
+        "saturation_level": 7,
+        "best_monetization": "Amazon FBA, Niche e-commerce",
+        "profit_potential": "Medium (30-45% margin)",
+        "entry_urgency": "Monitor (evergreen)"
+      },
+      {
+        "product_name": "Smart LED Desk Lamp with Wireless Charging",
+        "platforms_viral": ["TikTok (DE)", "YouTube (AT)", "MediaMarkt.de"],
+        "price_range": "€30-€60",
+        "supplier_sources": ["Alibaba", "AliExpress"],
+        "days_since_viral": 50,
+        "saturation_level": 4,
+        "best_monetization": "Dropshipping, Affiliate (home office)",
+        "profit_potential": "High (40-55% margin)",
+        "entry_urgency": "Act Now"
+      },
+      {
+        "product_name": "Pet Grooming Vacuum Kit",
+        "platforms_viral": ["Instagram (DE)", "Facebook (AT)", "Fressnapf.de"],
+        "price_range": "€50-€100",
+        "supplier_sources": ["Alibaba", "Pet product wholesalers"],
+        "days_since_viral": 70,
+        "saturation_level": 5,
+        "best_monetization": "Dropshipping, Niche e-commerce",
+        "profit_potential": "Medium (35-50% margin)",
+        "entry_urgency": "This Week"
+      },
+      {
+        "product_name": "Portable Espresso Maker (Handheld)",
+        "platforms_viral": ["TikTok (DE)", "Instagram (CH)", "Amazon.de"],
+        "price_range": "€25-€50",
+        "supplier_sources": ["Alibaba", "AliExpress"],
+        "days_since_viral": 30,
+        "saturation_level": 3,
+        "best_monetization": "Dropshipping, Affiliate (travel/coffee)",
+        "profit_potential": "High (45-60% margin)",
+        "entry_urgency": "Act Now"
+      },
+      {
+        "product_name": "Smart Reusable Notebook (Erasable)",
+        "platforms_viral": ["YouTube (DE)", "Pinterest (AT)", "Thalia.de"],
+        "price_range": "€20-€40",
+        "supplier_sources": ["Alibaba", "Stationery wholesalers"],
+        "days_since_viral": 80,
+        "saturation_level": 6,
+        "best_monetization": "Amazon FBA, Niche e-commerce",
+        "profit_potential": "Medium (30-45% margin)",
+        "entry_urgency": "Monitor"
+      },
+      {
+        "product_name": "Miniature Drone with HD Camera",
+        "platforms_viral": ["TikTok (DE)", "YouTube (CH)", "Conrad.de"],
+        "price_range": "€60-€120",
+        "supplier_sources": ["Alibaba", "AliExpress"],
+        "days_since_viral": 55,
+        "saturation_level": 4,
+        "best_monetization": "Dropshipping, Affiliate (tech/hobby)",
+        "profit_potential": "High (40-55% margin)",
+        "entry_urgency": "This Week"
+      },
+      {
+        "product_name": "Self-Stirring Coffee Mug",
+        "platforms_viral": ["Instagram (DE)", "Facebook (AT)", "Geschenkidee.de"],
+        "price_range": "€10-€20",
+        "supplier_sources": ["Alibaba", "Novelty item suppliers"],
+        "days_since_viral": 40,
+        "saturation_level": 7,
+        "best_monetization": "Dropshipping, Affiliate (gift guides)",
+        "profit_potential": "Low (25-40% margin)",
+        "entry_urgency": "Monitor (seasonal gift)"
+      },
+      {
+        "product_name": "Portable Neck Fan (Bladeless)",
+        "platforms_viral": ["TikTok (DE)", "Amazon.de"],
+        "price_range": "€20-€40",
+        "supplier_sources": ["Alibaba", "AliExpress"],
+        "days_since_viral": 20,
+        "saturation_level": 2,
+        "best_monetization": "Dropshipping, Amazon FBA",
+        "profit_potential": "High (50-65% margin)",
+        "entry_urgency": "Act Now (pre-summer)"
+      }
+    ],
+    "english_markets": [
+      {
+        "product_name": "Cloud-Shaped Humidifier with LED Light",
+        "platforms_viral": ["TikTok (USA)", "Instagram (UK)", "Amazon.com"],
+        "price_range": "$30-$60",
+        "supplier_sources": ["Alibaba", "AliExpress"],
+        "days_since_viral": 50,
+        "saturation_level": 5,
+        "best_monetization": "Dropshipping, Amazon FBA",
+        "profit_potential": "High (40-55% margin)",
+        "entry_urgency": "Act Now (Q1 home decor)"
+      },
+      {
+        "product_name": "Smart Sleep Mask with Bluetooth Audio",
+        "platforms_viral": ["YouTube (CA)", "TikTok (USA)", "Amazon.co.uk"],
+        "price_range": "$40-$70",
+        "supplier_sources": ["Alibaba", "Wellness suppliers"],
+        "days_since_viral": 65,
+        "saturation_level": 4,
+        "best_monetization": "Dropshipping, Affiliate (wellness)",
+        "profit_potential": "High (45-60% margin)",
+        "entry_urgency": "This Week"
+      },
+      {
+        "product_name": "Portable Mini Washing Machine (USB Powered)",
+        "platforms_viral": ["Instagram (USA)", "Reddit (AU)", "Amazon.com"],
+        "price_range": "$25-$50",
+        "supplier_sources": ["Alibaba", "AliExpress"],
+        "days_since_viral": 80,
+        "saturation_level": 6,
+        "best_monetization": "Dropshipping, Niche e-commerce (travel/camping)",
+        "profit_potential": "Medium (30-45% margin)",
+        "entry_urgency": "Monitor"
+      },
+      {
+        "product_name": "Magnetic Phone Holder for Laptop Screen",
+        "platforms_viral": ["TikTok (USA)", "YouTube (UK)", "Amazon.ca"],
+        "price_range": "$15-$25",
+        "supplier_sources": ["Alibaba", "AliExpress"],
+        "days_since_viral": 40,
+        "saturation_level": 3,
+        "best_monetization": "Dropshipping, Affiliate (WFH/productivity)",
+        "profit_potential": "High (50-65% margin)",
+        "entry_urgency": "Act Now"
+      },
+      {
+        "product_name": "Reusable Silicone Baking Mats (Non-Stick)",
+        "platforms_viral": ["Pinterest (USA)", "Instagram (AU)", "Amazon.com"],
+        "price_range": "$10-$20 (set)",
+        "supplier_sources": ["Alibaba", "Kitchenware wholesalers"],
+        "days_since_viral": 95,
+        "saturation_level": 7,
+        "best_monetization": "Amazon FBA, Niche e-commerce",
+        "profit_potential": "Medium (30-40% margin)",
+        "entry_urgency": "Monitor (evergreen)"
+      },
+      {
+        "product_name": "Smart Mug with Temperature Control",
+        "platforms_viral": ["TikTok (USA)", "YouTube (UK)", "Amazon.com"],
+        "price_range": "$80-$120",
+        "supplier_sources": ["Alibaba", "Tech gadget suppliers"],
+        "days_since_viral": 60,
+        "saturation_level": 4,
+        "best_monetization": "Dropshipping, Affiliate (WFH/tech)",
+        "profit_potential": "High (40-55% margin)",
+        "entry_urgency": "This Week"
+      },
+      {
+        "product_name": "Portable Blender (USB Rechargeable)",
+        "platforms_viral": ["Instagram (USA)", "TikTok (CA)", "Amazon.com"],
+        "price_range": "$20-$40",
+        "supplier_sources": ["Alibaba", "AliExpress"],
+        "days_since_viral": 75,
+        "saturation_level": 6,
+        "best_monetization": "Dropshipping, Affiliate (health/fitness)",
+        "profit_potential": "Medium (35-50% margin)",
+        "entry_urgency": "Monitor"
+      },
+      {
+        "product_name": "Miniature Desk Vacuum Cleaner",
+        "platforms_viral": ["TikTok (USA)", "Reddit (UK)", "Amazon.com"],
+        "price_range": "$10-$20",
+        "supplier_sources": ["Alibaba", "Novelty item suppliers"],
+        "days_since_viral": 35,
+        "saturation_level": 3,
+        "best_monetization": "Dropshipping, Affiliate (office gadgets)",
+        "profit_potential": "High (45-60% margin)",
+        "entry_urgency": "Act Now"
+      },
+      {
+        "product_name": "Aesthetic Glass Water Bottle with Time Markers",
+        "platforms_viral": ["Instagram (USA)", "Pinterest (AU)", "Amazon.com"],
+        "price_range": "$15-$25",
+        "supplier_sources": ["Alibaba", "Eco-friendly suppliers"],
+        "days_since_viral": 85,
+        "saturation_level": 7,
+        "best_monetization": "Amazon FBA, Niche e-commerce",
+        "profit_potential": "Low (25-40% margin)",
+        "entry_urgency": "Monitor (evergreen)"
+      },
+      {
+        "product_name": "Smart Mug Warmer with Auto Shut-off",
+        "platforms_viral": ["TikTok (USA)", "Amazon.com"],
+        "price_range": "$20-$35",
+        "supplier_sources": ["Alibaba", "AliExpress"],
+        "days_since_viral": 25,
+        "saturation_level": 2,
+        "best_monetization": "Dropshipping, Affiliate (WFH/gifts)",
+        "profit_potential": "High (50-65% margin)",
+        "entry_urgency": "Act Now"
+      }
+    ]
+  },
+  "evergreen_viral_categories": [
+    {
+      "category": "Problem-Solving Gadgets",
+      "patterns": "Products that offer simple, elegant solutions to common, annoying problems. Often visually demonstrable. Triggers: Frustration, desire for convenience.",
+      "examples": ["Miniature Desk Vacuum", "Magnetic Phone Holder for Laptop"]
+    },
+    {
+      "category": "Aesthetic & Lifestyle Enhancers",
+      "patterns": "Products that improve the visual appeal of a space or enhance a desired lifestyle (e.g., cozy, minimalist, productive). Highly shareable on visual platforms. Triggers: Aspiration, desire for comfort/beauty.",
+      "examples": ["Cloud-Shaped Humidifier", "Aesthetic Glass Water Bottle"]
+    },
+    {
+      "category": "Health & Wellness Innovations",
+      "patterns": "Products promising improved well-being, sleep, focus, or physical health. Often backed by perceived science or personal testimonials. Triggers: Self-improvement, health concerns, desire for optimization.",
+      "examples": ["Heated Eye Massager", "Smart Sleep Mask"]
+    },
+    {
+      "category": "Productivity & WFH Tools",
+      "patterns": "Items that make work-from-home setups more efficient, comfortable, or enjoyable. High demand in the post-pandemic era. Triggers: Efficiency, comfort, professional development.",
+      "examples": ["Smart LED Desk Lamp", "Smart Reusable Notebook"]
+    },
+    {
+      "category": "Novelty & Gifting",
+      "patterns": "Unique, quirky, or fun items that make great gifts or conversation starters. Often have a strong visual or humorous appeal. Triggers: Curiosity, desire to entertain, gift-giving occasions.",
+      "examples": ["Self-Stirring Coffee Mug", "Mini Portable Projector"]
+    }
+  ],
+  "free_live_data_sources": [
+    {
+      "source": "Google Trends",
+      "method": "Web Interface / Unofficial API Scraping",
+      "access": "Free via web interface. Unofficial API access via Python libraries (e.g., `pytrends`) that scrape the website. No official public API for real-time data.",
+      "rate_limits": "Web interface has soft limits. Unofficial scraping can be rate-limited; use proxies and delays.",
+      "workarounds": "Use `pytrends` for programmatic access. Focus on daily/weekly trends. Combine with Google Alerts for keyword spikes.",
+      "notes": "Excellent for search interest velocity, seasonality, and geographic patterns. Not real-time for micro-trends."
+    },
+    {
+      "source": "Reddit API",
+      "method": "Free Tier API",
+      "access": "Requires developer account and app registration. Free tier available for personal use and low volume requests.",
+      "rate_limits": "60 requests per minute (user-agent based).",
+      "workarounds": "Use multiple user agents, implement exponential backoff. Focus on subreddits like r/shutupandtakemymoney, r/DidntKnowIWantedThat, r/BuyItForLife, r/gadgets, r/Frugal.",
+      "notes": "Great for early product discovery, community sentiment, and niche discussions. Look for products with high upvotes and comments."
+    },
+    {
+      "source": "Twitter API v2",
+      "method": "Free Tier / Basic Access",
+      "access": "Requires developer account. Free tier offers limited access (e.g., 1,500 tweets/month for posting, 10,000 tweets/month for reading). Basic access (paid) is needed for higher volumes.",
+      "rate_limits": "Strictly enforced based on tier.",
+      "workarounds": "For free tier, focus on specific keyword searches, trending topics, and monitoring key influencers. Use `tweepy` (Python) for access. Consider using RSS feeds from Nitter instances (if available and legal) for public profiles.",
+      "notes": "Excellent for real-time spike detection, trending hashtags, and influencer activity. Free tier is very limited for comprehensive scanning."
+    },
+    {
+      "source": "YouTube Data API v3",
+      "method": "Free Quota API",
+      "access": "Requires Google Cloud project and API key. Free quota of 10,000 units/day (e.g., ~1000 search queries).",
+      "rate_limits": "Quota-based. Can be increased with billing enabled (but still free for low usage).",
+      "workarounds": "Focus on searching for trending videos, popular channels in specific niches, and analyzing video metadata (tags, descriptions). Look for high view counts and engagement on new uploads.",
+      "notes": "Good for identifying viral video content, product reviews, and unboxings. Can detect product trends through video popularity."
+    },
+    {
+      "source": "Amazon Movers & Shakers",
+      "method": "Web Scraping (Ethical & Legal)",
+      "access": "Publicly accessible web pages (e.g., Amazon.com/movers-shakers). No direct free API.",
+      "rate_limits": "Standard web scraping best practices apply (respect robots.txt, use delays, rotate IPs if necessary).",
+      "workarounds": "Use Python libraries like `BeautifulSoup` or `Scrapy`. Focus on specific categories. Monitor daily changes. *Legal disclaimer: Always check Amazon's Terms of Service regarding scraping.*",
+      "notes": "Direct indicator of rapidly selling products. Available for various Amazon locales (US, UK, DE, JP, etc.)."
+    },
+    {
+      "source": "TikTok Creative Center",
+      "method": "Web Interface",
+      "access": "Free via web interface. Provides insights into trending sounds, hashtags, and ads.",
+      "rate_limits": "None for manual browsing.",
+      "workarounds": "Manual monitoring. Can potentially automate data extraction with browser automation tools (e.g., Selenium, Playwright) but this is complex and against most ToS.",
+      "notes": "Crucial for understanding TikTok trends. Look for trending sounds applied to product showcases."
+    },
+    {
+      "source": "Pinterest Trends",
+      "method": "Web Interface",
+      "access": "Free via web interface. Provides insights into trending topics and categories.",
+      "rate_limits": "None for manual browsing.",
+      "workarounds": "Manual monitoring. Good for longer-term visual trends and product categories.",
+      "notes": "Useful for predicting future visual trends and lifestyle products."
+    },
+    {
+      "source": "RSS Feeds",
+      "method": "RSS Aggregators / Custom Scraping",
+      "access": "Many blogs, news sites, and even some social platforms offer RSS feeds. Free RSS aggregators (e.g., Feedly free tier, Inoreader free tier).",
+      "rate_limits": "Depends on the source. Aggregators have their own limits.",
+      "workarounds": "Identify key industry blogs, news outlets, and niche communities that offer RSS. Use n8n to consume RSS feeds and process new entries.",
+      "notes": "Excellent for monitoring content from specific sources, but not for broad trend detection."
+    },
+    {
+      "source": "Free Webhook Services",
+      "method": "Webhook.site, Pipedream (free tier)",
+      "access": "Free accounts offer limited webhooks and execution time.",
+      "rate_limits": "Based on free tier limits.",
+      "workarounds": "Use as endpoints for simple alerts or to capture data from services that support webhooks (e.g., IFTTT, some monitoring tools).",
+      "notes": "Useful for triggering automations when a specific event occurs (e.g., a new article on a monitored site)."
+    },
+    {
+      "source": "Browser Extensions for Data Collection",
+      "method": "Manual / Semi-Automated",
+      "access": "Free extensions (e.g., for Amazon product data, TikTok video details).",
+      "rate_limits": "None, as they operate client-side.",
+      "workarounds": "Manual browsing with extensions. Can be combined with browser automation for semi-automated data extraction (complex).",
+      "notes": "Good for quick, on-demand data points during manual research."
+    }
+  ],
+  "automated_scanning_setup": {
+    "overview": "This setup leverages n8n (self-hosted for €0) as the central automation hub, connecting to free APIs and web scraping scripts to monitor trends and trigger alerts.",
+    "components": [
+      "n8n (self-hosted on a free tier cloud VM like Oracle Cloud Free Tier or a Raspberry Pi)",
+      "SQLite Database (for n8n and custom data storage)",
+      "Python (for web scraping and data processing)",
+      "Google Sheets (for dashboard and data storage)",
+      "Telegram Bot (for alerts)"
+    ],
+    "step_by_step_guide": [
+      {
+        "step": "1. Setup n8n (Self-Hosted)",
+        "description": "Install n8n on a free cloud VM (e.g., Oracle Cloud Free Tier, AWS Free Tier EC2 micro instance) or a local machine (Raspberry Pi). This is your automation backbone.",
+        "instructions": [
+          "Provision a Linux VM (Ubuntu/Debian recommended).",
+          "Install Docker and Docker Compose.",
+          "Follow n8n's official Docker installation guide: `https://docs.n8n.io/getting-started/installation/server-setup/docker/`",
+          "Ensure n8n is accessible via a public IP/domain (use a free DNS service like Cloudflare if needed)."
+        ]
+      },
+      {
+        "step": "2. API Registration & Keys",
+        "description": "Register for developer accounts and obtain API keys for free data sources.",
+        "instructions": [
+          "**Google Cloud Project:** Create a project, enable YouTube Data API v3, get API key. (https://console.cloud.google.com/)",
+          "**Reddit Developer Account:** Register, create an app (script type), get client ID and secret. (https://www.reddit.com/prefs/apps)",
+          "**Twitter Developer Account:** Apply for Free/Basic access, get API keys/bearer token. (https://developer.twitter.com/)",
+          "**Telegram Bot:** Create a new bot via BotFather, get API token. (https://t.me/botfather)"
+        ]
+      },
+      {
+        "step": "3. Python Environment Setup",
+        "description": "Install Python and necessary libraries for web scraping and data processing.",
+        "instructions": [
+          "Install Python 3 on your n8n host: `sudo apt install python3 python3-pip`",
+          "Install libraries: `pip install requests beautifulsoup4 praw tweepy google-api-python-client pytrends`"
+        ]
+      },
+      {
+        "step": "4. Monitoring Dashboard (Google Sheets)",
+        "description": "Set up a Google Sheet to act as your central dashboard for trend data.",
+        "instructions": [
+          "Create a new Google Sheet (e.g., 'Viral Trends Dashboard').",
+          "Create tabs for 'DACH Trends', 'English Trends', 'Raw Data', 'Alert Log'.",
+          "Set up columns for each data point (Product Name, Platform, Price, Saturation, etc.).",
+          "Use n8n's Google Sheets node to write data to this sheet."
+        ]
+      },
+      {
+        "step": "5. Alert System Configuration (Telegram)",
+        "description": "Configure n8n to send real-time alerts to your Telegram bot.",
+        "instructions": [
+          "In n8n, use the 'Telegram' node.",
+          "Connect it using your bot token.",
+          "Set up a chat ID (you can get this by messaging your bot and then using `https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getUpdates`).",
+          "Configure n8n workflows to send messages when a new trend is detected or a threshold is met."
+        ]
+      }
+    ]
+  },
+  "zero_cost_trend_hunting_system_design": {
+    "architecture_overview": "A modular, event-driven system where n8n orchestrates data collection from various free sources, processes it, scores trends, and triggers alerts/actions.",
+    "data_flow": [
+      "**Data Sources:** Google Trends (pytrends), Reddit API, Twitter API, YouTube Data API, Amazon Movers & Shakers (scraping), TikTok Creative Center (manual/semi-auto), Pinterest Trends (manual/semi-auto), RSS Feeds.",
+      "**n8n Workflows (Orchestration & Processing):**",
+      "  - **Scheduler:** Triggers data collection workflows hourly/daily.",
+      "  - **Data Collection Nodes:** Python scripts (for scraping/pytrends), API nodes (Reddit, Twitter, YouTube), RSS Feed Reader nodes.",
+      "  - **Data Transformation Nodes:** JSON/CSV parsing, data cleaning, normalization.",
+      "  - **Trend Scoring Node (Custom Function/Python):** Implements the composite scoring algorithm.",
+      "  - **Decision Node:** Checks trend score, saturation, urgency.",
+      "  - **Storage Node:** Writes processed data to Google Sheets.",
+      "  - **Alert Node:** Sends notifications to Telegram for high-priority trends.",
+      "**Google Sheets (Dashboard & Storage):** Visualizes trends, stores historical data.",
+      "**Telegram (Alerts):** Real-time notifications for actionable trends."
+    ],
+    "key_components_and_integrations": [
+      {
+        "component": "Google Trends Monitor",
+        "description": "Monitors search interest for predefined keywords and emerging topics.",
+        "n8n_workflow_template": {
+          "name": "Google Trends Daily Monitor",
+          "nodes": [
+            {"type": "Cron", "parameters": {"interval": "every day at 08:00"}},
+            {"type": "Execute Command", "parameters": {"command": "python3 /path/to/pytrends_script.py", "output": "json"}},
+            {"type": "Function", "parameters": {"code": "return items.map(item => ({ ...item, source: 'Google Trends' }));"}},
+            {"type": "Google Sheets", "parameters": {"operation": "append row", "sheet": "Raw Data"}}
+          ],
+          "pytrends_script_example": "```python
+from pytrends.request import TrendReq
+import json
+
+pytrends = TrendReq(hl='en-US', tz=360)
+keywords = ['heated eye massager', 'mini projector', 'cloud humidifier']
+pytrends.build_payload(keywords, cat=0, timeframe='today 1-m', geo='DE')
+data = pytrends.interest_over_time()
+print(data.to_json(orient='records'))
+```"
+        }
+      },
+      {
+        "component": "Reddit Hot Posts Monitor",
+        "description": "Scans specified subreddits for highly upvoted new posts, indicating emerging product interest.",
+        "n8n_workflow_template": {
+          "name": "Reddit Hot Posts Monitor",
+          "nodes": [
+            {"type": "Cron", "parameters": {"interval": "every 4 hours"}},
+            {"type": "HTTP Request", "parameters": {"url": "https://oauth.reddit.com/r/shutupandtakemymoney/hot", "headers": {"Authorization": "Bearer {{ $env.REDDIT_ACCESS_TOKEN }}"}}},
+            {"type": "Function", "parameters": {"code": "return items[0].json.data.children.map(child => ({ ...child.data, source: 'Reddit' }));"}},
+            {"type": "Google Sheets", "parameters": {"operation": "append row", "sheet": "Raw Data"}}
+          ]
+        }
+      },
+      {
+        "component": "YouTube Trending Videos Monitor",
+        "description": "Identifies trending product review or unboxing videos.",
+        "n8n_workflow_template": {
+          "name": "YouTube Trending Videos Monitor",
+          "nodes": [
+            {"type": "Cron", "parameters": {"interval": "every day at 12:00"}},
+            {"type": "HTTP Request", "parameters": {"url": "https://www.googleapis.com/youtube/v3/videos?part=snippet%2Cstatistics&chart=mostPopular&regionCode=DE&key={{ $env.YOUTUBE_API_KEY }}", "output": "json"}},
+            {"type": "Function", "parameters": {"code": "return items[0].json.items.map(item => ({ ...item, source: 'YouTube' }));"}},
+            {"type": "Google Sheets", "parameters": {"operation": "append row", "sheet": "Raw Data"}}
+          ]
+        }
+      },
+      {
+        "component": "Amazon Movers & Shakers Scraper",
+        "description": "Extracts top movers and shakers from Amazon's public pages.",
+        "n8n_workflow_template": {
+          "name": "Amazon Movers & Shakers Scraper",
+          "nodes": [
+            {"type": "Cron", "parameters": {"interval": "every day at 02:00"}},
+            {"type": "Execute Command", "parameters": {"command": "python3 /path/to/amazon_scraper.py", "output": "json"}},
+            {"type": "Function", "parameters": {"code": "return items.map(item => ({ ...item, source: 'Amazon' }));"}},
+            {"type": "Google Sheets", "parameters": {"operation": "append row", "sheet": "Raw Data"}}
+          ],
+          "amazon_scraper_script_example": "```python
+import requests
+from bs4 import BeautifulSoup
+import json
+
+url = 'https://www.amazon.de/gp/movers-and-shakers/electronics'
+headers = {'User-Agent': 'Mozilla/5.0'}
+response = requests.get(url, headers=headers)
+soup = BeautifulSoup(response.content, 'html.parser')
+products = []
+# ... (logic to parse product data from soup)
+print(json.dumps(products))
+```"
+        }
+      },
+      {
+        "component": "Trend Scoring & Alerting",
+        "description": "Processes raw data, calculates trend scores, and sends alerts for high-priority trends.",
+        "n8n_workflow_template": {
+          "name": "Trend Scoring & Alerting",
+          "nodes": [
+            {"type": "Cron", "parameters": {"interval": "every 6 hours"}},
+            {"type": "Google Sheets", "parameters": {"operation": "read all", "sheet": "Raw Data"}},
+            {"type": "Function", "parameters": {"code": "/* Implement trend scoring logic here based on search velocity, social mentions, etc. */
+const scoredItems = items.map(item => {
+  let trend_score = 0; // Placeholder for actual calculation
+  let action_priority = 'monitor';
+  if (trend_score > 80) action_priority = 'act_now';
+  else if (trend_score > 60) action_priority = 'this_week';
+  return { ...item, trend_score, action_priority };
+});
+return scoredItems.filter(item => item.action_priority !== 'monitor');"}},
+            {"type": "Split In Batches", "parameters": {"batchSize": 1}},
+            {"type": "Telegram", "parameters": {"chatId": "{{ $env.TELEGRAM_CHAT_ID }}", "text": "New Viral Trend Detected: {{ $json.product_name }} (Score: {{ $json.trend_score }}) - Action: {{ $json.action_priority }}"}}
+          ]
+        }
+      }
+    ],
+    "automation_tools_free_tiers": [
+      {"tool": "n8n", "notes": "Self-hosted is free. Cloud version has free tier limits (e.g., 200 workflow executions/month)."},
+      {"tool": "Pipedream", "notes": "Free tier offers 10,000 invocations/month, useful for simple webhooks and integrations."},
+      {"tool": "IFTTT", "notes": "Free tier for basic applets, good for simple social media monitoring and alerts."}
+    ],
+    "data_storage_solutions": [
+      {"solution": "SQLite", "notes": "Local database for n8n. Can be used for custom data storage within n8n workflows."},
+      {"solution": "Google Sheets", "notes": "Excellent for structured data storage, dashboarding, and easy sharing. Free for personal use."},
+      {"solution": "CSV Files", "notes": "Simple file-based storage for raw data, can be generated by Python scripts."}
+    ],
+    "legal_considerations": [
+      "**Web Scraping:** Always check `robots.txt` and website Terms of Service. Respect rate limits. Avoid scraping personal data. Be aware that some sites explicitly forbid scraping.",
+      "**API Usage:** Adhere to each API's Terms of Service and rate limits. Misuse can lead to account suspension.",
+      "**Data Privacy (GDPR/CCPA):** If collecting any user-related data, ensure full compliance with relevant privacy regulations. For this system, focus on public, aggregated trend data."
+    ]
+  }
+}
