@@ -1,0 +1,118 @@
+
+[
+  {
+    "niche_id": "fitness_workout_11",
+    "niche_name": "Fitness & Workout",
+    "description": "Allgemeine Fitness, Heim-Workouts und Trainingspläne für eine breite Zielgruppe.",
+    "priority_score": 80,
+    "implementation_difficulty": 6,
+    "roi_projection": {
+      "conservative": 25000,
+      "realistic": 80000,
+      "optimistic": 180000
+    },
+    "quick_win_opportunities": [
+      "Erstellung von '30-Tage-Challenge'-Workout-Plänen",
+      "Reviews von günstigem Home-Workout-Equipment",
+      "Video-Tutorials für die häufigsten Fitnessübungen"
+    ],
+    "automation_ready_score": 7,
+    "market_saturation_index": 85,
+    "competition_intensity_score": 88,
+    "virality_potential_score": 85,
+    "scalability_score": 80,
+    "risk_assessment_score": 40
+  },
+  {
+    "niche_id": "apple_dev_ios_12",
+    "niche_name": "Apple Development & iOS",
+    "description": "Ressourcen, Tutorials und Tools speziell für die Entwicklung von Apps für das Apple-Ökosystem (iOS, macOS).",
+    "priority_score": 78,
+    "implementation_difficulty": 8,
+    "roi_projection": {
+      "conservative": 30000,
+      "realistic": 90000,
+      "optimistic": 200000
+    },
+    "quick_win_opportunities": [
+      "Tutorials zu neuen SwiftUI-Features",
+      "Vergleich von Libraries für iOS-Entwickler",
+      "Vorlagen für Xcode-Projekte"
+    ],
+    "automation_ready_score": 8,
+    "market_saturation_index": 65,
+    "competition_intensity_score": 75,
+    "virality_potential_score": 60,
+    "scalability_score": 85,
+    "risk_assessment_score": 35
+  },
+  {
+    "niche_id": "nike_sneakers_13",
+    "niche_name": "Nike Sneakers & Sportswear",
+    "description": "Fokus auf Nike-Produkte, insbesondere Sneaker-Kultur, neue Releases und Styling-Tipps.",
+    "priority_score": 75,
+    "implementation_difficulty": 5,
+    "roi_projection": {
+      "conservative": 20000,
+      "realistic": 60000,
+      "optimistic": 150000
+    },
+    "quick_win_opportunities": [
+      "Release-Kalender für neue Nike-Sneaker",
+      "Styling-Guides 'Wie trägt man Modell X?'",
+      "History-Artikel über ikonische Nike-Modelle"
+    ],
+    "automation_ready_score": 6,
+    "market_saturation_index": 90,
+    "competition_intensity_score": 92,
+    "virality_potential_score": 88,
+    "scalability_score": 75,
+    "risk_assessment_score": 50
+  },
+  {
+    "niche_id": "crypto_blockchain_14",
+    "niche_name": "Crypto & Blockchain (Light)",
+    "description": "Einsteigerfreundliche Informationen, Anleitungen und News aus der Welt der Kryptowährungen und Blockchain.",
+    "priority_score": 72,
+    "implementation_difficulty": 7,
+    "roi_projection": {
+      "conservative": 40000,
+      "realistic": 120000,
+      "optimistic": 300000
+    },
+    "quick_win_opportunities": [
+      "Anleitungen 'Wie kaufe ich meinen ersten Bitcoin?'",
+      "Erklärung der Top-10-Kryptowährungen",
+      "Warnungen vor häufigen Scams im Krypto-Bereich"
+    ],
+    "automation_ready_score": 7,
+    "market_saturation_index": 88,
+    "competition_intensity_score": 90,
+    "virality_potential_score": 82,
+    "scalability_score": 88,
+    "risk_assessment_score": 70
+  },
+  {
+    "niche_id": "taxes_accounting_15",
+    "niche_name": "Steuern & Buchhaltung",
+    "description": "Hilfestellungen, Software-Vergleiche und Tipps für Selbstständige und Privatpersonen in Deutschland.",
+    "priority_score": 68,
+    "implementation_difficulty": 8,
+    "roi_projection": {
+      "conservative": 25000,
+      "realistic": 70000,
+      "optimistic": 160000
+    },
+    "quick_win_opportunities": [
+      "Checkliste für die jährliche Steuererklärung",
+      "Vergleich der Top-Steuersoftware-Anbieter",
+      "Artikel '10 Steuertipps, die jeder kennen sollte'"
+    ],
+    "automation_ready_score": 8,
+    "market_saturation_index": 80,
+    "competition_intensity_score": 85,
+    "virality_potential_score": 50,
+    "scalability_score": 70,
+    "risk_assessment_score": 60
+  }
+]

@@ -1,0 +1,191 @@
+
+{
+  "analysis_batch_id": "content_intelligence_batch_3",
+  "niches": [
+    {
+      "niche_id": "fitness_workout_11",
+      "social_media_intelligence": {
+        "platform_analysis": [
+          {
+            "platform": "Instagram",
+            "strategy": "Focus on Reels with '30-Day Challenge' content. Use Stories for daily motivation and Q&A sessions. Partner with micro-influencers for authentic shoutouts. Run user-generated content campaigns with a dedicated hashtag.",
+            "optimal_times": ["06:00-08:00", "17:00-19:00"],
+            "content_types_roi": ["Reels Challenges", "Motivational Stories", "User-Generated Content"],
+            "kpi_benchmarks": {"engagement_rate": "5-9%", "hashtag_uses": "1k+"}
+          },
+          {
+            "platform": "YouTube",
+            "strategy": "Create full-length, follow-along home workout videos (e.g., '30-Minute Full Body HIIT'). Offer weekly workout plans in the description. Shorts for demonstrating single-exercise form.",
+            "optimal_times": ["07:00-09:00 SAT/SUN", "18:00-20:00 TUE"],
+            "content_types_roi": ["Follow-Along Workouts", "Weekly Plans", "Exercise Form Shorts"],
+            "kpi_benchmarks": {"avg_watch_time": "10-12 mins", "completion_rate": "40%+"}
+          },
+          {
+            "platform": "Facebook",
+            "strategy": "Build a community group for a specific challenge. Share success stories and recipes. Use Facebook Ads to target users interested in weight loss and home exercise.",
+            "optimal_times": ["19:00-22:00"],
+            "content_types_roi": ["Community Group Posts", "Success Stories", "Targeted Ads"],
+            "kpi_benchmarks": {"group_engagement": "15%+", "roas": "2.5-4x"}
+          }
+        ]
+      },
+      "viral_content_formula_bank": {
+        "headline_templates": [
+          "The only 5 exercises you need to get in shape.",
+          "I did 100 push-ups every day for 30 days. Here's what happened.",
+          "No equipment? No problem. Try this workout.",
+          "The biggest mistakes people make when trying to lose weight."
+        ],
+        "quick_wins": ["Create a downloadable PDF of a 7-day workout plan as a lead magnet to build an email list."]
+      }
+    },
+    {
+      "niche_id": "apple_dev_ios_12",
+      "social_media_intelligence": {
+        "platform_analysis": [
+          {
+            "platform": "YouTube",
+            "strategy": "Deep-dive tutorials on new features in Swift and SwiftUI. Create a series on building a complete iOS app from scratch. Livestream coding sessions during WWDC week.",
+            "optimal_times": ["16:00-18:00 WED/FRI"],
+            "content_types_roi": ["SwiftUI Tutorials", "Build-an-App Series", "WWDC Livestreams"],
+            "kpi_benchmarks": {"avg_watch_time": "15-20 mins", "ctr": "6-9%"}
+          },
+          {
+            "platform": "Twitter/X",
+            "strategy": "Post short code snippets using images. Create threads explaining complex concepts like Combine or Core Data. Engage with prominent Apple engineers and designers.",
+            "optimal_times": ["10:00-13:00"],
+            "content_types_roi": ["Code Snippets", "Concept Threads", "Expert Engagement"],
+            "kpi_benchmarks": {"engagement_rate": "2.5-4%", "retweets": "100+"}
+          },
+          {
+            "platform": "Reddit",
+            "strategy": "Be an active, helpful member of r/iOSProgramming and r/Swift. Share open-source libraries or helper functions you've created. Answer questions without self-promotion.",
+            "optimal_times": ["21:00-00:00"],
+            "content_types_roi": ["Helpful Answers", "Open-Source Libraries", "Technical Guides"],
+            "kpi_benchmarks": {"karma_per_post": "150+", "comment_karma": "500+"}
+          }
+        ]
+      },
+      "viral_content_formula_bank": {
+        "headline_templates": [
+          "The one SwiftUI feature that changes everything.",
+          "How to get your first iOS developer job.",
+          "I rebuilt the [Popular App] UI in SwiftUI.",
+          "Stop using Storyboards. Do this instead."
+        ],
+        "quick_wins": ["Create a GitHub repository with a list of awesome SwiftUI libraries and resources."]
+      }
+    },
+    {
+      "niche_id": "nike_sneakers_13",
+      "social_media_intelligence": {
+        "platform_analysis": [
+          {
+            "platform": "Instagram",
+            "strategy": "Primary platform. High-quality Reels showing on-foot looks, unboxings, and cleaning tips. Use Stories for release day countdowns and polls ('Cop or Drop?'). Collaborate with fashion micro-influencers.",
+            "optimal_times": ["12:00", "18:00-21:00"],
+            "content_types_roi": ["On-Foot Reels", "Unboxing Videos", "Influencer Collabs"],
+            "kpi_benchmarks": {"engagement_rate": "8-12%", "reach": "1M+"}
+          },
+          {
+            "platform": "TikTok",
+            "strategy": "Focus on trends. Create videos around trending sounds that feature sneakers. 'Get Ready With Me' (GRWM) videos showing how to style different Nike models. Duet videos reacting to new release announcements.",
+            "optimal_times": ["19:00-22:00"],
+            "content_types_roi": ["GRWM Videos", "Trending Sound Videos", "Reaction Duets"],
+            "kpi_benchmarks": {"views": "2M+", "shares": "5k+"}
+          },
+          {
+            "platform": "Pinterest",
+            "strategy": "Create boards for different models (Air Force 1, Jordan, Dunk). Post pins with outfit inspiration. Use affiliate links on pins to drive traffic to retailers like StockX or GOAT.",
+            "optimal_times": ["14:00", "20:00-22:00"],
+            "content_types_roi": ["Outfit Inspiration Pins", "Model-Specific Boards", "Affiliate Pins"],
+            "kpi_benchmarks": {"outbound_clicks": "2k+/pin", "saves": "1.5k+"}
+          }
+        ]
+      },
+      "viral_content_formula_bank": {
+        "headline_templates": [
+          "How to style the most popular sneaker of 2025.",
+          "The 5 Nike sneakers every collector should own.",
+          "I bought a fake [Popular Sneaker]. Here's how to spot the difference.",
+          "Unboxing the most hyped sneaker of the year."
+        ],
+        "quick_wins": ["Create a 'Release Calendar' and share it weekly on Instagram Stories and Twitter."]
+      }
+    },
+    {
+      "niche_id": "crypto_blockchain_14",
+      "social_media_intelligence": {
+        "platform_analysis": [
+          {
+            "platform": "Twitter/X",
+            "strategy": "Primary platform for news and real-time updates. Create threads explaining complex topics ('What is Layer 2?'). Use polls to gauge market sentiment. Engage with major figures in the crypto space. Use a bot to announce major price movements.",
+            "optimal_times": ["24/7 - news-driven"],
+            "content_types_roi": ["Explanatory Threads", "Market Sentiment Polls", "Real-time News"],
+            "kpi_benchmarks": {"engagement_rate": "3-6%", "virality_score": "9/10"}
+          },
+          {
+            "platform": "Telegram",
+            "strategy": "Create a channel for 'alpha' and news alerts. Use a bot to curate news from different sources. Offer exclusive content to channel members. Can be a powerful tool for building a tight-knit community.",
+            "optimal_times": ["Real-time"],
+            "content_types_roi": ["News Alerts", "Exclusive Analysis", "Curated Content"],
+            "kpi_benchmarks": {"subscriber_growth": "1k+/week", "ctr_on_links": "15%+"}
+          },
+          {
+            "platform": "YouTube",
+            "strategy": "Provide weekly market analysis videos. Create beginner guides ('How to use MetaMask'). Interview founders of new crypto projects. Livestream during major market events.",
+            "optimal_times": ["18:00-20:00 MON/FRI"],
+            "content_types_roi": ["Market Analysis", "Beginner Guides", "Founder Interviews"],
+            "kpi_benchmarks": {"avg_watch_time": "8-10 mins", "affiliate_signups": "100+/video"}
+          }
+        ]
+      },
+      "viral_content_formula_bank": {
+        "headline_templates": [
+          "The next 100x crypto coin?",
+          "Why [Popular Coin] is going to zero.",
+          "The 3 biggest crypto mistakes beginners make.",
+          "How to find new crypto projects before they explode."
+        ],
+        "quick_wins": ["Create a simple 'Fear & Greed Index' graphic and post it daily on Twitter and Telegram."]
+      }
+    },
+    {
+      "niche_id": "taxes_accounting_15",
+      "social_media_intelligence": {
+        "platform_analysis": [
+          {
+            "platform": "LinkedIn",
+            "strategy": "Focus on B2B content for freelancers and small business owners. Post carousels with '10 tax deductions you're missing'. Write articles about changes in tax law. Target business owners with ads for accounting software.",
+            "optimal_times": ["09:00-11:00 TUE/WED"],
+            "content_types_roi": ["Tax-Tip Carousels", "Legal Update Articles", "Targeted Ads"],
+            "kpi_benchmarks": {"engagement_rate": "4-6%", "lead_gen_rate": "8%+"}
+          },
+          {
+            "platform": "Facebook",
+            "strategy": "Create or engage in groups for German 'Selbstständige' and freelancers. Answer questions helpfully. Run seasonal ad campaigns leading up to tax deadlines (Jan-May in Germany).",
+            "optimal_times": ["19:00-21:00"],
+            "content_types_roi": ["Helpful Group Comments", "Deadline Reminder Ads", "Q&A Posts"],
+            "kpi_benchmarks": {"roas": "3-4x", "cpa": "< $40"}
+          },
+          {
+            "platform": "YouTube",
+            "strategy": "Create screen-sharing tutorials on how to use popular tax software (e.g., WISO, ELSTER). Produce yearly videos on 'What's new in taxes for 2025'.",
+            "optimal_times": ["19:00-21:00 MON/THU"],
+            "content_types_roi": ["Software Tutorials", "Yearly Update Videos", "Explainer Videos"],
+            "kpi_benchmarks": {"avg_watch_time": "7-9 mins", "saves": "1k+"}
+          }
+        ]
+      },
+      "viral_content_formula_bank": {
+        "headline_templates": [
+          "The biggest tax mistake freelancers make.",
+          "How to legally pay 0€ in taxes.",
+          "I tested the 5 best tax software programs. Here's the winner.",
+          "The deadline is approaching. Here is your checklist."
+        ],
+        "quick_wins": ["Create a downloadable PDF checklist for the annual tax declaration as a lead magnet."]
+      }
+    }
+  ]
+}

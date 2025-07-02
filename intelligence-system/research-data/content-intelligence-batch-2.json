@@ -1,0 +1,180 @@
+
+{
+  "analysis_batch_id": "content_intelligence_batch_2",
+  "niches": [
+    {
+      "niche_id": "fitness_biohacking_06",
+      "social_media_intelligence": {
+        "platform_analysis": [
+          {
+            "platform": "Instagram",
+            "strategy": "Highly visual content. Reels demonstrating specific exercises with a biohacking twist (e.g., 'Workout + Cold Plunge'). Before/after data visualizations from wearables (Whoop, Oura). User-generated content campaigns featuring transformations.",
+            "optimal_times": ["06:00-08:00", "19:00-21:00"],
+            "content_types_roi": ["Reels", "Data-driven Carousels", "User-Generated Content"],
+            "kpi_benchmarks": {"engagement_rate": "4-7%", "saves": "1k+"}
+          },
+          {
+            "platform": "YouTube",
+            "strategy": "In-depth guides on topics like 'The Ultimate Guide to Zone 2 Training' or 'Optimizing Your Nutrition for Muscle Growth'. Reviews of fitness tech and wearables. Podcasts with fitness experts and scientists.",
+            "optimal_times": ["15:00-17:00 THU/SUN"],
+            "content_types_roi": ["In-depth Guides", "Tech Reviews", "Expert Podcasts"],
+            "kpi_benchmarks": {"avg_watch_time": "10-15 mins", "ctr": "5-7%"}
+          },
+          {
+            "platform": "TikTok",
+            "strategy": "Quick, actionable tips. '30-second fitness hacks'. Debunking common fitness myths. Participating in fitness challenges and trends.",
+            "optimal_times": ["07:00", "17:00-20:00"],
+            "content_types_roi": ["Quick Tips", "Myth Debunking", "Challenge Participation"],
+            "kpi_benchmarks": {"views": "500k+", "shares": "2k+"}
+          }
+        ]
+      },
+      "viral_content_formula_bank": {
+        "headline_templates": [
+          "The one exercise that builds more muscle than any other.",
+          "Stop doing cardio like this. Do this instead.",
+          "I tried [Fitness Celebrity]'s workout for 30 days.",
+          "The 5 supplements I actually use as a fitness expert."
+        ],
+        "opening_hooks": [
+          "You're wasting your time in the gym if you're not doing this.",
+          "This is the secret to breaking your fitness plateau.",
+          "Throw out your pre-workout. This is all you need."
+        ],
+        "cta_templates": [
+          "Get my full workout plan (link in bio).",
+          "What's your fitness goal? Let me know below.",
+          "Tag a friend who needs to see this."
+        ],
+        "quick_wins": ["Use Instagram Stories polls to ask about fitness struggles, then create content addressing the most common answers."]
+      }
+    },
+    {
+      "niche_id": "online_courses_07",
+      "social_media_intelligence": {
+        "platform_analysis": [
+          {
+            "platform": "LinkedIn",
+            "strategy": "Promote courses for professional development. Share statistics on skill gaps in the industry. Post testimonials from successful students. Target specific job titles with relevant course ads.",
+            "optimal_times": ["09:00-11:00 TUE-THU"],
+            "content_types_roi": ["Student Testimonials", "Industry Data Posts", "Targeted Ads"],
+            "kpi_benchmarks": {"engagement_rate": "3-5%", "lead_gen_rate": "10%+"}
+          },
+          {
+            "platform": "Facebook",
+            "strategy": "Utilize Facebook Groups for specific skills (e.g., 'Learn Photoshop Group'). Run targeted ad campaigns with lookalike audiences from existing student lists. Use video ads showing course previews.",
+            "optimal_times": ["13:00", "19:00-21:00"],
+            "content_types_roi": ["Video Ad Previews", "Group Engagement", "Retargeting Ads"],
+            "kpi_benchmarks": {"roas": "3-5x", "cpa": "< $50"}
+          },
+          {
+            "platform": "Pinterest",
+            "strategy": "Create visually appealing pins for creative skills (design, photography, baking). Use Rich Pins to show course details directly. Create boards for different learning paths.",
+            "optimal_times": ["14:00", "20:00-23:00"],
+            "content_types_roi": ["Infographic Pins", "Video Pins", "Learning Path Boards"],
+            "kpi_benchmarks": {"outbound_clicks": "1k+/pin", "save_rate": "10%+"}
+          }
+        ]
+      },
+      "viral_content_formula_bank": {
+        "headline_templates": [
+          "The skill that will get you a raise in 2025.",
+          "Learn [High-Value Skill] in 30 days, guaranteed.",
+          "10 free courses to kickstart your new career.",
+          "Is a university degree still worth it? The case for online learning."
+        ],
+        "quick_wins": ["Offer a free 'mini-course' via email to capture leads and demonstrate value."]
+      }
+    },
+    {
+      "niche_id": "software_tools_08",
+      "social_media_intelligence": {
+        "platform_analysis": [
+          {
+            "platform": "YouTube",
+            "strategy": "Primary platform. In-depth reviews, 'X vs Y' comparison videos, and tutorials for popular SaaS tools. Focus on solving a specific business problem with a tool.",
+            "optimal_times": ["14:00-16:00 WED/FRI"],
+            "content_types_roi": ["Comparison Videos", "Problem-Solving Tutorials", "In-depth Reviews"],
+            "kpi_benchmarks": {"avg_watch_time": "8-10 mins", "affiliate_ctr": "5%+"}
+          },
+          {
+            "platform": "Twitter/X",
+            "strategy": "Announce new software deals (especially lifetime deals). Create threads comparing the top 5 tools for a specific task. Engage with the official accounts of the tools you review.",
+            "optimal_times": ["09:00-12:00"],
+            "content_types_roi": ["Deal Announcements", "Comparison Threads", "Brand Engagement"],
+            "kpi_benchmarks": {"link_clicks": "1.5k+", "engagement_rate": "2-3%"}
+          }
+        ]
+      },
+      "viral_content_formula_bank": {
+        "headline_templates": [
+          "This tool has a free plan that's better than most paid versions.",
+          "The 5 SaaS tools I use to run my 1M€ business.",
+          "[Popular Tool] is great, but this alternative is 80% cheaper.",
+          "Unethical productivity hacks using [Tool Name]."
+        ],
+        "quick_wins": ["Create a 'Tool of the Week' series and promote it via a newsletter."]
+      }
+    },
+    {
+      "niche_id": "coaching_mentoring_09",
+      "social_media_intelligence": {
+        "platform_analysis": [
+          {
+            "platform": "LinkedIn",
+            "strategy": "Post high-value carousels with frameworks and models. Share client success stories (with permission). Write long-form articles on industry trends. Use native video to build a personal connection.",
+            "optimal_times": ["08:00-10:00 TUE-THU"],
+            "content_types_roi": ["Framework Carousels", "Client Success Stories", "Thought Leadership Articles"],
+            "kpi_benchmarks": {"engagement_rate": "5-8%", "inbound_messages": "10+/post"}
+          },
+          {
+            "platform": "Instagram",
+            "strategy": "Use Reels for motivational clips and quick tips. Go Live with other coaches for Q&A sessions. Use Stories to share behind-the-scenes and build a personal brand.",
+            "optimal_times": ["09:00", "19:00-21:00"],
+            "content_types_roi": ["Motivational Reels", "Live Q&As", "Personal Stories"],
+            "kpi_benchmarks": {"shares": "200+", "dms": "50+"}
+          }
+        ]
+      },
+      "viral_content_formula_bank": {
+        "headline_templates": [
+          "The one question that will change your life.",
+          "The 5 limiting beliefs that are holding you back.",
+          "How my client went from 0 to 10k€/month in 90 days.",
+          "Stop setting goals. Do this instead."
+        ],
+        "quick_wins": ["Offer 15-minute free 'clarity calls' in your Instagram bio to generate high-quality leads."]
+      }
+    },
+    {
+      "niche_id": "coding_courses_10",
+      "social_media_intelligence": {
+        "platform_analysis": [
+          {
+            "platform": "YouTube",
+            "strategy": "Create 'Full Course for Beginners' videos for popular languages. Offer 'Code-along' projects. Compare different bootcamps and learning platforms.",
+            "optimal_times": ["15:00-17:00 TUE/SAT"],
+            "content_types_roi": ["Full Courses", "Project Tutorials", "Platform Reviews"],
+            "kpi_benchmarks": {"avg_watch_time": "20-30 mins", "subscribers_gained": "2k+/video"}
+          },
+          {
+            "platform": "Reddit",
+            "strategy": "Engage in subreddits like r/learnprogramming, r/webdev. Answer questions thoroughly and occasionally link to a relevant, free resource you've created. Avoid hard selling.",
+            "optimal_times": ["20:00-00:00"],
+            "content_types_roi": ["Helpful Comments", "Free Resource Posts", "Tutorials"],
+            "kpi_benchmarks": {"comment_karma": "200+", "post_upvote_ratio": ">95%"}
+          }
+        ]
+      },
+      "viral_content_formula_bank": {
+        "headline_templates": [
+          "The only coding bootcamp review you need to watch.",
+          "How I learned to code in 6 months and got a job.",
+          "The 10 best free resources to learn to code in 2025.",
+          "Python vs. JavaScript: What should you learn first?"
+        ],
+        "quick_wins": ["Create a GitHub repository with a curated list of the best free learning resources for various languages."]
+      }
+    }
+  ]
+}

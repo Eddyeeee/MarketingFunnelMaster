@@ -1,0 +1,37 @@
+
+{
+  "phase": "Phase 2: Scaling & Diversification (Days 31-120)",
+  "30_day_milestones_batch_2": [
+    {
+      "milestone": "Content Foundation for Niches 6-10",
+      "tasks": [
+        "Publish 5 foundational articles for each of the 5 new niches (25 total)",
+        "Create 2 introductory videos for each new niche (10 total)",
+        "Set up dedicated social media channels/playlists for new niches"
+      ],
+      "status": "not_started"
+    }
+  ],
+  "60_day_milestones_batch_2": [
+    {
+      "milestone": "Monetization & Initial Outreach for Niches 6-10",
+      "tasks": [
+        "Identify and apply to 5-10 affiliate programs for each new niche",
+        "Integrate affiliate links into the first batch of content",
+        "Begin outreach for guest posting opportunities"
+      ],
+      "status": "not_started"
+    }
+  ],
+  "90_day_milestones_batch_2": [
+    {
+      "milestone": "Traffic Generation & SEO for Niches 6-10",
+      "tasks": [
+        "Develop and execute a backlink strategy for the new niche content",
+        "Launch targeted social media promotion for the most promising content pieces",
+        "Analyze initial traffic and engagement data to identify early winners"
+      ],
+      "status": "not_started"
+    }
+  ]
+}

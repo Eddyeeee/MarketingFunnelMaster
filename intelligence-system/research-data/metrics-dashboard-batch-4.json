@@ -1,0 +1,68 @@
+
+{
+  "investing_trading_16": {
+    "health_score": 84,
+    "alert_thresholds": {
+      "conversion_rate_min": 0.01,
+      "bounce_rate_max": 0.6
+    },
+    "performance_triggers": {
+      "market_crash": "Content über langfristige Strategien und Kaufchancen erstellen",
+      "high_interest_in_specific_stock": "Detaillierte Analyse zu dieser Aktie erstellen"
+    },
+    "optimization_priorities": ["SEO für Long-Tail-Keywords", "Aufbau einer E-Mail-Liste mit Markt-Updates"],
+    "investment_priority_rank": 5
+  },
+  "passive_income_17": {
+    "health_score": 95,
+    "alert_thresholds": {
+      "conversion_rate_min": 0.03,
+      "bounce_rate_max": 0.5
+    },
+    "performance_triggers": {
+      "viral_case_study": "Bezahlte Werbung für diesen Beitrag schalten",
+      "low_engagement": "Interaktive Inhalte wie Rechner oder Quizze erstellen"
+    },
+    "optimization_priorities": ["Content-Marketing (Case Studies)", "E-Mail-Automatisierung (Funnel)"],
+    "investment_priority_rank": 1
+  },
+  "online_business_automation_18": {
+    "health_score": 94,
+    "alert_thresholds": {
+      "conversion_rate_min": 0.025,
+      "bounce_rate_max": 0.5
+    },
+    "performance_triggers": {
+      "new_major_software_update": "Tutorial-Video zum Update erstellen",
+      "high_demand_for_specific_workflow": "Detaillierte Anleitung und Vorlage dazu erstellen"
+    },
+    "optimization_priorities": ["SEO (Tool-Vergleiche)", "Videomarketing (Tutorials)"],
+    "investment_priority_rank": 2
+  },
+  "mental_health_stress_19": {
+    "health_score": 85,
+    "alert_thresholds": {
+      "conversion_rate_min": 0.04,
+      "bounce_rate_max": 0.65
+    },
+    "performance_triggers": {
+      "high_shares_on_article": "Ähnliche Themen mit mehr Tiefe behandeln",
+      "low_affiliate_sales": "Produkte subtiler und im Kontext von Geschichten einbetten"
+    },
+    "optimization_priorities": ["Vertrauensaufbau (Experten-Interviews, Studien)", "Community-Management"],
+    "investment_priority_rank": 4
+  },
+  "nutrition_diets_20": {
+    "health_score": 80,
+    "alert_thresholds": {
+      "conversion_rate_min": 0.035,
+      "bounce_rate_max": 0.7
+    },
+    "performance_triggers": {
+      "new_diet_trend_emerges": "Schnell einen fundierten Artikel dazu veröffentlichen (Pro/Contra)",
+      "high_engagement_on_recipes": "Mehr Rezept-Videos und -Sammlungen erstellen"
+    },
+    "optimization_priorities": ["Social Media (Pinterest, Instagram)", "SEO für Rezept-Keywords"],
+    "investment_priority_rank": 6
+  }
+}

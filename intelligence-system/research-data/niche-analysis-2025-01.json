@@ -1,0 +1,118 @@
+
+[
+  {
+    "niche_id": "ki_tools_automation_01",
+    "niche_name": "KI-Tools & Automatisierung",
+    "description": "Fokus auf KI-gestützte Werkzeuge und Workflow-Automatisierung für verschiedene Branchen.",
+    "priority_score": 95,
+    "implementation_difficulty": 7,
+    "roi_projection": {
+      "conservative": 50000,
+      "realistic": 150000,
+      "optimistic": 300000
+    },
+    "quick_win_opportunities": [
+      "Erstellung von Top-10-Listen für KI-Tools",
+      "Vergleichsartikel populärer Automatisierungs-Software",
+      "Tutorials für Einsteiger in die Workflow-Automatisierung"
+    ],
+    "automation_ready_score": 9,
+    "market_saturation_index": 60,
+    "competition_intensity_score": 75,
+    "virality_potential_score": 85,
+    "scalability_score": 95,
+    "risk_assessment_score": 40
+  },
+  {
+    "niche_id": "coding_development_02",
+    "niche_name": "Coding & Development",
+    "description": "Ressourcen, Kurse und Tools für Softwareentwickler und Programmierer.",
+    "priority_score": 90,
+    "implementation_difficulty": 8,
+    "roi_projection": {
+      "conservative": 40000,
+      "realistic": 120000,
+      "optimistic": 250000
+    },
+    "quick_win_opportunities": [
+      "Code-Snippets für häufige Probleme",
+      "Vergleich von Programmiersprachen für Anfänger",
+      "Reviews von Development-Tools"
+    ],
+    "automation_ready_score": 8,
+    "market_saturation_index": 70,
+    "competition_intensity_score": 80,
+    "virality_potential_score": 70,
+    "scalability_score": 90,
+    "risk_assessment_score": 30
+  },
+  {
+    "niche_id": "business_coaching_03",
+    "niche_name": "Business & Coaching",
+    "description": "Angebote für Unternehmer, Manager und Freelancer zur Geschäfts- und Persönlichkeitsentwicklung.",
+    "priority_score": 88,
+    "implementation_difficulty": 7,
+    "roi_projection": {
+      "conservative": 60000,
+      "realistic": 180000,
+      "optimistic": 400000
+    },
+    "quick_win_opportunities": [
+      "Checklisten für Business-Gründung",
+      "Vorlagen für Business-Pläne",
+      "Interviews mit erfolgreichen Coaches"
+    ],
+    "automation_ready_score": 9,
+    "market_saturation_index": 80,
+    "competition_intensity_score": 85,
+    "virality_potential_score": 75,
+    "scalability_score": 85,
+    "risk_assessment_score": 50
+  },
+  {
+    "niche_id": "dancing_sports_04",
+    "niche_name": "Tanzen & Sport",
+    "description": "Kurse, Tutorials und Produkte für Tanz- und Sportbegeisterte.",
+    "priority_score": 82,
+    "implementation_difficulty": 6,
+    "roi_projection": {
+      "conservative": 30000,
+      "realistic": 90000,
+      "optimistic": 200000
+    },
+    "quick_win_opportunities": [
+      "Kurze Tanz-Tutorials für Social Media",
+      "Workout-Pläne für zu Hause",
+      "Tests von Sportbekleidung und -ausrüstung"
+    ],
+    "automation_ready_score": 7,
+    "market_saturation_index": 65,
+    "competition_intensity_score": 70,
+    "virality_potential_score": 90,
+    "scalability_score": 80,
+    "risk_assessment_score": 45
+  },
+  {
+    "niche_id": "biohacking_health_05",
+    "niche_name": "Biohacking & Health",
+    "description": "Produkte und Informationen zur Optimierung von Gesundheit, Schlaf und Leistungsfähigkeit.",
+    "priority_score": 85,
+    "implementation_difficulty": 7,
+    "roi_projection": {
+      "conservative": 45000,
+      "realistic": 130000,
+      "optimistic": 280000
+    },
+    "quick_win_opportunities": [
+      "Top-5-Biohacks für Anfänger",
+      "Reviews von Nootropika und Supplements",
+      "Anleitungen zur Schlafoptimierung"
+    ],
+    "automation_ready_score": 8,
+    "market_saturation_index": 55,
+    "competition_intensity_score": 65,
+    "virality_potential_score": 80,
+    "scalability_score": 88,
+    "risk_assessment_score": 40
+  }
+]

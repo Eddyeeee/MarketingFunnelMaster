@@ -1,0 +1,191 @@
+
+{
+  "analysis_batch_id": "content_intelligence_batch_4",
+  "niches": [
+    {
+      "niche_id": "investing_trading_16",
+      "social_media_intelligence": {
+        "platform_analysis": [
+          {
+            "platform": "Twitter/X",
+            "strategy": "Real-time market commentary, breaking news, and quick analysis of stock movements. Use threads to explain complex financial concepts. Engage with financial influencers and analysts.",
+            "optimal_times": ["09:00-17:00 (trading hours)", "19:00-21:00"],
+            "content_types_roi": ["Market Commentary", "Explainer Threads", "News Alerts"],
+            "kpi_benchmarks": {"engagement_rate": "3-5%", "virality_score": "8/10"}
+          },
+          {
+            "platform": "YouTube",
+            "strategy": "Weekly market outlooks, deep dives into specific companies or sectors, and tutorials on using trading platforms. Interview financial experts and fund managers.",
+            "optimal_times": ["18:00-20:00 SUN/MON"],
+            "content_types_roi": ["Market Outlooks", "Company Analysis", "Platform Tutorials"],
+            "kpi_benchmarks": {"avg_watch_time": "10-15 mins", "ctr": "5-8%"}
+          },
+          {
+            "platform": "Reddit",
+            "strategy": "Participate in subreddits like r/Finanzen (German) or r/investing. Share well-researched insights and data. Be transparent about risks and avoid giving financial advice.",
+            "optimal_times": ["19:00-23:00"],
+            "content_types_roi": ["Data-driven Posts", "Q&A Sessions", "Educational Content"],
+            "kpi_benchmarks": {"upvote_ratio": ">90%", "comment_karma": "200+"}
+          }
+        ]
+      },
+      "viral_content_formula_bank": {
+        "headline_templates": [
+          "The next big stock to explode in 2025.",
+          "I lost 10k€ trading. Here's what I learned.",
+          "How to build a passive income portfolio with ETFs.",
+          "Don't buy [Popular Stock] until you watch this."
+        ],
+        "quick_wins": ["Create a simple infographic explaining compound interest and share it across all platforms."]
+      }
+    },
+    {
+      "niche_id": "passive_income_17",
+      "social_media_intelligence": {
+        "platform_analysis": [
+          {
+            "platform": "YouTube",
+            "strategy": "Case studies of successful passive income streams. Step-by-step guides on setting up automated businesses (e.g., print-on-demand, affiliate marketing). Interviews with people living off passive income.",
+            "optimal_times": ["15:00-17:00 TUE/THU"],
+            "content_types_roi": ["Case Studies", "Step-by-Step Guides", "Interviews"],
+            "kpi_benchmarks": {"avg_watch_time": "12-18 mins", "conversion_to_lead": "3-5%"}
+          },
+          {
+            "platform": "Instagram",
+            "strategy": "Reels showcasing the lifestyle of passive income (e.g., 'Working from the beach'). Infographics on different passive income models. Use Stories for Q&A about getting started.",
+            "optimal_times": ["09:00", "18:00-20:00"],
+            "content_types_roi": ["Lifestyle Reels", "Infographics", "Q&A Stories"],
+            "kpi_benchmarks": {"saves": "700+", "engagement_rate": "6-10%"}
+          },
+          {
+            "platform": "Pinterest",
+            "strategy": "Visually appealing pins with passive income ideas, side hustle inspiration, and financial freedom tips. Link to blog posts with detailed guides.",
+            "optimal_times": ["20:00-23:00"],
+            "content_types_roi": ["Idea Pins", "Infographic Pins", "Checklist Pins"],
+            "kpi_benchmarks": {"outbound_clicks": "1.5k+/pin", "saves": "1k+"}
+          }
+        ]
+      },
+      "viral_content_formula_bank": {
+        "headline_templates": [
+          "How I made 1000€ while I slept.",
+          "The easiest passive income stream for beginners.",
+          "Quit your job with this simple strategy.",
+          "5 passive income ideas that actually work in 2025."
+        ],
+        "quick_wins": ["Create a free downloadable PDF with '20 Passive Income Ideas' as a lead magnet."]
+      }
+    },
+    {
+      "niche_id": "online_business_automation_18",
+      "social_media_intelligence": {
+        "platform_analysis": [
+          {
+            "platform": "LinkedIn",
+            "strategy": "Thought leadership on business automation, AI in business, and scaling strategies. Share case studies of businesses that successfully automated. Host webinars on specific automation tools.",
+            "optimal_times": ["08:00-10:00 TUE-THU"],
+            "content_types_roi": ["Case Studies", "Webinars", "Thought Leadership Articles"],
+            "kpi_benchmarks": {"engagement_rate": "4-7%", "lead_gen_rate": "12%+"}
+          },
+          {
+            "platform": "YouTube",
+            "strategy": "Tutorials on setting up specific automation workflows (e.g., 'Automate your customer support with Zapier and ChatGPT'). Reviews of business automation software. Interviews with successful online entrepreneurs.",
+            "optimal_times": ["16:00-18:00 WED/FRI"],
+            "content_types_roi": ["Workflow Tutorials", "Software Reviews", "Entrepreneur Interviews"],
+            "kpi_benchmarks": {"avg_watch_time": "10-15 mins", "affiliate_signups": "50+/video"}
+          },
+          {
+            "platform": "Twitter/X",
+            "strategy": "Share quick automation tips, new AI tool announcements, and engage in discussions about the future of work. Use threads to break down complex automation concepts.",
+            "optimal_times": ["09:00-12:00", "19:00-21:00"],
+            "content_types_roi": ["Automation Tips", "Tool Announcements", "Explainer Threads"],
+            "kpi_benchmarks": {"engagement_rate": "2-4%", "link_clicks": "1k+"}
+          }
+        ]
+      },
+      "viral_content_formula_bank": {
+        "headline_templates": [
+          "Automate your entire business in 7 days.",
+          "The AI tool that replaced my entire marketing team.",
+          "Stop doing [Task]. Automate it with this.",
+          "How I built a 6-figure online business with 0 employees."
+        ],
+        "quick_wins": ["Create a simple n8n/Zapier template for a common business automation task and offer it as a free download."]
+      }
+    },
+    {
+      "niche_id": "mental_health_stress_19",
+      "social_media_intelligence": {
+        "platform_analysis": [
+          {
+            "platform": "Instagram",
+            "strategy": "Share calming visuals with motivational quotes. Use Reels for short guided meditations or breathing exercises. Stories for Q&A about stress management. Collaborate with mental health professionals.",
+            "optimal_times": ["08:00-10:00", "20:00-22:00"],
+            "content_types_roi": ["Motivational Reels", "Guided Meditations", "Expert Collaborations"],
+            "kpi_benchmarks": {"saves": "500+", "engagement_rate": "5-8%"}
+          },
+          {
+            "platform": "YouTube",
+            "strategy": "Long-form guided meditations, sleep stories, and educational videos on the science of stress and mindfulness. Interviews with therapists and psychologists.",
+            "optimal_times": ["19:00-21:00"],
+            "content_types_roi": ["Guided Meditations", "Educational Videos", "Expert Interviews"],
+            "kpi_benchmarks": {"avg_watch_time": "15-20 mins", "comments": "100+"}
+          },
+          {
+            "platform": "Pinterest",
+            "strategy": "Create boards for stress relief techniques, mindfulness exercises, and self-care routines. Use calming aesthetics. Link to blog posts with more in-depth information.",
+            "optimal_times": ["14:00", "20:00-23:00"],
+            "content_types_roi": ["Infographic Pins", "Quote Pins", "Routine Pins"],
+            "kpi_benchmarks": {"outbound_clicks": "1k+/pin", "saves": "1k+"}
+          }
+        ]
+      },
+      "viral_content_formula_bank": {
+        "headline_templates": [
+          "The 5-minute routine that cured my anxiety.",
+          "Stop stressing about [Problem]. Do this instead.",
+          "I tried [Therapy Type] for 30 days. Here's what happened.",
+          "The secret to a calm mind in a chaotic world."
+        ],
+        "quick_wins": ["Create a simple 'Stress Relief Checklist' as a downloadable PDF."]
+      }
+    },
+    {
+      "niche_id": "nutrition_diets_20",
+      "social_media_intelligence": {
+        "platform_analysis": [
+          {
+            "platform": "Instagram",
+            "strategy": "Visually appealing food photography, short recipe videos (Reels), and infographics on nutritional facts. Use Stories for 'What I Eat in a Day' and Q&A about diet myths.",
+            "optimal_times": ["07:00-09:00", "12:00-14:00", "18:00-20:00"],
+            "content_types_roi": ["Recipe Reels", "Food Photography", "Nutritional Infographics"],
+            "kpi_benchmarks": {"saves": "1k+", "engagement_rate": "6-10%"}
+          },
+          {
+            "platform": "TikTok",
+            "strategy": "Quick recipe hacks, debunking diet myths, and 'What I Eat in a Day' videos. Participate in food-related trends and challenges.",
+            "optimal_times": ["17:00-20:00"],
+            "content_types_roi": ["Recipe Hacks", "Myth Debunking", "Food Challenges"],
+            "kpi_benchmarks": {"views": "1M+", "shares": "3k+"}
+          },
+          {
+            "platform": "YouTube",
+            "strategy": "Full recipe tutorials, meal prep guides, and in-depth reviews of diet plans (e.g., 'Keto Diet Explained'). Interviews with nutritionists and dietitians.",
+            "optimal_times": ["15:00-17:00 WED/SAT"],
+            "content_types_roi": ["Recipe Tutorials", "Meal Prep Guides", "Diet Reviews"],
+            "kpi_benchmarks": {"avg_watch_time": "8-12 mins", "subscribers_gained": "500+/video"}
+          }
+        ]
+      },
+      "viral_content_formula_bank": {
+        "headline_templates": [
+          "I ate [Food] for 30 days. Here's what happened.",
+          "The only diet you'll ever need.",
+          "Stop counting calories. Do this instead.",
+          "5 healthy recipes you can make in under 15 minutes."
+        ],
+        "quick_wins": ["Create a visually appealing 'Healthy Meal Prep Checklist' for Instagram and Pinterest."]
+      }
+    }
+  ]
+}

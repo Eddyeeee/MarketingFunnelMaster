@@ -1,0 +1,68 @@
+
+{
+  "fitness_biohacking_06": {
+    "health_score": 82,
+    "alert_thresholds": {
+      "conversion_rate_min": 0.03,
+      "bounce_rate_max": 0.65
+    },
+    "performance_triggers": {
+      "high_engagement": "Community-Challenge starten",
+      "low_conversion": "Testimonials prominenter platzieren"
+    },
+    "optimization_priorities": ["Content-Erstellung (Videos)", "Affiliate-Partnerschaften (Supplements)"],
+    "investment_priority_rank": 5
+  },
+  "online_courses_07": {
+    "health_score": 93,
+    "alert_thresholds": {
+      "conversion_rate_min": 0.035,
+      "bounce_rate_max": 0.5
+    },
+    "performance_triggers": {
+      "high_traffic": "Retargeting-Kampagne starten",
+      "high_cart_abandonment": "Rabatt-Code per E-Mail senden"
+    },
+    "optimization_priorities": ["E-Mail-Marketing-Automatisierung", "SEO für Kurs-Kategorien"],
+    "investment_priority_rank": 1
+  },
+  "software_tools_08": {
+    "health_score": 90,
+    "alert_thresholds": {
+      "conversion_rate_min": 0.04,
+      "bounce_rate_max": 0.55
+    },
+    "performance_triggers": {
+      "new_tool_release": "Sofortigen Review-Artikel erstellen",
+      "low_ctr": "Headlines und Meta-Descriptions optimieren"
+    },
+    "optimization_priorities": ["SEO (Vergleichs-Keywords)", "Content (Tutorials)"],
+    "investment_priority_rank": 2
+  },
+  "coaching_mentoring_09": {
+    "health_score": 88,
+    "alert_thresholds": {
+      "lead_conversion_rate_min": 0.015,
+      "bounce_rate_max": 0.6
+    },
+    "performance_triggers": {
+      "high_quality_leads": "Webinar-Reihe starten",
+      "low_engagement": "Experten-Interviews führen"
+    },
+    "optimization_priorities": ["Lead-Nurturing", "Aufbau von Autorität (Thought Leadership)"],
+    "investment_priority_rank": 3
+  },
+  "coding_courses_10": {
+    "health_score": 87,
+    "alert_thresholds": {
+      "conversion_rate_min": 0.025,
+      "bounce_rate_max": 0.6
+    },
+    "performance_triggers": {
+      "high_demand_skill": "Neuen Lernpfad erstellen",
+      "low_traffic": "Gastartikel auf Entwickler-Blogs platzieren"
+    },
+    "optimization_priorities": ["Community-Management", "Partnerschaften mit Bootcamps"],
+    "investment_priority_rank": 4
+  }
+}

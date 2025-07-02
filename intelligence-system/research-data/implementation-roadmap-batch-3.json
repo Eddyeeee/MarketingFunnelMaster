@@ -1,0 +1,37 @@
+
+{
+  "phase": "Phase 3: Content Expansion & Authority Building (Days 91-180)",
+  "30_day_milestones_batch_3": [
+    {
+      "milestone": "Launch Content for Niches 11-15",
+      "tasks": [
+        "Publish 5-7 articles for each of the 5 new niches (25-35 total)",
+        "Create 3-4 videos/social media posts for each new niche (15-20 total)",
+        "Establish a consistent publishing schedule for all 15 active niches"
+      ],
+      "status": "not_started"
+    }
+  ],
+  "60_day_milestones_batch_3": [
+    {
+      "milestone": "Build Topical Authority",
+      "tasks": [
+        "Create 'pillar pages' or 'cornerstone content' for each of the 15 niches",
+        "Develop internal linking strategy to connect related content",
+        "Begin targeted outreach for backlinks from authoritative sites in each niche"
+      ],
+      "status": "not_started"
+    }
+  ],
+  "90_day_milestones_batch_3": [
+    {
+      "milestone": "Performance Review and Optimization",
+      "tasks": [
+        "Conduct a full performance review of the first 15 niches",
+        "Identify underperforming content and create an optimization plan (rewrite, update, etc.)",
+        "Double down on content formats and topics that are performing well"
+      ],
+      "status": "not_started"
+    }
+  ]
+}

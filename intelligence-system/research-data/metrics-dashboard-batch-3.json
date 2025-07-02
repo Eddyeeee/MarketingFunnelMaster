@@ -1,0 +1,68 @@
+
+{
+  "fitness_workout_11": {
+    "health_score": 78,
+    "alert_thresholds": {
+      "conversion_rate_min": 0.025,
+      "bounce_rate_max": 0.7
+    },
+    "performance_triggers": {
+      "high_video_views": "Neue Video-Serie produzieren",
+      "low_time_on_site": "Artikel mit mehr interaktiven Elementen anreichern"
+    },
+    "optimization_priorities": ["Videoproduktion (YouTube, TikTok)", "Community-Aufbau (Facebook-Gruppen)"],
+    "investment_priority_rank": 7
+  },
+  "apple_dev_ios_12": {
+    "health_score": 76,
+    "alert_thresholds": {
+      "conversion_rate_min": 0.02,
+      "bounce_rate_max": 0.6
+    },
+    "performance_triggers": {
+      "high_github_traffic": "Mehr Code-Beispiele und Open-Source-Projekte",
+      "low_affiliate_clicks": "Affiliate-Produkte (z.B. Dev-Tools) besser integrieren"
+    },
+    "optimization_priorities": ["Technischer Content (Blog)", "Partnerschaften mit Tool-Anbietern"],
+    "investment_priority_rank": 8
+  },
+  "nike_sneakers_13": {
+    "health_score": 72,
+    "alert_thresholds": {
+      "conversion_rate_min": 0.015,
+      "bounce_rate_max": 0.75
+    },
+    "performance_triggers": {
+      "viral_social_post": "Bezahlte Promotion für den Post starten",
+      "low_conversion": "Fokus auf Content statt Hard-Selling legen"
+    },
+    "optimization_priorities": ["Social Media (Instagram, Pinterest)", "Affiliate-Marketing (Nike, StockX)"],
+    "investment_priority_rank": 9
+  },
+  "crypto_blockchain_14": {
+    "health_score": 70,
+    "alert_thresholds": {
+      "conversion_rate_min": 0.02,
+      "bounce_rate_max": 0.65
+    },
+    "performance_triggers": {
+      "bull_run_starts": "Content-Frequenz erhöhen, viele 'How-to'-Guides",
+      "bear_market_starts": "Fokus auf 'Learn & Earn' und langfristige Strategien"
+    },
+    "optimization_priorities": ["SEO für Einsteiger-Keywords", "Vertrauensaufbau durch transparente Berichterstattung"],
+    "investment_priority_rank": 6
+  },
+  "taxes_accounting_15": {
+    "health_score": 65,
+    "alert_thresholds": {
+      "conversion_rate_min": 0.03,
+      "bounce_rate_max": 0.55
+    },
+    "performance_triggers": {
+      "tax_deadline_approaches": "Content-Push mit Checklisten und Erinnerungen",
+      "low_traffic_off_season": "Evergreen-Content zu Themen wie 'Geld sparen' produzieren"
+    },
+    "optimization_priorities": ["SEO (Long-Tail-Keywords)", "E-Mail-Marketing (Newsletter mit Fristen)"],
+    "investment_priority_rank": 10
+  }
+}

@@ -1,0 +1,118 @@
+
+[
+  {
+    "niche_id": "investing_trading_16",
+    "niche_name": "Investieren & Trading",
+    "description": "Informationen, Strategien und Plattform-Vergleiche für Aktien, ETFs und Trading.",
+    "priority_score": 85,
+    "implementation_difficulty": 9,
+    "roi_projection": {
+      "conservative": 60000,
+      "realistic": 180000,
+      "optimistic": 400000
+    },
+    "quick_win_opportunities": [
+      "Anleitungen für die Eröffnung eines Depots bei Brokern wie Trade Republic oder Scalable Capital",
+      "Vergleich von ETF-Sparplänen",
+      "Erklärung von grundlegenden Börsenbegriffen"
+    ],
+    "automation_ready_score": 7,
+    "market_saturation_index": 95,
+    "competition_intensity_score": 98,
+    "virality_potential_score": 65,
+    "scalability_score": 90,
+    "risk_assessment_score": 75
+  },
+  {
+    "niche_id": "passive_income_17",
+    "niche_name": "Passives Einkommen",
+    "description": "Methoden, Ideen und Anleitungen zum Aufbau von passiven Einkommensströmen.",
+    "priority_score": 94,
+    "implementation_difficulty": 7,
+    "roi_projection": {
+      "conservative": 50000,
+      "realistic": 160000,
+      "optimistic": 350000
+    },
+    "quick_win_opportunities": [
+      "Liste mit '10 Ideen für passives Einkommen, die jeder umsetzen kann'",
+      "Case Studies von erfolgreichen Projekten",
+      "Anleitungen für den Start mit Affiliate-Marketing oder Nischenseiten"
+    ],
+    "automation_ready_score": 9,
+    "market_saturation_index": 80,
+    "competition_intensity_score": 85,
+    "virality_potential_score": 88,
+    "scalability_score": 95,
+    "risk_assessment_score": 45
+  },
+  {
+    "niche_id": "online_business_automation_18",
+    "niche_name": "Online Business & Automatisierung",
+    "description": "Strategien und Tools für die Gründung, Skalierung und Automatisierung von Online-Unternehmen.",
+    "priority_score": 92,
+    "implementation_difficulty": 8,
+    "roi_projection": {
+      "conservative": 65000,
+      "realistic": 190000,
+      "optimistic": 420000
+    },
+    "quick_win_opportunities": [
+      "Schritt-für-Schritt-Anleitung zur Gründung eines Online-Business",
+      "Vergleich von E-Commerce-Plattformen (Shopify, WooCommerce)",
+      "Vorstellung von Automatisierungs-Workflows (z.B. mit n8n oder Zapier)"
+    ],
+    "automation_ready_score": 10,
+    "market_saturation_index": 82,
+    "competition_intensity_score": 88,
+    "virality_potential_score": 80,
+    "scalability_score": 96,
+    "risk_assessment_score": 50
+  },
+  {
+    "niche_id": "mental_health_stress_19",
+    "niche_name": "Mentale Gesundheit & Stress",
+    "description": "Hilfestellungen, Kurse und Produkte rund um mentale Gesundheit, Stressbewältigung und Achtsamkeit.",
+    "priority_score": 86,
+    "implementation_difficulty": 7,
+    "roi_projection": {
+      "conservative": 35000,
+      "realistic": 100000,
+      "optimistic": 230000
+    },
+    "quick_win_opportunities": [
+      "Top 5 Meditations-Apps im Vergleich",
+      "Einfache Achtsamkeitsübungen für den Alltag",
+      "Artikel über die Anzeichen von Burnout und wie man gegensteuert"
+    ],
+    "automation_ready_score": 7,
+    "market_saturation_index": 70,
+    "competition_intensity_score": 75,
+    "virality_potential_score": 85,
+    "scalability_score": 80,
+    "risk_assessment_score": 65
+  },
+  {
+    "niche_id": "nutrition_diets_20",
+    "niche_name": "Ernährung & Diäten",
+    "description": "Informationen, Pläne und Produkte zu gesunder Ernährung, Gewichtsverlust und verschiedenen Diätformen.",
+    "priority_score": 81,
+    "implementation_difficulty": 6,
+    "roi_projection": {
+      "conservative": 30000,
+      "realistic": 90000,
+      "optimistic": 200000
+    },
+    "quick_win_opportunities": [
+      "Vergleich der populärsten Diäten (Keto, Low-Carb, Intervallfasten)",
+      "Gesunde und schnelle Rezepte für den Alltag",
+      "Reviews von Nahrungsergänzungsmitteln"
+    ],
+    "automation_ready_score": 7,
+    "market_saturation_index": 90,
+    "competition_intensity_score": 92,
+    "virality_potential_score": 86,
+    "scalability_score": 78,
+    "risk_assessment_score": 48
+  }
+]

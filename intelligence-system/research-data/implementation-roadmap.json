@@ -1,0 +1,72 @@
+
+{
+  "30_day_milestones": [
+    {
+      "milestone": "Nischen- und Keyword-Recherche abschließen",
+      "tasks": [
+        "Finale Auswahl der 20 Nischen",
+        "Detaillierte Keyword-Analyse für jede Nische",
+        "Konkurrenzanalyse für die Top-Keywords"
+      ],
+      "status": "completed"
+    },
+    {
+      "milestone": "Setup der grundlegenden Infrastruktur",
+      "tasks": [
+        "Registrierung der Domains für die 20 Nischen",
+        "Einrichtung von Hosting und CMS",
+        "Installation der notwendigen Plugins und Tools"
+      ],
+      "status": "in_progress"
+    },
+    {
+      "milestone": "Erstellung der ersten Inhalte",
+      "tasks": [
+        "Erstellung von 5 Artikeln für jede der 5 Hauptnischen",
+        "Produktion von 2 Videos pro Hauptnische",
+        "Einrichtung der Social-Media-Profile"
+      ],
+      "status": "not_started"
+    }
+  ],
+  "60_day_milestones": [
+    {
+      "milestone": "Content-Produktion skalieren",
+      "tasks": [
+        "Veröffentlichung von 10 weiteren Artikeln pro Nische",
+        "Produktion von 5 weiteren Videos pro Nische",
+        "Regelmäßige Social-Media-Aktivität"
+      ],
+      "status": "not_started"
+    },
+    {
+      "milestone": "Monetarisierung implementieren",
+      "tasks": [
+        "Anmeldung bei relevanten Affiliate-Programmen",
+        "Integration von Affiliate-Links in die Inhalte",
+        "Erstellung von ersten Produkt-Reviews"
+      ],
+      "status": "not_started"
+    }
+  ],
+  "90_day_milestones": [
+    {
+      "milestone": "Traffic-Generierung und SEO-Optimierung",
+      "tasks": [
+        "Start von SEO-Kampagnen",
+        "Aufbau von Backlinks",
+        "Gastartikel auf relevanten Blogs"
+      ],
+      "status": "not_started"
+    },
+    {
+      "milestone": "Analyse und Optimierung",
+      "tasks": [
+        "Analyse der ersten Performance-Daten",
+        "A/B-Tests von Landing Pages und Headlines",
+        "Optimierung der Conversion-Rates"
+      ],
+      "status": "not_started"
+    }
+  ]
+}

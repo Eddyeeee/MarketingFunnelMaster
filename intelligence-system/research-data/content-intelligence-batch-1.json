@@ -1,0 +1,230 @@
+
+{
+  "analysis_batch_id": "content_intelligence_batch_1",
+  "niches": [
+    {
+      "niche_id": "ki_tools_automation_01",
+      "social_media_intelligence": {
+        "platform_analysis": [
+          {
+            "platform": "LinkedIn",
+            "strategy": "Focus on B2B angles, posting case studies of workflow automation ROI. Use articles for thought leadership on the future of AI in business. Engage in comments of major tech influencers.",
+            "optimal_times": ["08:00-10:00", "16:00-18:00 TUE-THU"],
+            "content_types_roi": ["Case Study Posts", "Article", "Video Clip of Tool"],
+            "kpi_benchmarks": {"engagement_rate": "3-5%", "ctr": "2-4%"}
+          },
+          {
+            "platform": "Twitter/X",
+            "strategy": "High-frequency posting. Use threads to break down complex AI concepts. Share quick tips, new tool discoveries, and engage in real-time conversations around #AI and #NoCode.",
+            "optimal_times": ["07:00-09:00", "12:00-14:00", "19:00-21:00"],
+            "content_types_roi": ["Threads", "Short Video Demos", "Infographics"],
+            "kpi_benchmarks": {"engagement_rate": "1.5-3%", "virality_score": "7/10"}
+          },
+          {
+            "platform": "YouTube",
+            "strategy": "Create detailed tutorials for specific tools (e.g., 'How to build X with n8n'). Shorts for quick '30-second AI hacks'. High-CTR thumbnails with clear before/after states.",
+            "optimal_times": ["14:00-16:00 WED/FRI", "10:00-12:00 SAT/SUN"],
+            "content_types_roi": ["Long-form Tutorials", "Tool Comparison Videos", "Shorts"],
+            "kpi_benchmarks": {"avg_watch_time": "6-8 mins", "ctr": "5-8%"}
+          },
+          {
+            "platform": "Reddit",
+            "strategy": "Engage authentically in subreddits like r/Automate, r/artificial, r/SideProject. Provide value first, share links later. Use AMA (Ask Me Anything) with an 'automation expert'.",
+            "optimal_times": ["06:00-08:00", "20:00-23:00 MON/SAT"],
+            "content_types_roi": ["Value-add Comments", "In-depth Guides", "AMA Sessions"],
+            "kpi_benchmarks": {"upvote_ratio": ">90%", "comment_karma": "100+"}
+          }
+        ]
+      },
+      "viral_content_formula_bank": {
+        "headline_templates": [
+          "The AI Tool That Replaced My [Job Role]",
+          "Automate [Boring Task] in 7 Minutes With This AI",
+          "10 AI Tools You Didn't Know You Needed (But Can't Live Without)",
+          "Is [Popular Software] Obsolete? This AI Thinks So."
+        ],
+        "opening_hooks": [
+          "Stop wasting hours on [Task]. Do this instead.",
+          "This is the most powerful AI tool I've seen in 2025.",
+          "99% of people don't know this automation secret."
+        ],
+        "cta_templates": [
+          "Try the tool for free (link in bio).",
+          "Which AI tool should I review next? Comment below.",
+          "Get my full automation workflow (free download)."
+        ],
+        "quick_wins": ["Use headline templates for immediate A/B testing on Twitter/X to find winning angles before creating long-form content."]
+      },
+      "competitor_espionage_matrix": {
+        "top_competitors": ["Zapier Blog", "Make.com Academy", "Ben's Bites (Newsletter)", "The Rundown AI (Newsletter)"],
+        "analysis_placeholders": {
+          "ad_spend_roas": "Requires SEMrush/Ahrefs API - Estimated $10k-$50k/month on Google Ads.",
+          "funnel_architecture": "Typically: Lead Magnet (PDF/Webinar) -> Email Sequence -> Tripwire Offer -> Core Product/Affiliate Link.",
+          "tech_stack": "Commonly: Webflow/Wordpress, ConvertKit/ActiveCampaign, Circle.so for communities."
+        },
+        "weakness_exploitation_map": "Most competitors focus on single-tool tutorials. Opportunity to create content around multi-tool workflows that solve a bigger problem."
+      },
+      "automation_readiness_scores": {
+        "content_curation": {"score": 9, "tools": ["Feedly API", "Pocket API"], "n8n_template": "RSS -> OpenAI for Summary -> Buffer/Social Media"},
+        "video_creation": {"score": 7, "tools": ["Pictory.ai", "ElevenLabs API"], "n8n_template": "Article URL -> Pictory to create video -> Upload to YouTube"},
+        "human_oversight": "High for strategy, low for execution. Final review of AI-generated content is essential."
+      },
+      "required_tools": {
+        "essential": [
+          {"tool": "n8n.io", "cost": "self-hosted or cloud", "notes": "Core of the automation engine."},
+          {"tool": "OpenAI API", "cost": "usage-based", "notes": "For text generation, summarization."},
+          {"tool": "SEMrush/Ahrefs", "cost": 119, "notes": "For SEO, competitor analysis. API key needed."}
+        ],
+        "nice_to_have": [
+          {"tool": "ElevenLabs API", "cost": 22, "notes": "For realistic voice-overs."},
+          {"tool": "Midjourney/Stable Diffusion", "cost": 30, "notes": "For unique visuals."}
+        ]
+      }
+    },
+    {
+      "niche_id": "coding_development_02",
+      "social_media_intelligence": {
+        "platform_analysis": [
+          {
+            "platform": "GitHub",
+            "strategy": "This is a primary platform. Publish useful open-source tools, code snippets, and comprehensive READMEs. Use GitHub Actions for automation examples.",
+            "optimal_times": ["N/A - project-based"],
+            "content_types_roi": ["Open-Source Tools", "Code Snippets", "Tutorials"],
+            "kpi_benchmarks": {"stars": "100+", "forks": "20+"}
+          },
+          {
+            "platform": "YouTube",
+            "strategy": "Live coding sessions, deep-dive tutorials on specific frameworks (e.g., 'Next.js 15 Full Course'), and comparisons ('Vue vs. React in 2025').",
+            "optimal_times": ["15:00-17:00 TUE/THU"],
+            "content_types_roi": ["Live Coding", "Full Courses", "Comparison Videos"],
+            "kpi_benchmarks": {"avg_watch_time": "12-15 mins", "ctr": "4-7%"}
+          },
+          {
+            "platform": "Twitter/X",
+            "strategy": "Share code snippets as images, post polls about preferred tech stacks, and engage with core contributors of popular frameworks. Announce new GitHub repos.",
+            "optimal_times": ["08:00-10:00", "21:00-23:00"],
+            "content_types_roi": ["Code Snippets", "Tech Polls", "Project Announcements"],
+            "kpi_benchmarks": {"engagement_rate": "2-4%", "retweets": "50+"}
+          }
+        ]
+      },
+      "viral_content_formula_bank": {
+        "headline_templates": [
+          "I built a [Popular App] clone in 100 lines of [Language].",
+          "The framework that will kill [Popular Framework].",
+          "Stop using console.log(). Use this instead.",
+          "5 Git commands you probably don't know."
+        ],
+        "quick_wins": ["Turn popular Stack Overflow answers into short video tutorials or Twitter threads."]
+      },
+      "automation_readiness_scores": {
+        "github_repo_creation": {"score": 8, "tools": ["GitHub API"], "n8n_template": "Webhook on new project -> Create repo with template files"},
+        "code_snippet_sharing": {"score": 9, "tools": ["Carbon.now.sh", "Twitter API"], "n8n_template": "New Gist -> Carbon API to create image -> Post to Twitter"}
+      }
+    },
+    {
+      "niche_id": "business_coaching_03",
+      "social_media_intelligence": {
+        "platform_analysis": [
+          {
+            "platform": "LinkedIn",
+            "strategy": "Primary platform. Post carousels with actionable business frameworks. Write articles on leadership and scaling. Host live audio events with Q&A sessions.",
+            "optimal_times": ["08:00-10:00 TUE-THU"],
+            "content_types_roi": ["Carousel Posts", "Articles", "Live Audio Events"],
+            "kpi_benchmarks": {"engagement_rate": "4-6%", "profile_clicks": "500+"}
+          },
+          {
+            "platform": "Instagram",
+            "strategy": "Use Reels to share '15-second business tips'. Use Stories for Q&As and behind-the-scenes of a coaching business. Collaborate with other business accounts.",
+            "optimal_times": ["12:00", "17:00-18:00"],
+            "content_types_roi": ["Reels", "Q&A Stories", "Collaborations"],
+            "kpi_benchmarks": {"shares": "100+", "saves": "200+"}
+          }
+        ]
+      },
+      "viral_content_formula_bank": {
+        "headline_templates": [
+          "The 1-page business plan that generated 100k€.",
+          "Fire your marketing agency. Do this instead.",
+          "The 5 biggest mistakes entrepreneurs make.",
+          "How I run my 1M€ business in 4 hours a week."
+        ],
+        "quick_wins": ["Repurpose LinkedIn carousels into Instagram carousels and TikTok videos."]
+      }
+    },
+    {
+      "niche_id": "dancing_sports_04",
+      "social_media_intelligence": {
+        "platform_analysis": [
+          {
+            "platform": "TikTok",
+            "strategy": "Primary platform. Jump on trending sounds and choreographies. Create easy-to-follow tutorials. Use the duet feature to react to other dancers.",
+            "optimal_times": ["18:00-21:00"],
+            "content_types_roi": ["Trending Dances", "Tutorials", "Duets"],
+            "kpi_benchmarks": {"views": "1M+", "completion_rate": "60%+"}
+          },
+          {
+            "platform": "Instagram",
+            "strategy": "Reels are key. Post high-quality videos of dance routines. Use Stories for behind-the-scenes practice and polls on which song to dance to next.",
+            "optimal_times": ["19:00-21:00"],
+            "content_types_roi": ["Reels", "Behind-the-Scenes Stories", "Polls"],
+            "kpi_benchmarks": {"shares": "1k+", "reach": "500k+"}
+          },
+          {
+            "platform": "YouTube",
+            "strategy": "Long-form content. Full choreography breakdowns, 'Learn to dance in 30 days' series, and collaborations with other dancers. Shorts for viral clips.",
+            "optimal_times": ["15:00-17:00 FRI/SAT"],
+            "content_types_roi": ["Full Choreographies", "Dance Challenges", "Shorts"],
+            "kpi_benchmarks": {"avg_watch_time": "5-7 mins", "subscribers_gained": "1k+/video"}
+          }
+        ]
+      },
+      "viral_content_formula_bank": {
+        "headline_templates": [
+          "Learn this viral dance in 60 seconds.",
+          "The 5 easiest dance moves to look cool.",
+          "Rating popular TikTok dances (brutally honest).",
+          "From zero to dancer in 30 days."
+        ],
+        "quick_wins": ["Use TikTok's trending sounds and filters immediately as they appear."]
+      }
+    },
+    {
+      "niche_id": "biohacking_health_05",
+      "social_media_intelligence": {
+        "platform_analysis": [
+          {
+            "platform": "Instagram",
+            "strategy": "Visually appealing content. Infographics on the science of supplements. Reels showing 'A day in the life of a biohacker'. Before/after data visualizations (e.g., sleep scores).",
+            "optimal_times": ["07:00-09:00", "20:00-22:00"],
+            "content_types_roi": ["Infographics", "Reels", "Data Visualizations"],
+            "kpi_benchmarks": {"saves": "500+", "engagement_rate": "5%+"}
+          },
+          {
+            "platform": "YouTube",
+            "strategy": "Deep dives into specific topics (e.g., 'Nootropics Explained: The Science'). Product reviews of health gadgets. Interviews with doctors and scientists.",
+            "optimal_times": ["16:00-18:00 WED/SUN"],
+            "content_types_roi": ["Science Explained Videos", "Product Reviews", "Expert Interviews"],
+            "kpi_benchmarks": {"avg_watch_time": "10-12 mins", "ctr": "4-6%"}
+          },
+          {
+            "platform": "Twitter/X",
+            "strategy": "Share links to new scientific studies with a short summary. Create threads on biohacking protocols. Engage with health and science journalists.",
+            "optimal_times": ["07:00-09:00"],
+            "content_types_roi": ["Study Summaries", "Protocol Threads", "Expert Engagement"],
+            "kpi_benchmarks": {"engagement_rate": "1-2%", "link_clicks": "1k+"}
+          }
+        ]
+      },
+      "viral_content_formula_bank": {
+        "headline_templates": [
+          "I tried [Biohack] for 30 days. Here's what happened.",
+          "The 3 best supplements for focus (backed by science).",
+          "This simple trick improved my sleep by 40%.",
+          "Is coffee killing your gains? The truth about caffeine."
+        ],
+        "quick_wins": ["Create short videos debunking common health myths."]
+      }
+    }
+  ]
+}

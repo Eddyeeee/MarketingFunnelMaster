@@ -1,0 +1,118 @@
+
+[
+  {
+    "persona_id": "entwickler_01",
+    "persona_name": "Tech-Savvy Alex",
+    "niche_id": "coding_development_02",
+    "age_range": "25-40",
+    "psychographics": {
+      "personality_types": ["INTJ", "INTP"],
+      "values": ["Wissen", "Effizienz", "Autonomie"],
+      "interests": ["Technologie", "Programmierung", "Gaming", "KI"]
+    },
+    "behavioral_triggers": [
+      "Neue Tool-Releases",
+      "Effizienzsteigerung",
+      "Lösung für ein komplexes Problem",
+      "Exklusive Beta-Einladungen"
+    ],
+    "emotional_states": ["Neugier", "Fokus", "Frustration (bei Problemen)", "Stolz (auf gelöste Probleme)"],
+    "device_usage": {
+      "mobile": 0.3,
+      "desktop": 0.6,
+      "tablet": 0.1
+    }
+  },
+  {
+    "persona_id": "kreative_02",
+    "persona_name": "Kreative Klara",
+    "niche_id": "ki_tools_automation_01",
+    "age_range": "20-35",
+    "psychographics": {
+      "personality_types": ["ENFP", "INFP"],
+      "values": ["Kreativität", "Ästhetik", "Individualität"],
+      "interests": ["Design", "Kunst", "Musik", "Fotografie"]
+    },
+    "behavioral_triggers": [
+      "Inspirierende visuelle Inhalte",
+      "Neue Design-Tools",
+      "Tutorials für kreative Techniken",
+      "Rabatte auf Kreativ-Software"
+    ],
+    "emotional_states": ["Inspiration", "Begeisterung", "Kreativblockade", "Freude am Schaffen"],
+    "device_usage": {
+      "mobile": 0.5,
+      "desktop": 0.4,
+      "tablet": 0.1
+    }
+  },
+  {
+    "persona_id": "unternehmer_03",
+    "persona_name": "Unternehmer Ulrich",
+    "niche_id": "business_coaching_03",
+    "age_range": "30-50",
+    "psychographics": {
+      "personality_types": ["ENTJ", "ESTJ"],
+      "values": ["Erfolg", "Wachstum", "Effizienz", "Status"],
+      "interests": ["Wirtschaft", "Marketing", "Finanzen", "Leadership"]
+    },
+    "behavioral_triggers": [
+      "Case Studies mit hohem ROI",
+      "Strategien zur Umsatzsteigerung",
+      "Zeitsparende Business-Tools",
+      "Networking-Möglichkeiten"
+    ],
+    "emotional_states": ["Ambition", "Stress", "Entschlossenheit", "Erfolgsdruck"],
+    "device_usage": {
+      "mobile": 0.4,
+      "desktop": 0.5,
+      "tablet": 0.1
+    }
+  },
+  {
+    "persona_id": "sportler_04",
+    "persona_name": "Sportliche Susi",
+    "niche_id": "dancing_sports_04",
+    "age_range": "18-45",
+    "psychographics": {
+      "personality_types": ["ESFP", "ESTP"],
+      "values": ["Gesundheit", "Leistung", "Disziplin", "Gemeinschaft"],
+      "interests": ["Fitness", "Laufen", "Tanzen", "Gesunde Ernährung"]
+    },
+    "behavioral_triggers": [
+      "Neue Workout-Trends",
+      "Rabatte auf Sportartikel",
+      "Motivierende Erfolgsgeschichten",
+      "Herausforderungen und Wettbewerbe"
+    ],
+    "emotional_states": ["Energie", "Motivation", "Erschöpfung", "Stolz auf Leistung"],
+    "device_usage": {
+      "mobile": 0.6,
+      "desktop": 0.3,
+      "tablet": 0.1
+    }
+  },
+  {
+    "persona_id": "wellness_05",
+    "persona_name": "Wellness-Willi",
+    "niche_id": "biohacking_health_05",
+    "age_range": "25-55",
+    "psychographics": {
+      "personality_types": ["INFJ", "ISFJ"],
+      "values": ["Gesundheit", "Achtsamkeit", "Balance", "Nachhaltigkeit"],
+      "interests": ["Yoga", "Meditation", "Gesunde Ernährung", "Persönlichkeitsentwicklung"]
+    },
+    "behavioral_triggers": [
+      "Wissenschaftlich fundierte Gesundheits-Tipps",
+      "Neue Produkte für Wohlbefinden",
+      "Angebote für Retreats und Kurse",
+      "Positive Testimonials"
+    ],
+    "emotional_states": ["Entspannung", "Stress", "Ausgeglichenheit", "Suche nach innerer Ruhe"],
+    "device_usage": {
+      "mobile": 0.5,
+      "desktop": 0.4,
+      "tablet": 0.1
+    }
+  }
+]

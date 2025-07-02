@@ -1,0 +1,118 @@
+
+[
+  {
+    "persona_id": "investor_ingo_16",
+    "persona_name": "Investor-Ingo",
+    "niche_id": "investing_trading_16",
+    "age_range": "30-60",
+    "psychographics": {
+      "personality_types": ["INTJ", "ISTJ"],
+      "values": ["Vermögensaufbau", "Sicherheit", "Langfristigkeit", "Wissen"],
+      "interests": ["Wirtschaftsnachrichten", "Börsenanalysen", "Biografien von Investoren", "Finanzielle Unabhängigkeit"]
+    },
+    "behavioral_triggers": [
+      "Marktkorrekturen (Kaufgelegenheiten)",
+      "Positive Analysten-Ratings",
+      "Niedrige Gebühren bei Brokern",
+      "Fundierte, datenbasierte Anlagestrategien"
+    ],
+    "emotional_states": ["Geduldig", "Analytisch", "Risikobewusst", "Zukunftsorientiert"],
+    "device_usage": {
+      "mobile": 0.4,
+      "desktop": 0.5,
+      "tablet": 0.1
+    }
+  },
+  {
+    "persona_id": "passive_paula_17",
+    "persona_name": "Passive-Paula",
+    "niche_id": "passive_income_17",
+    "age_range": "25-50",
+    "psychographics": {
+      "personality_types": ["INTP", "ENFP"],
+      "values": ["Freiheit", "Flexibilität", "Kreativität", "Unabhängigkeit"],
+      "interests": ["Digitale Nomaden", "Minimalismus", "Automatisierung", "Side-Hustles"]
+    },
+    "behavioral_triggers": [
+      "Erfolgsgeschichten von anderen",
+      "Systeme, die mit wenig Aufwand laufen",
+      "Geringe Anfangsinvestition",
+      "Skalierbare Geschäftsmodelle"
+    ],
+    "emotional_states": ["Hoffnungsvoll", "Suchend nach Alternativen zum 9-to-5-Job", "Kreativ", "Manchmal überfordert von den Möglichkeiten"],
+    "device_usage": {
+      "mobile": 0.5,
+      "desktop": 0.4,
+      "tablet": 0.1
+    }
+  },
+  {
+    "persona_id": "online_oliver_18",
+    "persona_name": "Online-Oliver",
+    "niche_id": "online_business_automation_18",
+    "age_range": "25-50",
+    "psychographics": {
+      "personality_types": ["ENTJ", "ENTP"],
+      "values": ["Skalierbarkeit", "Effizienz", "Wachstum", "Innovation"],
+      "interests": ["SaaS-Tools", "Marketing-Automatisierung", "E-Commerce-Trends", "Systemdenken"]
+    },
+    "behavioral_triggers": [
+      "Tools, die Prozesse automatisieren und Zeit sparen",
+      "Strategien zur Skalierung des Geschäfts",
+      "Case Studies von schnell wachsenden Online-Unternehmen",
+      "Integrationen zwischen verschiedenen Software-Tools"
+    ],
+    "emotional_states": ["Ambitioniert", "Systematisch", "Immer auf der Suche nach dem nächsten 'Hack'", "Ungeduldig bei manuelen Prozessen"],
+    "device_usage": {
+      "mobile": 0.4,
+      "desktop": 0.5,
+      "tablet": 0.1
+    }
+  },
+  {
+    "persona_id": "mental_mona_19",
+    "persona_name": "Mental-Mona",
+    "niche_id": "mental_health_stress_19",
+    "age_range": "25-55",
+    "psychographics": {
+      "personality_types": ["INFJ", "INFP"],
+      "values": ["Wohlbefinden", "Achtsamkeit", "Selbstfürsorge", "Balance"],
+      "interests": ["Psychologie", "Yoga", "Meditation", "Persönlichkeitsentwicklung"]
+    },
+    "behavioral_triggers": [
+      "Gefühl von Stress oder Überforderung",
+      "Wissenschaftlich fundierte Ratschläge",
+      "Positive und ermutigende Erfahrungsberichte",
+      "Niedrigschwellige Angebote (z.B. kostenlose Meditations-App)"
+    ],
+    "emotional_states": ["Gestresst", "Suchend nach Ruhe", "Selbstkritisch", "Offen für neue Methoden"],
+    "device_usage": {
+      "mobile": 0.6,
+      "desktop": 0.3,
+      "tablet": 0.1
+    }
+  },
+  {
+    "persona_id": "ernaehrungs_eva_20",
+    "persona_name": "Ernährungs-Eva",
+    "niche_id": "nutrition_diets_20",
+    "age_range": "25-60",
+    "psychographics": {
+      "personality_types": ["ISFJ", "ESFJ"],
+      "values": ["Gesundheit", "Wohlbefinden", "Familie", "Genuss"],
+      "interests": ["Koch-Blogs", "Gesundheitsmagazine", "Fitness", "Nachhaltigkeit"]
+    },
+    "behavioral_triggers": [
+      "Wunsch nach Gewichtsverlust oder -zunahme",
+      "Gesundheitliche Probleme, die durch Ernährung beeinflusst werden können",
+      "Einfache und schnelle Rezepte",
+      "Positive Testimonials und Vorher-Nachher-Bilder"
+    ],
+    "emotional_states": ["Unzufrieden mit dem eigenen Körper", "Verwirrt von widersprüchlichen Informationen", "Motiviert zu einer Veränderung", "Genussorientiert"],
+    "device_usage": {
+      "mobile": 0.7,
+      "desktop": 0.2,
+      "tablet": 0.1
+    }
+  }
+]

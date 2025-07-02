@@ -1,0 +1,68 @@
+
+{
+  "ki_tools_automation_01": {
+    "health_score": 92,
+    "alert_thresholds": {
+      "conversion_rate_min": 0.04,
+      "bounce_rate_max": 0.6
+    },
+    "performance_triggers": {
+      "high_engagement": "Neue Content-Serie starten",
+      "low_conversion": "A/B-Test für Landing Page starten"
+    },
+    "optimization_priorities": ["Content-Erstellung", "SEO-Optimierung"],
+    "investment_priority_rank": 1
+  },
+  "coding_development_02": {
+    "health_score": 88,
+    "alert_thresholds": {
+      "conversion_rate_min": 0.03,
+      "bounce_rate_max": 0.65
+    },
+    "performance_triggers": {
+      "high_traffic": "Neue Kurse bewerben",
+      "high_bounce_rate": "Content-Qualität prüfen"
+    },
+    "optimization_priorities": ["Affiliate-Partnerschaften", "Community-Aufbau"],
+    "investment_priority_rank": 2
+  },
+  "business_coaching_03": {
+    "health_score": 85,
+    "alert_thresholds": {
+      "conversion_rate_min": 0.02,
+      "bounce_rate_max": 0.55
+    },
+    "performance_triggers": {
+      "high_lead_quality": "Sales-Funnel optimieren",
+      "low_engagement": "Neue Content-Formate testen"
+    },
+    "optimization_priorities": ["Lead-Generierung", "E-Mail-Marketing"],
+    "investment_priority_rank": 3
+  },
+  "dancing_sports_04": {
+    "health_score": 80,
+    "alert_thresholds": {
+      "conversion_rate_min": 0.035,
+      "bounce_rate_max": 0.7
+    },
+    "performance_triggers": {
+      "viral_content": "Bezahlte Promotion starten",
+      "low_traffic": "SEO-Analyse durchführen"
+    },
+    "optimization_priorities": ["Social-Media-Marketing", "Videoproduktion"],
+    "investment_priority_rank": 4
+  },
+  "biohacking_health_05": {
+    "health_score": 86,
+    "alert_thresholds": {
+      "conversion_rate_min": 0.045,
+      "bounce_rate_max": 0.6
+    },
+    "performance_triggers": {
+      "high_product_sales": "Cross-Selling-Angebote erstellen",
+      "low_email_open_rate": "Betreffzeilen optimieren"
+    },
+    "optimization_priorities": ["Conversion-Rate-Optimierung", "Produkt-Reviews"],
+    "investment_priority_rank": 2
+  }
+}

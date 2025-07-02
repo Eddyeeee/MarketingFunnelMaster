@@ -1,0 +1,118 @@
+
+[
+  {
+    "persona_id": "workout_walter_11",
+    "persona_name": "Workout-Walter",
+    "niche_id": "fitness_workout_11",
+    "age_range": "20-50",
+    "psychographics": {
+      "personality_types": ["ESFJ", "ESTP"],
+      "values": ["Gesundheit", "Konsistenz", "Einfachheit", "Community"],
+      "interests": ["Home-Workouts", "Fitness-Apps", "Gesunde Rezepte", "Outdoor-Aktivitäten"]
+    },
+    "behavioral_triggers": [
+      "Saisonale Fitness-Herausforderungen (z.B. 'Sommerfigur')",
+      "Positive Vorher-Nachher-Bilder",
+      "Einfach zu befolgende Workout-Pläne",
+      "Rabatte auf Fitness-Programme"
+    ],
+    "emotional_states": ["Motiviert", "Unzufrieden mit dem eigenen Körper", "Suchend nach Anleitung", "Energiegeladen nach dem Sport"],
+    "device_usage": {
+      "mobile": 0.8,
+      "desktop": 0.1,
+      "tablet": 0.1
+    }
+  },
+  {
+    "persona_id": "apple_anna_12",
+    "persona_name": "Apple-Anna",
+    "niche_id": "apple_dev_ios_12",
+    "age_range": "25-45",
+    "psychographics": {
+      "personality_types": ["INTP", "ISTJ"],
+      "values": ["Design-Ästhetik", "Benutzererfahrung", "Qualität", "Innovation"],
+      "interests": ["Apple-News", "WWDC", "Swift-Programmierung", "Minimalistisches Design"]
+    },
+    "behavioral_triggers": [
+      "Ankündigung neuer Apple-Hardware oder -Software",
+      "Exklusive Tutorials für Apple-Plattformen",
+      "Tools, die die App-Entwicklung beschleunigen",
+      "Positive Reviews im App Store"
+    ],
+    "emotional_states": ["Kreativ", "Detailorientiert", "Frustriert von App-Store-Richtlinien", "Stolz auf eine fertige App"],
+    "device_usage": {
+      "mobile": 0.4,
+      "desktop": 0.5,
+      "tablet": 0.1
+    }
+  },
+  {
+    "persona_id": "sneakerhead_sven_13",
+    "persona_name": "Sneakerhead-Sven",
+    "niche_id": "nike_sneakers_13",
+    "age_range": "15-35",
+    "psychographics": {
+      "personality_types": ["ESFP", "ENFP"],
+      "values": ["Status", "Exklusivität", "Markenloyalität", "Street-Culture"],
+      "interests": ["Mode-Blogs", "Hypebeast", "Instagram", "Sneaker-Messen"]
+    },
+    "behavioral_triggers": [
+      "Ankündigung einer limitierten Auflage",
+      "Kollaborationen mit Prominenten",
+      "Gerüchte über kommende Releases",
+      "Sales und Rabattaktionen"
+    ],
+    "emotional_states": ["Aufgeregt (vor einem Drop)", "Enttäuscht (wenn man leer ausgeht)", "Stolz (auf die eigene Sammlung)", "Trendbewusst"],
+    "device_usage": {
+      "mobile": 0.9,
+      "desktop": 0.1,
+      "tablet": 0.0
+    }
+  },
+  {
+    "persona_id": "crypto_carla_14",
+    "persona_name": "Crypto-Carla",
+    "niche_id": "crypto_blockchain_14",
+    "age_range": "20-45",
+    "psychographics": {
+      "personality_types": ["ENTP", "ISTP"],
+      "values": ["Freiheit", "Dezentralisierung", "Potenzieller Reichtum", "Technologischer Fortschritt"],
+      "interests": ["Finanznachrichten", "Tech-Twitter", "Reddit (r/CryptoCurrency)", "Wirtschaftspolitik"]
+    },
+    "behavioral_triggers": [
+      "Starke Kursschwankungen (FOMO/FUD)",
+      "Positive Nachrichten über Krypto-Adoption",
+      "Einfach zu bedienende Handelsplattformen",
+      "Anleitungen, die die Komplexität reduzieren"
+    ],
+    "emotional_states": ["Gierig", "Ängstlich (FUD)", "Optimistisch", "Verwirrt von der Komplexität"],
+    "device_usage": {
+      "mobile": 0.6,
+      "desktop": 0.4,
+      "tablet": 0.0
+    }
+  },
+  {
+    "persona_id": "steuer_stefan_15",
+    "persona_name": "Steuer-Stefan",
+    "niche_id": "taxes_accounting_15",
+    "age_range": "25-60",
+    "psychographics": {
+      "personality_types": ["ISTJ", "ISFJ"],
+      "values": ["Sicherheit", "Korrektheit", "Geld sparen", "Pünktlichkeit"],
+      "interests": ["Finanz-Blogs", "Gesetzesänderungen", "Verbraucherschutz", "Effiziente Haushaltsführung"]
+    },
+    "behavioral_triggers": [
+      "Nahende Fristen (z.B. Abgabe der Steuererklärung)",
+      "Möglichkeit, Geld vom Finanzamt zurückzubekommen",
+      "Verständliche Anleitungen für komplexe Sachverhalte",
+      "Positive Testberichte für Steuersoftware"
+    ],
+    "emotional_states": ["Gestresst", "Überfordert", "Erleichtert (nach Erledigung)", "Verunsichert"],
+    "device_usage": {
+      "mobile": 0.3,
+      "desktop": 0.6,
+      "tablet": 0.1
+    }
+  }
+]

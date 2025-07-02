@@ -1,0 +1,118 @@
+
+[
+  {
+    "persona_id": "fitness_frank_06",
+    "persona_name": "Fitness-Frank",
+    "niche_id": "fitness_biohacking_06",
+    "age_range": "20-50",
+    "psychographics": {
+      "personality_types": ["ESTP", "ENTJ"],
+      "values": ["Leistung", "Daten", "Optimierung", "Gesundheit"],
+      "interests": ["Fitness-Tracking", "Wearables", "Ernährungswissenschaft", "Kraftsport"]
+    },
+    "behavioral_triggers": [
+      "Neue wissenschaftliche Studien",
+      "Produkte mit messbarem Nutzen",
+      "Angebote für High-Tech-Fitnessgeräte",
+      "Vergleichstests von Supplements"
+    ],
+    "emotional_states": ["Motiviert", "Daten-getrieben", "Wettbewerbsorientiert", "Diszipliniert"],
+    "device_usage": {
+      "mobile": 0.7,
+      "desktop": 0.2,
+      "tablet": 0.1
+    }
+  },
+  {
+    "persona_id": "lern_lena_07",
+    "persona_name": "Lern-Lena",
+    "niche_id": "online_courses_07",
+    "age_range": "18-50",
+    "psychographics": {
+      "personality_types": ["INFP", "ISFJ"],
+      "values": ["Wissenserwerb", "Persönliches Wachstum", "Flexibilität", "Karriereentwicklung"],
+      "interests": ["Lesen", "Dokumentationen", "Sprachen lernen", "Kreative Hobbys"]
+    },
+    "behavioral_triggers": [
+      "Rabatte auf Kurse",
+      "Zertifikate und anerkannte Abschlüsse",
+      "Flexible Lernzeiten",
+      "Positive Bewertungen von anderen Lernenden"
+    ],
+    "emotional_states": ["Neugierig", "Hoffnungsvoll", "Manchmal überfordert", "Stolz auf Lernerfolge"],
+    "device_usage": {
+      "mobile": 0.4,
+      "desktop": 0.5,
+      "tablet": 0.1
+    }
+  },
+  {
+    "persona_id": "profi_paul_08",
+    "persona_name": "Profi-Paul",
+    "niche_id": "software_tools_08",
+    "age_range": "25-45",
+    "psychographics": {
+      "personality_types": ["ISTJ", "ESTJ"],
+      "values": ["Effizienz", "Produktivität", "Organisation", "ROI"],
+      "interests": ["Technik-Blogs", "Wirtschaftsnachrichten", "Projektmanagement", "Automatisierung"]
+    },
+    "behavioral_triggers": [
+      "Lifetime-Deals für Software",
+      "Tools, die Zeit sparen",
+      "Integrationen mit bestehenden Systemen",
+      "Positive Reviews in Fachmedien"
+    ],
+    "emotional_states": ["Fokussiert", "Organisiert", "Gestresst bei Ineffizienz", "Zufrieden bei Produktivitätssteigerung"],
+    "device_usage": {
+      "mobile": 0.3,
+      "desktop": 0.6,
+      "tablet": 0.1
+    }
+  },
+  {
+    "persona_id": "mentor_martin_09",
+    "persona_name": "Mentor-Martin",
+    "niche_id": "coaching_mentoring_09",
+    "age_range": "25-55",
+    "psychographics": {
+      "personality_types": ["ENFJ", "INFJ"],
+      "values": ["Wachstum", "Selbstverwirklichung", "Unterstützung", "Sinnhaftigkeit"],
+      "interests": ["Psychologie", "Biografien", "Seminare", "Networking"]
+    },
+    "behavioral_triggers": [
+      "Erfolgsgeschichten von Coachees",
+      "Kostenlose Erstgespräche",
+      "Programme mit klarem Fahrplan",
+      "Empfehlungen aus dem eigenen Netzwerk"
+    ],
+    "emotional_states": ["Suchend", "Motiviert zur Veränderung", "Unsicher", "Inspiriert"],
+    "device_usage": {
+      "mobile": 0.5,
+      "desktop": 0.4,
+      "tablet": 0.1
+    }
+  },
+  {
+    "persona_id": "code_chris_10",
+    "persona_name": "Code-Chris",
+    "niche_id": "coding_courses_10",
+    "age_range": "18-35",
+    "psychographics": {
+      "personality_types": ["INTP", "ISTP"],
+      "values": ["Logik", "Problemlösung", "Lernen", "Karrierechancen"],
+      "interests": ["Open Source", "Hackathons", "Tech-Meetups", "Gaming"]
+    },
+    "behavioral_triggers": [
+      "Job-Garantien nach Bootcamp-Abschluss",
+      "Projekte zum Mitmachen",
+      "Kostenlose Probelektionen",
+      "Vergleich von Lernpfaden"
+    ],
+    "emotional_states": ["Analytisch", "Frustriert bei Bugs", "Begeistert von neuer Technologie", "Zielorientiert"],
+    "device_usage": {
+      "mobile": 0.2,
+      "desktop": 0.7,
+      "tablet": 0.1
+    }
+  }
+]

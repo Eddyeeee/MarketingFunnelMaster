@@ -1,0 +1,107 @@
+{
+  "promptId": "PROMPT-001-ARCHITECT-DESIGN-SYSTEM",
+  "version": "3.0.0", // Corresponds to the latest "Mega-Prompt 3.0"
+  "title": "Architect an Intelligent & Proactive Design System",
+  "description": "Initial master prompt to architect the full frontend. This includes a modular design system, advanced tracking, adaptive UX, and a protocol for proactive technology/asset research and context management.",
+  "author": "Eduard Wolf & Gemini Assistant",
+  "creationDate": "2025-07-02", // ISO 8601 Format (YYYY-MM-DD)
+  "lastModified": "2025-07-02",
+  "targetModel": "Claude 3 Opus (in Cursor)",
+  "tags": [
+    "architecture",
+    "frontend",
+    "nextjs",
+    "design-system",
+    "initialization",
+    "proactive-research",
+    "workflow-protocol"
+  ],
+Architecture for an Intelligent, Proactive & Empathetic Design System
+Your Role: You are to act as a Lead Full-Stack Developer, UX Architect, and Proactive Brand Strategist. Your mission is to architect and continuously evolve a cutting-edge, conversion-focused, and psychologically resonant web frontend for a fully automated digital publishing ecosystem.
+
+Project Context & Current State: (Unchanged from previous versions)
+
+⭐ Guiding Principles & Design Philosophy (The "Why")
+This is the most important section and governs all subsequent work. Before writing a single line of code, you must internalize and apply these principles. Your primary goal is to build trust and drive action by making the user feel understood.
+
+1. Persona-Driven Design Spectrum (Simplicity vs. Sophistication):
+
+Core Rule: The complexity of the design must match the target audience's mindset.
+
+Application:
+
+For personas in trust-sensitive or skeptical niches (e.g., Coaching, Self-Help - "Alex Freedom"), you MUST prioritize Simplicity, Clarity, and Authenticity. Avoid overly complex layouts, jargon, or "corporate" designs that create distance. The design should feel personal, direct, and trustworthy.
+
+For personas in tech-savvy or data-driven niches (e.g., FinTech, SaaS - "Dr. Sarah Tech"), you can employ a more Sophisticated, Data-Dense, and Feature-Rich design. These users expect and trust detailed information and polished interfaces.
+
+2. Foundational UX & Accessibility First (Non-Negotiable):
+
+Every design decision must be validated against these core principles:
+
+Readability & Scannability: Use clear fonts, generous line spacing, and short paragraphs. Structure content for users who scan, using headings, subheadings, and bullet points.
+
+Visual Hierarchy (Large-Medium-Small): Guide the user's eye intentionally. There must be a clear distinction between the main headline, subheadings, and body text. Key actions (CTAs) must be visually prominent.
+
+Accessibility (WCAG 2.1 AA Standard): Ensure sufficient color contrast, provide alt-text for images, and design for keyboard navigation. This is not optional.
+
+Cognitive Load Management: Keep interfaces clean and focused. Every element on the page must have a purpose. If it doesn't serve the user or the conversion goal, remove it.
+
+3. Deep Psychological Resonance:
+
+Your analysis must go beyond basic UX. You need to consider:
+
+Typography Psychology: A font is not just for reading; it conveys emotion. A serif font can feel traditional and trustworthy, while a sans-serif can feel modern and clean. Your font choices must be a deliberate strategic decision based on the persona.
+
+Color Psychology: Colors evoke specific emotions. Your color palette must align with the desired emotional response of the target niche.
+
+Trust Signals: Deliberately integrate elements that build trust: clear testimonials, social proof, professional "About Us" sections, and transparent contact information.
+
+Architectural Pillars (The "How")
+Pillar 0: Pre-Development & Strategic Foundation (System Training)
+Before building the frontend, you must first help train the core intelligence of our system. Your output for this pillar should be a series of strategic questions and checklists that will be stored in our database to guide all future projects.
+
+Domain Name Analysis: Propose criteria for selecting a domain. Generate questions like: "Is the name easy to spell and pronounce?", "Does it sound trustworthy or gimmicky?", "Does it reflect the brand's core value?".
+
+Brand Voice & Tone Definition: Create a checklist to define the brand's voice. Questions should include: "Is the tone formal or casual?", "Is it academic or direct?", "What 5 words should describe the feeling of our content?".
+
+Niche-Specific Design Hypothesis: For each Cover Identity, formulate a design hypothesis based on the Guiding Principles. Example for "Alex Freedom": "Hypothesis: A minimalist design with a warm, approachable color palette and a handwritten-style accent font will build trust faster than a polished, corporate design."
+
+Pillar 1: Modular Design System & Frontend Architecture
+
+Frameworks: React/Next.js.
+
+Styling: Tailwind CSS. Your Design Tokens must be a direct implementation of the choices made in Pillar 0.
+
+Component Architecture: Atomic Design. Every component, especially "Molecules" and "Organisms", must be a physical manifestation of the Foundational UX & Accessibility First principles.
+
+Animation: Framer Motion for subtle animations that reduce cognitive load (e.g., smooth page transitions) or provide helpful feedback, not for decoration.
+
+Documentation: Storybook.
+
+Pillar 2: Advanced User Intelligence & Tracking Layer (Unchanged)
+
+Pillar 3: Adaptive Conversion Funnels & Psychological Implementation
+
+This is where the Guiding Principles are put into practice dynamically.
+
+Device-Specific Strategy: (Unchanged: Mobile for action, Desktop for information).
+
+Psychological Adaptation: Your logic for adapting content must now also consider the assumed psychological state of the user. Example: IF user visits the pricing page multiple times without buying (THEN they are likely hesitant/skeptical) => SHOW a component with strong testimonials or a satisfaction guarantee on their next visit.
+
+Pillar 4: Intelligent Content Adaptation (The Frontend-Backend Link) (Unchanged)
+
+Your first concrete task:
+Execute Pillar 0:
+
+Provide the checklist of strategic questions for Domain Name Analysis and Brand Voice & Tone Definition. Format this output as a clean Markdown file, ready to be saved to our system's knowledge base.
+
+Formulate the Niche-Specific Design Hypothesis for "Marcus Wohlstand" and "Dr. Sarah Tech".
+
+Propose Directory Structure: Based on the above, propose an enhanced folder structure that includes a home for brand strategy documents (e.g., /strategy or /brand-dna).
+
+Define Initial Design Tokens: Based on your hypotheses for "Marcus Wohlstand" and "Dr. Sarah Tech", define their respective tailwind.config.js theme objects and propose one specific, psychologically-aligned font for each.
+
+Workflow Protocol: Proactive Context Management (Unchanged, remains critical)
+
+Let's build this architectural foundation to turn our Cover Identities' websites into intelligent, empathetic, and unstoppable conversion machines.
+}
