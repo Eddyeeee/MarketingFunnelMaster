@@ -9,6 +9,7 @@ const path = require('path');
 // Core modules
 const OpportunityScanner = require('./core/OpportunityScanner');
 const N8nIntegration = require('./n8n-integration/opportunity-webhook');
+const PythonAIBridge = require('./ai-bridge/python-ai-bridge');
 
 // Initialize Express app
 const app = express();
@@ -17,9 +18,13 @@ app.use(express.json());
 // Database connection
 const db = new sqlite3.Database(path.join(__dirname, 'databases', 'opportunity.db'));
 
-// Initialize scanner and N8n integration
+// Initialize scanner, N8n integration, and AI bridge
 const scanner = new OpportunityScanner(db);
 const n8nIntegration = new N8nIntegration(app, db);
+const aiBridge = new PythonAIBridge({
+    pythonApiUrl: process.env.PYTHON_AI_URL || 'http://localhost:8000',
+    timeout: 120000 // 2 minutes for AI operations
+});
 
 // API Routes
 app.get('/', (req, res) => {
@@ -58,14 +63,35 @@ app.get('/api/opportunities', (req, res) => {
     });
 });
 
-// Trigger manual scan
+// Trigger manual scan with AI enhancement
 app.post('/api/scan', async (req, res) => {
     try {
-        console.log('🔍 Manual scan triggered...');
+        console.log('🔍 Manual scan triggered with AI enhancement...');
         const results = await scanner.scanAll();
+        
+        // Enhance top opportunities with AI if available
+        if (aiBridge.isRunning && results.new > 0) {
+            console.log('🧠 Enhancing opportunities with AI...');
+            try {
+                // Get latest opportunities
+                const latestOpportunities = await getLatestOpportunities(3);
+                
+                // Enhance each with AI
+                for (const opp of latestOpportunities) {
+                    const enhanced = await aiBridge.enhanceOpportunityWithAI(opp);
+                    await saveEnhancedOpportunity(enhanced);
+                }
+                
+                results.ai_enhanced = latestOpportunities.length;
+            } catch (aiError) {
+                console.error('⚠️ AI enhancement failed:', aiError.message);
+                results.ai_enhancement_error = aiError.message;
+            }
+        }
+        
         res.json({
             success: true,
-            message: 'Scan completed',
+            message: 'Scan completed with AI enhancement',
             results: results
         });
     } catch (error) {
@@ -101,6 +127,106 @@ app.get('/api/stats', (req, res) => {
     });
 });
 
+// AI-powered research endpoint
+app.post('/api/ai/research', async (req, res) => {
+    try {
+        const { topic, options = {} } = req.body;
+        
+        if (!topic) {
+            return res.status(400).json({ error: 'Topic is required' });
+        }
+        
+        console.log(`🧠 AI research requested for: ${topic}`);
+        
+        if (!aiBridge.isRunning) {
+            return res.status(503).json({ error: 'AI system not available' });
+        }
+        
+        const result = await aiBridge.conductResearch(topic, options);
+        
+        res.json({
+            success: true,
+            topic: topic,
+            result: result
+        });
+        
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+// Crypto education analysis endpoint
+app.post('/api/ai/crypto-analysis', async (req, res) => {
+    try {
+        console.log('🪙 Crypto education analysis requested');
+        
+        if (!aiBridge.isRunning) {
+            return res.status(503).json({ error: 'AI system not available' });
+        }
+        
+        const result = await aiBridge.analyzeCryptoEducation(req.body);
+        
+        res.json({
+            success: true,
+            result: result
+        });
+        
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+// AI system status endpoint
+app.get('/api/ai/status', async (req, res) => {
+    try {
+        const status = await aiBridge.getSystemStatus();
+        res.json(status);
+    } catch (error) {
+        res.json({
+            system_status: 'offline',
+            error: error.message
+        });
+    }
+});
+
+// Helper functions
+async function getLatestOpportunities(limit = 5) {
+    return new Promise((resolve, reject) => {
+        db.all(
+            'SELECT * FROM opportunities ORDER BY discovered_at DESC LIMIT ?',
+            [limit],
+            (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows);
+            }
+        );
+    });
+}
+
+async function saveEnhancedOpportunity(enhanced) {
+    return new Promise((resolve, reject) => {
+        const metadata = enhanced.metadata ? JSON.parse(enhanced.metadata) : {};
+        metadata.ai_analysis = enhanced.ai_analysis;
+        metadata.ai_confidence_score = enhanced.ai_confidence_score;
+        metadata.enhancement_timestamp = enhanced.enhancement_timestamp;
+        
+        db.run(
+            'UPDATE opportunities SET metadata = ? WHERE id = ?',
+            [JSON.stringify(metadata), enhanced.id],
+            (err) => {
+                if (err) reject(err);
+                else resolve();
+            }
+        );
+    });
+}
+
 // Schedule automatic scans
 console.log('📅 Setting up scheduled scans...');
 
@@ -129,28 +255,70 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, async () => {
     console.log(`
 ╔═══════════════════════════════════════════════════════╗
-║       OPPORTUNISTIC INTELLIGENCE SYSTEM v1.0.0        ║
+║       OPPORTUNISTIC INTELLIGENCE SYSTEM v2.0.0        ║
+║              🧠 AI-POWERED VERSION 🧠                 ║
 ╠═══════════════════════════════════════════════════════╣
 ║  🚀 System started successfully!                      ║
 ║  🌐 API running on: http://localhost:${PORT}            ║
 ║  📊 Dashboard: http://localhost:${PORT}/dashboard       ║
 ║  🔍 Scanning: Every 30 minutes (quick), 6 hours (full)║
+║  🧠 AI Research: http://localhost:${PORT}/api/ai/       ║
 ╚═══════════════════════════════════════════════════════╝
     `);
+    
+    // Initialize AI system
+    console.log('\n🧠 Initializing AI Research System...');
+    try {
+        await aiBridge.initialize();
+        console.log('✅ AI Research System online!');
+    } catch (error) {
+        console.error('⚠️ AI Research System failed to start:', error.message);
+        console.log('💡 System will continue without AI enhancement');
+    }
     
     // Run initial scan
     console.log('\n🎯 Running initial opportunity scan...');
     try {
         const results = await scanner.quickScan();
         console.log('✅ Initial scan complete!');
+        
+        // Try AI enhancement if available
+        if (aiBridge.isRunning && results.new > 0) {
+            console.log('🧠 Starting AI enhancement of opportunities...');
+            try {
+                const latestOpportunities = await getLatestOpportunities(2);
+                for (const opp of latestOpportunities) {
+                    const enhanced = await aiBridge.enhanceOpportunityWithAI(opp);
+                    await saveEnhancedOpportunity(enhanced);
+                }
+                console.log(`✅ AI enhanced ${latestOpportunities.length} opportunities!`);
+            } catch (aiError) {
+                console.error('⚠️ AI enhancement failed:', aiError.message);
+            }
+        }
+        
     } catch (error) {
         console.error('❌ Initial scan failed:', error.message);
     }
 });
 
 // Graceful shutdown
-process.on('SIGINT', () => {
+process.on('SIGINT', async () => {
     console.log('\n🛑 Shutting down gracefully...');
-    db.close();
-    process.exit(0);
+    
+    try {
+        // Shutdown AI system
+        if (aiBridge.isRunning) {
+            await aiBridge.shutdown();
+        }
+        
+        // Close database
+        db.close();
+        
+        console.log('✅ Shutdown complete');
+        process.exit(0);
+    } catch (error) {
+        console.error('Error during shutdown:', error);
+        process.exit(1);
+    }
 });
