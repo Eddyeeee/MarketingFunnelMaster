@@ -277,7 +277,7 @@ export function ResearchOverview({ className }: ResearchOverviewProps) {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {niches
+            {[...niches]
               .sort((a: any, b: any) => b.priority_score - a.priority_score)
               .slice(0, 5)
               .map((niche: any, index: number) => (

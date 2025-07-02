@@ -61,7 +61,7 @@ export function ResearchMetricsDashboard({ className }: ResearchMetricsDashboard
       { name: 'Low (≤6)', value: niches.filter((n: any) => n.automation_ready_score < 7).length, color: '#ef4444' },
     ];
 
-    const timelineData = niches
+    const timelineData = [...niches]
       .sort((a: any, b: any) => a.implementation_difficulty - b.implementation_difficulty)
       .slice(0, 6)
       .map((niche: any, index: any) => ({
