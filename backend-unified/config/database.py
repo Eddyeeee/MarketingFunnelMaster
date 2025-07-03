@@ -92,7 +92,7 @@ async def create_tables():
     """Create database tables if they don't exist"""
     try:
         # Import all models to ensure they're registered with Base
-        from models import users, leads, websites, analytics, agents  # noqa
+        from models import users, leads  # Import only existing models for now
         
         # Create tables in PostgreSQL
         if postgresql_engine:
@@ -104,7 +104,8 @@ async def create_tables():
         
     except Exception as e:
         logger.error(f"❌ Error creating tables: {e}")
-        raise
+        logger.warning("Continuing without creating tables - they may need to be created manually")
+        # Don't raise here to allow the application to start
 
 async def close_database():
     """Close database connections"""
@@ -229,6 +230,11 @@ async def get_db_session() -> AsyncGenerator[AsyncSession, None]:
     async with get_async_session() as session:
         yield session
 
+async def get_db() -> AsyncGenerator[AsyncSession, None]:
+    """FastAPI dependency for database sessions (alias for compatibility)"""
+    async with get_async_session() as session:
+        yield session
+
 async def get_db_manager() -> DatabaseManager:
     """FastAPI dependency for database manager"""
     return db_manager
@@ -296,6 +302,7 @@ __all__ = [
     "get_async_session",
     "get_sync_session",
     "get_db_session",
+    "get_db",
     "get_db_manager",
     "test_database_connection",
     "DatabaseManager",

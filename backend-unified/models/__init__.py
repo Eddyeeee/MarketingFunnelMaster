@@ -7,17 +7,19 @@ Executor: Claude Code
 Erstellt: 2025-07-03
 """
 
-# Import all models to ensure they're registered with SQLAlchemy Base
+# Import only existing models for now
 from .users import User, UserProfile, UserSettings
 from .leads import Lead, LeadQuizAnswer, LeadFunnel
-from .websites import Website, WebsiteContent, WebsiteDomain
-from .analytics import AnalyticsEvent, PerformanceMetrics, ConversionData
-from .agents import AIAgent, AgentTask, AgentMessage, AgentPerformance
-from .products import Product, ProductCategory, ProductReview
-from .affiliates import AffiliateProgram, AffiliateLink, AffiliateCommission
-from .campaigns import Campaign, CampaignMetrics, EmailSequence
 
-# Export all models
+# TODO: Import additional models as they are created
+# from .websites import Website, WebsiteContent, WebsiteDomain
+# from .analytics import AnalyticsEvent, PerformanceMetrics, ConversionData
+# from .agents import AIAgent, AgentTask, AgentMessage, AgentPerformance
+# from .products import Product, ProductCategory, ProductReview
+# from .affiliates import AffiliateProgram, AffiliateLink, AffiliateCommission
+# from .campaigns import Campaign, CampaignMetrics, EmailSequence
+
+# Export existing models only
 __all__ = [
     # User models
     "User",
@@ -27,36 +29,5 @@ __all__ = [
     # Lead models
     "Lead",
     "LeadQuizAnswer",
-    "LeadFunnel",
-    
-    # Website models
-    "Website",
-    "WebsiteContent", 
-    "WebsiteDomain",
-    
-    # Analytics models
-    "AnalyticsEvent",
-    "PerformanceMetrics",
-    "ConversionData",
-    
-    # Agent models
-    "AIAgent",
-    "AgentTask",
-    "AgentMessage",
-    "AgentPerformance",
-    
-    # Product models
-    "Product",
-    "ProductCategory",
-    "ProductReview",
-    
-    # Affiliate models
-    "AffiliateProgram",
-    "AffiliateLink", 
-    "AffiliateCommission",
-    
-    # Campaign models
-    "Campaign",
-    "CampaignMetrics",
-    "EmailSequence"
+    "LeadFunnel"
 ]

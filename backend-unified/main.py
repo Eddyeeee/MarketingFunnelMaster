@@ -22,7 +22,7 @@ from datetime import datetime
 from config.settings import settings
 from config.database import init_database, close_database
 from api.v1 import auth, agents, websites, analytics, intelligence
-from api.webhooks import webhooks
+from api import webhooks
 from core.agents.orchestrator import AgentOrchestrator
 from core.intelligence.ai_research_client import AIResearchClient
 from utils.logging import setup_logging
@@ -267,8 +267,8 @@ app.include_router(
 )
 
 # WebSocket endpoints for real-time agent communication
-from api.websockets import websocket_router
-app.include_router(websocket_router)
+from api import websockets
+app.include_router(websockets.websocket_router)
 
 # Development and debugging endpoints
 if settings.ENVIRONMENT == "development":
