@@ -1,0 +1,192 @@
+# Alert Rules for Marketing Funnel Master
+# Critical Performance & Business Metrics
+
+groups:
+  # ===== CRITICAL UPTIME ALERTS =====
+  - name: uptime_alerts
+    rules:
+      - alert: WebsiteDown
+        expr: probe_success == 0
+        for: 2m
+        labels:
+          severity: critical
+          team: devops
+          alert_type: uptime
+        annotations:
+          summary: "🚨 Website {{ $labels.instance }} is DOWN"
+          description: "{{ $labels.instance }} has been down for more than 2 minutes. Immediate attention required."
+          runbook_url: "https://runbook.company.com/website-down"
+          action_required: "Check Vercel status, DNS configuration, and server health"
+
+      - alert: WebsiteSlowResponse
+        expr: probe_duration_seconds > 3
+        for: 5m
+        labels:
+          severity: warning
+          team: devops
+          alert_type: performance
+        annotations:
+          summary: "⚠️ Website {{ $labels.instance }} is responding slowly"
+          description: "{{ $labels.instance }} response time is {{ $value }}s (>3s threshold)"
+          runbook_url: "https://runbook.company.com/slow-response"
+
+  # ===== BUSINESS CRITICAL ALERTS =====
+  - name: business_alerts
+    rules:
+      - alert: ConversionRateDropped
+        expr: (rate(conversions_total[1h]) / rate(visitors_total[1h])) * 100 < 5
+        for: 30m
+        labels:
+          severity: critical
+          team: marketing
+          alert_type: business
+        annotations:
+          summary: "🚨 CRITICAL: Conversion rate dropped below 5%"
+          description: "{{ $labels.instance }} conversion rate is {{ $value }}% (threshold: 5%)"
+          runbook_url: "https://runbook.company.com/conversion-drop"
+          action_required: "Check funnel performance, A/B tests, and user experience"
+
+      - alert: NoConversionsInHour
+        expr: increase(conversions_total[1h]) == 0
+        for: 1h
+        labels:
+          severity: critical
+          team: marketing
+          alert_type: business
+        annotations:
+          summary: "🚨 CRITICAL: No conversions in the last hour"
+          description: "{{ $labels.instance }} has not recorded any conversions in the last hour"
+          runbook_url: "https://runbook.company.com/no-conversions"
+          action_required: "Check payment processing, form submissions, and tracking"
+
+      - alert: HighBounceRate
+        expr: (rate(bounces_total[1h]) / rate(visitors_total[1h])) * 100 > 80
+        for: 15m
+        labels:
+          severity: warning
+          team: marketing
+          alert_type: user_experience
+        annotations:
+          summary: "⚠️ High bounce rate detected: {{ $value }}%"
+          description: "{{ $labels.instance }} bounce rate is {{ $value }}% (threshold: 80%)"
+          runbook_url: "https://runbook.company.com/high-bounce-rate"
+
+  # ===== TECHNICAL PERFORMANCE ALERTS =====
+  - name: performance_alerts
+    rules:
+      - alert: HighServerErrorRate
+        expr: (rate(http_requests_total{status=~"5.."}[5m]) / rate(http_requests_total[5m])) * 100 > 5
+        for: 5m
+        labels:
+          severity: critical
+          team: devops
+          alert_type: technical
+        annotations:
+          summary: "🚨 High server error rate: {{ $value }}%"
+          description: "{{ $labels.instance }} server error rate is {{ $value }}% (threshold: 5%)"
+          runbook_url: "https://runbook.company.com/server-errors"
+
+      - alert: HighMemoryUsage
+        expr: (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100 < 10
+        for: 5m
+        labels:
+          severity: warning
+          team: devops
+          alert_type: resources
+        annotations:
+          summary: "⚠️ High memory usage: {{ $value }}%"
+          description: "Memory usage is above 90% on {{ $labels.instance }}"
+          runbook_url: "https://runbook.company.com/memory-usage"
+
+      - alert: DiskSpaceLow
+        expr: (node_filesystem_free_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) * 100 < 10
+        for: 5m
+        labels:
+          severity: warning
+          team: devops
+          alert_type: resources
+        annotations:
+          summary: "⚠️ Low disk space: {{ $value }}%"
+          description: "Disk space is below 10% on {{ $labels.instance }}"
+          runbook_url: "https://runbook.company.com/disk-space"
+
+  # ===== SECURITY ALERTS =====
+  - name: security_alerts
+    rules:
+      - alert: UnusualTrafficSpike
+        expr: rate(http_requests_total[5m]) > 1000
+        for: 10m
+        labels:
+          severity: warning
+          team: security
+          alert_type: security
+        annotations:
+          summary: "⚠️ Unusual traffic spike detected"
+          description: "{{ $labels.instance }} receiving {{ $value }} requests/second"
+          runbook_url: "https://runbook.company.com/traffic-spike"
+
+      - alert: HighFailedLoginAttempts
+        expr: rate(failed_login_attempts_total[5m]) > 50
+        for: 5m
+        labels:
+          severity: warning
+          team: security
+          alert_type: security
+        annotations:
+          summary: "⚠️ High failed login attempts"
+          description: "{{ $labels.instance }} has {{ $value }} failed login attempts/minute"
+          runbook_url: "https://runbook.company.com/failed-logins"
+
+  # ===== DEPENDENCY ALERTS =====
+  - name: dependency_alerts
+    rules:
+      - alert: ExternalAPIDown
+        expr: probe_success{job="external-apis"} == 0
+        for: 5m
+        labels:
+          severity: critical
+          team: devops
+          alert_type: dependency
+        annotations:
+          summary: "🚨 External API {{ $labels.instance }} is down"
+          description: "External dependency {{ $labels.instance }} is not responding"
+          runbook_url: "https://runbook.company.com/external-api-down"
+
+      - alert: DatabaseConnectionFailed
+        expr: pg_up == 0
+        for: 2m
+        labels:
+          severity: critical
+          team: devops
+          alert_type: database
+        annotations:
+          summary: "🚨 Database connection failed"
+          description: "Cannot connect to PostgreSQL database"
+          runbook_url: "https://runbook.company.com/database-down"
+
+  # ===== BUSINESS INTELLIGENCE ALERTS =====
+  - name: business_intelligence_alerts
+    rules:
+      - alert: RevenueTargetMissed
+        expr: sum(revenue_total) < 10000
+        for: 1d
+        labels:
+          severity: warning
+          team: business
+          alert_type: revenue
+        annotations:
+          summary: "⚠️ Daily revenue target missed"
+          description: "Total revenue today: €{{ $value }} (target: €10,000)"
+          runbook_url: "https://runbook.company.com/revenue-target"
+
+      - alert: UnusualConversionPattern
+        expr: abs(rate(conversions_total[1h]) - rate(conversions_total[1h] offset 24h)) > 0.5
+        for: 30m
+        labels:
+          severity: warning
+          team: marketing
+          alert_type: conversion_pattern
+        annotations:
+          summary: "⚠️ Unusual conversion pattern detected"
+          description: "Conversion rate significantly different from same time yesterday"
+          runbook_url: "https://runbook.company.com/conversion-pattern"

@@ -1,0 +1,163 @@
+# Prometheus Configuration for Marketing Funnel Master
+# Multi-Site Monitoring & Alerting System
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    monitor: 'marketing-funnel-master'
+    environment: 'production'
+
+# Alertmanager Configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093
+
+# Alert Rules
+rule_files:
+  - "alert_rules.yml"
+
+# Scrape Configurations
+scrape_configs:
+  # ===== CORE SERVICES =====
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+    metrics_path: /metrics
+    scrape_interval: 15s
+
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+    scrape_interval: 15s
+
+  # ===== WEBSITE MONITORING =====
+  - job_name: 'qmoney-production'
+    static_configs:
+      - targets: ['qmoney-funnel.vercel.app']
+    metrics_path: /api/metrics
+    scheme: https
+    scrape_interval: 30s
+    scrape_timeout: 10s
+    params:
+      module: [http_2xx]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115
+
+  - job_name: 'remotecash-production'
+    static_configs:
+      - targets: ['remotecash-funnel.vercel.app']
+    metrics_path: /api/metrics
+    scheme: https
+    scrape_interval: 30s
+    scrape_timeout: 10s
+    params:
+      module: [http_2xx]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115
+
+  - job_name: 'cryptoflow-production'
+    static_configs:
+      - targets: ['cryptoflow-funnel.vercel.app']
+    metrics_path: /api/metrics
+    scheme: https
+    scrape_interval: 30s
+    scrape_timeout: 10s
+    params:
+      module: [http_2xx]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115
+
+  - job_name: 'affiliatepro-production'
+    static_configs:
+      - targets: ['affiliatepro-funnel.vercel.app']
+    metrics_path: /api/metrics
+    scheme: https
+    scrape_interval: 30s
+    scrape_timeout: 10s
+    params:
+      module: [http_2xx]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115
+
+  # ===== BLACKBOX EXPORTER (UPTIME MONITORING) =====
+  - job_name: 'blackbox-http'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+        - https://qmoney-funnel.vercel.app
+        - https://remotecash-funnel.vercel.app
+        - https://cryptoflow-funnel.vercel.app
+        - https://affiliatepro-funnel.vercel.app
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115
+
+  # ===== PERFORMANCE MONITORING =====
+  - job_name: 'lighthouse-performance'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['lighthouse-exporter:9394']
+    scrape_interval: 300s  # 5 minutes
+    params:
+      urls: 
+        - https://qmoney-funnel.vercel.app
+        - https://remotecash-funnel.vercel.app
+        - https://cryptoflow-funnel.vercel.app
+        - https://affiliatepro-funnel.vercel.app
+
+  # ===== CUSTOM BUSINESS METRICS =====
+  - job_name: 'conversion-metrics'
+    metrics_path: /api/metrics/business
+    scheme: https
+    static_configs:
+      - targets: 
+        - qmoney-funnel.vercel.app
+        - remotecash-funnel.vercel.app
+        - cryptoflow-funnel.vercel.app
+        - affiliatepro-funnel.vercel.app
+    scrape_interval: 60s
+    basic_auth:
+      username: metrics
+      password_file: /etc/prometheus/metrics_password
+
+  # ===== EXTERNAL DEPENDENCIES =====
+  - job_name: 'supabase-monitoring'
+    static_configs:
+      - targets: ['supabase-monitoring:8080']
+    metrics_path: /metrics
+    scrape_interval: 30s
+
+  - job_name: 'vercel-edge-monitoring'
+    static_configs:
+      - targets: ['vercel-edge-exporter:9200']
+    metrics_path: /metrics
+    scrape_interval: 60s

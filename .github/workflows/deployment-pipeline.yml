@@ -1,0 +1,365 @@
+name: 🚀 Deployment Pipeline - Multi-Site Automation
+
+on:
+  push:
+    branches: [ main, staging, develop ]
+  pull_request:
+    branches: [ main, staging ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment Environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+      site:
+        description: 'Specific Site (optional)'
+        required: false
+        type: string
+
+env:
+  NODE_VERSION: '18'
+  PYTHON_VERSION: '3.11'
+  PNPM_VERSION: '8'
+
+jobs:
+  # ===== VALIDATION & QUALITY GATES =====
+  validate:
+    name: 🔍 Code Quality & Security
+    runs-on: ubuntu-latest
+    outputs:
+      has-changes: ${{ steps.changes.outputs.has-changes }}
+      frontend-changes: ${{ steps.changes.outputs.frontend }}
+      backend-changes: ${{ steps.changes.outputs.backend }}
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🔍 Detect Changes
+        id: changes
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            frontend:
+              - 'client/**'
+              - 'shared/**'
+              - 'package.json'
+              - 'package-lock.json'
+              - 'vite.config.ts'
+              - 'tailwind.config.ts'
+            backend:
+              - 'backend-unified/**'
+              - 'server/**'
+              - 'requirements.txt'
+            config:
+              - '.github/workflows/**'
+              - 'docker-compose.yml'
+              - 'Dockerfile'
+
+      - name: 🔧 Setup Node.js
+        if: steps.changes.outputs.frontend == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 🔧 Setup Python
+        if: steps.changes.outputs.backend == 'true'
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: 📦 Install Frontend Dependencies
+        if: steps.changes.outputs.frontend == 'true'
+        run: npm ci --prefer-offline
+
+      - name: 📦 Install Backend Dependencies
+        if: steps.changes.outputs.backend == 'true'
+        run: |
+          cd backend-unified
+          pip install -r requirements.txt
+
+      - name: 🔍 Frontend Lint & Type Check
+        if: steps.changes.outputs.frontend == 'true'
+        run: |
+          npm run lint
+          npm run type-check
+
+      - name: 🔍 Backend Lint & Type Check
+        if: steps.changes.outputs.backend == 'true'
+        run: |
+          cd backend-unified
+          black --check .
+          flake8 .
+          mypy .
+
+      - name: 🔐 Security Audit
+        run: |
+          npm audit --audit-level=moderate
+          if [ -f backend-unified/requirements.txt ]; then
+            pip install safety
+            safety check -r backend-unified/requirements.txt
+          fi
+
+      - name: 🧪 Frontend Tests
+        if: steps.changes.outputs.frontend == 'true'
+        run: npm run test:coverage
+
+      - name: 🧪 Backend Tests
+        if: steps.changes.outputs.backend == 'true'
+        run: |
+          cd backend-unified
+          pytest --cov=. --cov-report=xml
+
+      - name: 📊 Upload Coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.xml,./backend-unified/coverage.xml
+
+  # ===== BUILD & PACKAGE =====
+  build:
+    name: 🏗️ Build & Package
+    runs-on: ubuntu-latest
+    needs: validate
+    if: needs.validate.outputs.has-changes == 'true'
+    strategy:
+      matrix:
+        product: [qmoney, remotecash, cryptoflow, affiliatepro]
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: npm ci --prefer-offline
+
+      - name: 🏗️ Build Product
+        run: npm run build:${{ matrix.product }}
+        env:
+          PRODUCT_ID: ${{ matrix.product }}
+          NODE_ENV: production
+
+      - name: 🔍 Build Validation
+        run: |
+          if [ ! -d "dist" ]; then
+            echo "Build failed - no dist directory"
+            exit 1
+          fi
+          
+          # Check critical files exist
+          if [ ! -f "dist/index.html" ]; then
+            echo "Build failed - no index.html"
+            exit 1
+          fi
+
+      - name: 📦 Package Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.product }}
+          path: dist/
+          retention-days: 30
+
+  # ===== STAGING DEPLOYMENT =====
+  deploy-staging:
+    name: 🚀 Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [validate, build]
+    if: github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/develop'
+    environment: staging
+    strategy:
+      matrix:
+        product: [qmoney, remotecash, cryptoflow, affiliatepro]
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 📦 Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-${{ matrix.product }}
+          path: dist/
+
+      - name: 🚀 Deploy to Vercel Staging
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-args: '--prod'
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_STAGING }}
+          working-directory: ./
+          scope: ${{ secrets.VERCEL_ORG_ID }}
+
+      - name: 🔍 Health Check
+        run: |
+          # Wait for deployment to be ready
+          sleep 30
+          
+          # Basic health check
+          STAGING_URL="https://${{ matrix.product }}-staging.vercel.app"
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" $STAGING_URL)
+          
+          if [ $STATUS -ne 200 ]; then
+            echo "Health check failed - Status: $STATUS"
+            exit 1
+          fi
+          
+          echo "✅ Health check passed for ${{ matrix.product }}"
+
+  # ===== PRODUCTION DEPLOYMENT =====
+  deploy-production:
+    name: 🏭 Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [validate, build]
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    strategy:
+      matrix:
+        product: [qmoney, remotecash, cryptoflow, affiliatepro]
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 📦 Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-${{ matrix.product }}
+          path: dist/
+
+      - name: 🚀 Deploy to Vercel Production
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-args: '--prod'
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_PRODUCTION }}
+          working-directory: ./
+          scope: ${{ secrets.VERCEL_ORG_ID }}
+
+      - name: 🔍 Production Health Check
+        run: |
+          # Wait for deployment to be ready
+          sleep 30
+          
+          # Comprehensive health check
+          PRODUCTION_URL="https://${{ matrix.product }}.com"
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" $PRODUCTION_URL)
+          
+          if [ $STATUS -ne 200 ]; then
+            echo "🚨 Production health check failed - Status: $STATUS"
+            # Trigger rollback
+            echo "ROLLBACK_REQUIRED=true" >> $GITHUB_ENV
+            exit 1
+          fi
+          
+          # Performance check
+          LOAD_TIME=$(curl -s -o /dev/null -w "%{time_total}" $PRODUCTION_URL)
+          if (( $(echo "$LOAD_TIME > 3.0" | bc -l) )); then
+            echo "⚠️ Performance warning - Load time: ${LOAD_TIME}s"
+          fi
+          
+          echo "✅ Production deployment successful for ${{ matrix.product }}"
+
+      - name: 📊 Update Deployment Status
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { context } = github;
+            const status = process.env.ROLLBACK_REQUIRED === 'true' ? 'failure' : 'success';
+            
+            await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: context.payload.deployment?.id,
+              state: status,
+              description: `Deployment ${status} for ${{ matrix.product }}`,
+              environment: 'production'
+            });
+
+  # ===== MONITORING & ALERTS =====
+  post-deployment:
+    name: 📊 Post-Deployment Monitoring
+    runs-on: ubuntu-latest
+    needs: [deploy-production]
+    if: always()
+    steps:
+      - name: 📊 Trigger Monitoring
+        run: |
+          # Send deployment notification to monitoring system
+          curl -X POST "${{ secrets.MONITORING_WEBHOOK }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "event": "deployment_completed",
+              "environment": "production",
+              "timestamp": "'$(date -u +%Y-%m-%dT%H:%M:%SZ)'",
+              "commit": "'${{ github.sha }}'",
+              "products": ["qmoney", "remotecash", "cryptoflow", "affiliatepro"]
+            }'
+
+      - name: 🔔 Success Notification
+        if: needs.deploy-production.result == 'success'
+        uses: 8398a7/action-slack@v3
+        with:
+          status: success
+          text: |
+            🚀 **Deployment Pipeline Completed Successfully**
+            
+            **Environment:** Production
+            **Commit:** ${{ github.sha }}
+            **Products:** qmoney, remotecash, cryptoflow, affiliatepro
+            **Time:** $(date -u +%Y-%m-%dT%H:%M:%SZ)
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+      - name: 🚨 Failure Notification
+        if: needs.deploy-production.result == 'failure'
+        uses: 8398a7/action-slack@v3
+        with:
+          status: failure
+          text: |
+            🚨 **Deployment Pipeline Failed**
+            
+            **Environment:** Production
+            **Commit:** ${{ github.sha }}
+            **Action Required:** Manual intervention needed
+            **Logs:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+  # ===== ROLLBACK CAPABILITY =====
+  rollback:
+    name: 🔄 Emergency Rollback
+    runs-on: ubuntu-latest
+    if: failure()
+    environment: production
+    steps:
+      - name: 🔄 Trigger Rollback
+        run: |
+          echo "🚨 Initiating emergency rollback procedure..."
+          
+          # This would typically involve:
+          # 1. Reverting to previous Vercel deployment
+          # 2. Updating DNS if needed
+          # 3. Notifying monitoring systems
+          
+          # For now, we'll create a rollback issue
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/${{ github.repository }}/issues" \
+            -d '{
+              "title": "🚨 Emergency Rollback Required",
+              "body": "Deployment failed for commit ${{ github.sha }}. Manual rollback required.",
+              "labels": ["critical", "rollback", "production"]
+            }'
