@@ -122,92 +122,7 @@ CONVERSION OPTIMIZATION:
 
 ---
 
-## 🔧 BETRIEBSSYSTEM-PROTOKOLLE (NEU)
-
-### **PROTOKOLL FÜR HIERARCHISCHE AUFGABENZERLEGUNG (HTD):**
-```
-STRATEGIST-MANAGER-EXECUTOR HIERARCHIE:
-├── STRATEGIST: Analysiert Gesamtkontext und definiert Ziele
-├── MANAGER: Zerlegt Ziele in spezifische Aufgaben
-└── EXECUTOR: Führt einzelne Aufgaben präzise aus
-
-ESKALATIONS-REGEL:
-- Executor → Manager: Bei Implementierungsblockaden
-- Manager → Strategist: Bei Zielverfehlung oder Ressourcenknappheit
-- Strategist → Human: Bei fundamentalen Entscheidungen
-```
-
-### **PROTOKOLL FÜR KONTINUIERLICHES KOMPETENZTRAINING (KKT):**
-```
-WISSENS-UPDATE-PIPELINE:
-├── Knowledge Scanner: Erkennt veraltete Informationen
-├── Learning Agent: Akquiriert neues Wissen
-├── Integration Agent: Validiert und integriert Updates
-└── Distribution Agent: Verteilt Updates an alle Agenten
-
-UPDATE-FREQUENZ:
-- Critical: Real-time (Security, API-Changes)
-- High: Täglich (Market Trends, Competitor Moves)
-- Medium: Wöchentlich (Technology Updates)
-- Low: Monatlich (Strategic Adjustments)
-```
-
-### **PROTOKOLL FÜR INTELLIGENTE DATENORGANISATION (IDO):**
-```
-DATEI-NAMENSKONVENTION:
-[DeptID]-[ContentType]-[Descriptor]-[Version].ext
-
-DEPT-IDs:
-- STR: Strategy Layer
-- RES: Research Layer  
-- CNT: Content Layer
-- TEC: Technical Layer
-- MON: Monetization Layer
-
-CONTENT-TYPES:
-- spec: Spezifikationen
-- data: Datenfiles
-- code: Implementierungen
-- docs: Dokumentationen
-- test: Test-Suites
-
-BEISPIELE:
-- STR-spec-BusinessManager-v2.md
-- RES-data-MarketAnalysis-Q1-v1.json
-- TEC-code-WebsiteGenerator-v4.py
-```
-
----
-
 ## 📋 OPERATIVE PROTOKOLLE & QUALITÄTSSTANDARDS
-
-### **SPEZIFIKATIONS-MANDAT:**
-**REGEL**: Für jeden abstrakten Agenten muss vor der Implementierung eine `.spec.md`-Datei erstellt werden.
-
-**SPEZIFIKATIONS-TEMPLATE:**
-```markdown
-# [Agent Name] - Spezifikation
-
-## Zweck & Verantwortlichkeiten
-- Primäre Funktion
-- Sekundäre Funktionen
-- Abgrenzung zu anderen Agenten
-
-## Input/Output Interface
-- Erwartete Eingaben
-- Garantierte Ausgaben
-- Fehlerbehandlung
-
-## Performance-Kriterien
-- Reaktionszeit
-- Qualitätsstandards
-- Skalierungsanforderungen
-
-## Abhängigkeiten
-- Benötigte Agenten
-- Externe Services
-- Datenquellen
-```
 
 ### **PLANNING-FIRST PRINZIP:**
 1. **Konzeptphase**: Detaillierte Planung vor Code-Entwicklung
@@ -231,35 +146,6 @@ Input → Agent 1 → Validation → Agent 2 → Quality Check → Agent 3 → O
 - **A/B-Testing**: Automatisierte Prompt-Optimierung
 - **Learning-Loops**: Agents lernen aus Erfolgen und Fehlern
 - **Feedback-Integration**: Markt-Feedback wird automatisch eingearbeitet
-
----
-
-## 👤 HUMAN-IN-THE-LOOP (HITL) PROTOKOLL
-
-### **OBLIGATORISCHE HUMAN-FREIGABE:**
-1. **Strategische Pivots**: Änderungen der Gesamtstrategie
-2. **Finanzielle Entscheidungen**: Investments >€1.000
-3. **Legal/Compliance**: Rechtliche Risikobewertungen
-4. **Brand-kritische Entscheidungen**: Corporate Identity, Positionierung
-5. **Neue Agent-Erstellung**: Spezifikation neuer Agenten-Typen
-
-### **AUTOMATISIERTE ESKALATION:**
-```
-ESKALATIONS-TRIGGER:
-├── Confidence Level <70%: Automatische Human-Benachrichtigung
-├── Conflicting Agent Recommendations: Moderator-Eingriff
-├── Budget Threshold Exceeded: Immediate Human Review
-└── Compliance Red Flag: Stopp + Human Review
-```
-
-### **APPROVAL-WORKFLOW:**
-```
-1. Agent identifiziert HITL-Punkt
-2. Strukturiertes Briefing an Human
-3. Timeout-Handling (24h Default)
-4. Entscheidung wird systemweit propagiert
-5. Learning-Update für zukünftige Entscheidungen
-```
 
 ---
 
@@ -371,7 +257,7 @@ Market Data → AI Analysis → Strategic Options → ROI Calculation → Decisi
 ### **MODERN DEVELOPMENT WORKFLOWS:**
 ```bash
 # FastAPI + Next.js Development
-claude stack:setup [domain_count]
+claude stack:setup [modern|wordpress] [domain_count]
 claude deploy:site [domain] [niche] [persona_target]
 claude optimize:ux [domain] [device_type] [conversion_goal]
 
@@ -455,7 +341,7 @@ docker-compose up -d     # Multi-Site Container Setup
 ---
 
 *Letzte Aktualisierung: 2025-07-03*  
-*Version: 4.0 - Betriebssystem-Protokolle + Intelligente Datenorganisation*
+*Version: 3.0 - Modern Tech Stack Revolution (FastAPI + Next.js + UX Intelligence)*
 
 ---
 
