@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useSubscription } from '@apollo/client';
 import { GET_PROCESSES, PROCESS_UPDATED } from '../../graphql/queries';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,18 +6,15 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
 import { 
   Play, 
   Square, 
   RefreshCw, 
-  TrendingUp, 
   Cpu, 
   MemoryStick, 
   Activity,
   Clock,
   AlertCircle,
-  CheckCircle,
   XCircle,
   MinusCircle,
   ChevronDown,
@@ -26,7 +23,7 @@ import {
 } from 'lucide-react';
 import { Process } from '@intelligence-dashboard/shared';
 import { wsClient } from '@/services/websocket';
-import { formatNumber, formatDate, getStatusColor, getStatusBadgeClass, getLogLevelClass } from '@/lib/utils';
+import { formatNumber, formatDate, getStatusBadgeClass, getLogLevelClass } from '@/lib/utils';
 
 
 interface ProcessViewerProps {
@@ -63,7 +60,8 @@ export function ProcessViewer({ className }: ProcessViewerProps) {
     wsClient.connect();
     wsClient.subscribe('processes');
 
-    const handleProcessUpdate = (process: Process) => {
+    const handleProcessUpdate = (data: unknown) => {
+      const process = data as Process;
       setProcesses(prev => 
         prev.map(p => p.id === process.id ? process : p)
       );

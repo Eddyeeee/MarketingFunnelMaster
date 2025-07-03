@@ -13,12 +13,27 @@ export default [
       parserOptions: {
         ecmaVersion: 2022,
         sourceType: 'module',
-        ecmaFeatures: {
-          jsx: true,
-        },
+        jsx: true,
       },
       globals: {
+        window: 'readonly',
+        document: 'readonly',
+        navigator: 'readonly',
+        localStorage: 'readonly',
+        fetch: 'readonly',
+        WebSocket: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
+        URL: 'readonly',
         console: 'readonly',
+        HTMLDivElement: 'readonly',
+        HTMLButtonElement: 'readonly',
+        HTMLInputElement: 'readonly',
+        HTMLParagraphElement: 'readonly',
+        HTMLHeadingElement: 'readonly',
+        NodeJS: 'readonly',
         process: 'readonly',
         Buffer: 'readonly',
         __dirname: 'readonly',
@@ -27,10 +42,6 @@ export default [
         module: 'readonly',
         require: 'readonly',
         global: 'readonly',
-        window: 'readonly',
-        document: 'readonly',
-        navigator: 'readonly',
-        location: 'readonly',
       },
     },
     plugins: {
@@ -52,6 +63,13 @@ export default [
       react: {
         version: 'detect',
       },
+    },
+  },
+  {
+    files: ['**/server/**/*.{ts,tsx}', '**/shared/**/*.{ts,tsx}'],
+    rules: {
+      'react-hooks/rules-of-hooks': 'off',
+      'react-hooks/exhaustive-deps': 'off',
     },
   },
   {

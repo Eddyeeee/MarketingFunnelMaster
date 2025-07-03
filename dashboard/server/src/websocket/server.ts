@@ -17,7 +17,7 @@ export class IntelligenceWebSocketServer extends EventEmitter {
   private wss: WebSocketServer;
   private server: ReturnType<typeof createServer>;
   private clients: Map<string, Client> = new Map();
-  private pingInterval: NodeJS.Timeout;
+  private pingInterval!: NodeJS.Timeout;
 
   constructor(port: number = 4001) {
     super();
@@ -34,7 +34,7 @@ export class IntelligenceWebSocketServer extends EventEmitter {
   }
 
   private setupWebSocketHandlers() {
-    this.wss.on('connection', (ws: WebSocket, req) => {
+    this.wss.on('connection', (ws: WebSocket, _req) => {
       const clientId = uuidv4();
       const client: Client = {
         id: clientId,

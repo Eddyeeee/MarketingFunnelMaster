@@ -1,22 +1,19 @@
-import React from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_RESEARCH_DATASET } from '../../graphql/queries';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
 import { 
   TrendingUp,
   Target,
   Zap,
   DollarSign,
-  Users,
-  Brain,
   AlertTriangle,
   CheckCircle,
   Shield,
   Star,
   BarChart3
 } from 'lucide-react';
+import type { NicheAnalysis } from '@intelligence-dashboard/shared';
 
 interface ResearchOverviewProps {
   className?: string;
@@ -64,13 +61,13 @@ export function ResearchOverview({ className }: ResearchOverviewProps) {
   const niches = data?.researchDataset?.niches || [];
 
   // Calculate insights
-  const topPerformer = niches.reduce((top: any, niche: any) => 
+  const topPerformer = niches.reduce((top: NicheAnalysis | null, niche: NicheAnalysis) => 
     !top || niche.priority_score > top.priority_score ? niche : top, null
   );
 
-  const highROINiches = niches.filter((n: any) => n.roi_projection.realistic >= 150000);
-  const lowRiskNiches = niches.filter((n: any) => n.risk_assessment_score <= 35);
-  const automationReady = niches.filter((n: any) => n.automation_ready_score >= 9);
+  const highROINiches = niches.filter((n: NicheAnalysis) => n.roi_projection.realistic >= 150000);
+  const lowRiskNiches = niches.filter((n: NicheAnalysis) => n.risk_assessment_score <= 35);
+  const automationReady = niches.filter((n: NicheAnalysis) => n.automation_ready_score >= 9);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('de-DE', {
@@ -278,9 +275,9 @@ export function ResearchOverview({ className }: ResearchOverviewProps) {
         <CardContent>
           <div className="space-y-4">
             {[...niches]
-              .sort((a: any, b: any) => b.priority_score - a.priority_score)
+              .sort((a: NicheAnalysis, b: NicheAnalysis) => b.priority_score - a.priority_score)
               .slice(0, 5)
-              .map((niche: any, index: number) => (
+              .map((niche: NicheAnalysis, index: number) => (
                 <div key={niche.niche_id} className="flex items-center justify-between p-3 border rounded-lg">
                   <div className="flex items-center space-x-3">
                     <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground text-sm font-bold">

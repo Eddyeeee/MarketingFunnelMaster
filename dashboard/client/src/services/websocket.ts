@@ -7,7 +7,7 @@ export class IntelligenceWebSocketClient {
   private maxReconnectAttempts = 5
   private reconnectDelay = 1000
   private subscriptions = new Set<string>()
-  private messageHandlers = new Map<string, Set<(data: any) => void>>()
+  private messageHandlers = new Map<string, Set<(data: unknown) => void>>()
 
   constructor(url: string = 'ws://localhost:4001') {
     this.url = url
@@ -92,14 +92,14 @@ export class IntelligenceWebSocketClient {
     }
   }
 
-  on(messageType: string, handler: (data: any) => void): void {
+  on(messageType: string, handler: (data: unknown) => void): void {
     if (!this.messageHandlers.has(messageType)) {
       this.messageHandlers.set(messageType, new Set())
     }
     this.messageHandlers.get(messageType)!.add(handler)
   }
 
-  off(messageType: string, handler: (data: any) => void): void {
+  off(messageType: string, handler: (data: unknown) => void): void {
     const handlers = this.messageHandlers.get(messageType)
     if (handlers) {
       handlers.delete(handler)
@@ -121,7 +121,7 @@ export class IntelligenceWebSocketClient {
     this.sendMessage({ type: 'get_revenue', timeframe })
   }
 
-  private sendMessage(message: any): void {
+  private sendMessage(message: Record<string, unknown>): void {
     if (this.ws?.readyState === WebSocket.OPEN) {
       this.ws.send(JSON.stringify(message))
     }

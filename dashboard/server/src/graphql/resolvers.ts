@@ -15,7 +15,7 @@ import {
   NicheAnalysis,
   ResearchPersona
 } from '@intelligence-dashboard/shared';
-import { cacheGet, cacheSet, cacheKeys } from '../redis/client';
+import { cacheGet, cacheSet } from '../redis/client';
 import { logger } from '../utils/logger';
 import { wsServer } from '../websocket/server';
 import { dataImportService } from '../services/dataImportService';
@@ -70,8 +70,8 @@ export const resolvers = {
           {
             id: '1',
             name: 'Content Analysis Pipeline',
-            status: 'RUNNING',
-            type: 'ANALYSIS',
+            status: 'running',
+            type: 'analysis',
             startTime: new Date(Date.now() - 3600000),
             lastUpdate: new Date(),
             progress: 75,
@@ -86,7 +86,7 @@ export const resolvers = {
               {
                 id: '1',
                 timestamp: new Date(),
-                level: 'INFO',
+                level: 'info',
                 message: 'Processing batch 15 of 20',
                 metadata: { batchId: 15, totalBatches: 20 },
               },
@@ -95,8 +95,8 @@ export const resolvers = {
           {
             id: '2',
             name: 'Research Data Crawler',
-            status: 'RUNNING',
-            type: 'RESEARCH',
+            status: 'running',
+            type: 'research',
             startTime: new Date(Date.now() - 7200000),
             lastUpdate: new Date(),
             progress: 92,
@@ -111,7 +111,7 @@ export const resolvers = {
               {
                 id: '2',
                 timestamp: new Date(),
-                level: 'INFO',
+                level: 'info',
                 message: 'Crawled 1,250 sources successfully',
                 metadata: { sources: 1250, errors: 15 },
               },
@@ -127,7 +127,7 @@ export const resolvers = {
       }
     },
 
-    process: async (_, { id }: { id: string }): Promise<Process | null> => {
+    process: async (_: any, { id }: { id: string }): Promise<Process | null> => {
       try {
         const processes = await cacheGet<Process[]>('processes:all');
         return processes?.find(p => p.id === id) || null;
@@ -137,7 +137,7 @@ export const resolvers = {
       }
     },
 
-    searchResearch: async (_, { query, filters }: { query: string; filters?: any }): Promise<ResearchData[]> => {
+    searchResearch: async (_: any, { query, filters }: { query: string; filters?: Record<string, any> }): Promise<ResearchData[]> => {
       try {
         const cacheKey = `research:search:${Buffer.from(query).toString('base64')}`;
         const cached = await cacheGet<ResearchData[]>(cacheKey);
@@ -155,10 +155,10 @@ export const resolvers = {
                 url: 'https://example.com/ai-trends',
                 relevanceScore: 0.95,
                 entities: [
-                  { name: 'OpenAI', type: 'ORGANIZATION', confidence: 0.9 },
-                  { name: 'GPT-4', type: 'PRODUCT', confidence: 0.85 },
+                  { name: 'OpenAI', type: 'organization', confidence: 0.9 },
+                  { name: 'GPT-4', type: 'product', confidence: 0.85 },
                 ],
-                sentiment: { score: 0.7, label: 'POSITIVE' },
+                sentiment: { score: 0.7, label: 'positive' },
                 children: [
                   {
                     id: uuidv4(),
@@ -166,7 +166,7 @@ export const resolvers = {
                     content: 'Enterprise adoption rates are accelerating...',
                     relevanceScore: 0.88,
                     entities: [],
-                    sentiment: { score: 0.6, label: 'POSITIVE' },
+                    sentiment: { score: 0.6, label: 'positive' },
                   },
                 ],
               },
@@ -189,7 +189,7 @@ export const resolvers = {
       }
     },
 
-    aiMetrics: async (_, { platform, timeframe }: { platform?: string; timeframe?: string }): Promise<AIMetrics[]> => {
+    aiMetrics: async (_: any, { platform, timeframe }: { platform?: string; timeframe?: string }): Promise<AIMetrics[]> => {
       try {
         const cacheKey = `metrics:${platform || 'all'}:${timeframe || 'latest'}`;
         const cached = await cacheGet<AIMetrics[]>(cacheKey);
@@ -199,7 +199,7 @@ export const resolvers = {
           {
             id: uuidv4(),
             timestamp: new Date(),
-            platform: 'PERPLEXITY',
+            platform: 'perplexity',
             metrics: {
               searchRanking: 85,
               visibility: 92,
@@ -223,7 +223,7 @@ export const resolvers = {
       }
     },
 
-    revenueData: async (_, { timeframe }: { timeframe?: string }): Promise<RevenueData | null> => {
+    revenueData: async (_: any, { timeframe }: { timeframe?: string }): Promise<RevenueData | null> => {
       try {
         const cacheKey = `revenue:${timeframe || 'latest'}`;
         const cached = await cacheGet<RevenueData>(cacheKey);
@@ -278,7 +278,7 @@ export const resolvers = {
       }
     },
 
-    channelPerformance: async (_, { channelId }: { channelId?: string }): Promise<ChannelPerformance[]> => {
+    channelPerformance: async (_: any, { channelId }: { channelId?: string }): Promise<ChannelPerformance[]> => {
       try {
         const cacheKey = `channels:${channelId || 'all'}`;
         const cached = await cacheGet<ChannelPerformance[]>(cacheKey);
@@ -288,7 +288,7 @@ export const resolvers = {
           {
             channelId: '1',
             channelName: 'Main YouTube Channel',
-            platform: 'YOUTUBE',
+            platform: 'youtube',
             metrics: {
               followers: 25000,
               engagement: 8.5,
@@ -302,7 +302,7 @@ export const resolvers = {
               {
                 id: '1',
                 title: 'AI Marketing Secrets',
-                type: 'VIDEO',
+                type: 'video',
                 publishedAt: new Date(Date.now() - 86400000),
                 performance: {
                   views: 5000,
@@ -336,7 +336,7 @@ export const resolvers = {
           {
             workflowId: '1',
             workflowName: 'Content Distribution Pipeline',
-            status: 'HEALTHY',
+            status: 'healthy',
             uptime: 99.8,
             lastRun: new Date(Date.now() - 3600000),
             nextRun: new Date(Date.now() + 3600000),
@@ -372,7 +372,7 @@ export const resolvers = {
       }
     },
 
-    scalingRecommendations: async (_, { priority }: { priority?: string }): Promise<ScalingRecommendation[]> => {
+    scalingRecommendations: async (_: any, { priority }: { priority?: string }): Promise<ScalingRecommendation[]> => {
       try {
         const cacheKey = `scaling:recommendations:${priority || 'all'}`;
         const cached = await cacheGet<ScalingRecommendation[]>(cacheKey);
@@ -382,8 +382,8 @@ export const resolvers = {
           {
             id: uuidv4(),
             timestamp: new Date(),
-            type: 'OPPORTUNITY',
-            priority: 'HIGH',
+            type: 'opportunity',
+            priority: 'high',
             title: 'Expand to TikTok Platform',
             description: 'High engagement opportunity detected on TikTok for your content vertical',
             impact: {
@@ -396,7 +396,7 @@ export const resolvers = {
               {
                 id: uuidv4(),
                 action: 'Create TikTok content strategy',
-                effort: 'MEDIUM',
+                effort: 'medium',
                 cost: 5000,
                 expectedResult: 'Increase reach by 200%',
                 dependencies: ['content_team', 'video_editing'],
@@ -413,7 +413,7 @@ export const resolvers = {
       }
     },
 
-    predictiveIntelligence: async (_, { type }: { type?: string }): Promise<PredictiveIntelligence | null> => {
+    predictiveIntelligence: async (_: any, { type }: { type?: string }): Promise<PredictiveIntelligence | null> => {
       try {
         const cacheKey = `predictive:${type || 'all'}`;
         const cached = await cacheGet<PredictiveIntelligence>(cacheKey);
@@ -425,11 +425,11 @@ export const resolvers = {
           predictions: [
             {
               id: uuidv4(),
-              type: 'TREND',
+              type: 'trend',
               title: 'AI Automation Tools Surge',
               probability: 85,
               timeframe: '2-3 months',
-              impact: 'HIGH',
+              impact: 'high',
               recommendations: [
                 'Focus on AI automation content',
                 'Create automation-focused products',
@@ -453,7 +453,7 @@ export const resolvers = {
               title: 'AI Automation Course',
               description: 'Create comprehensive course on AI automation for businesses',
               potentialRevenue: 100000,
-              difficulty: 'MEDIUM',
+              difficulty: 'medium',
               timeToImplement: '2-3 months',
               requiredResources: ['content creation', 'video production', 'platform development'],
             },
@@ -475,9 +475,9 @@ export const resolvers = {
 
         const defaultConfig: DashboardConfig = {
           refreshInterval: 30000,
-          theme: 'DARK',
+          theme: 'dark',
           layout: {
-            type: 'GRID',
+            type: 'grid',
             columns: 12,
             gap: 16,
           },
@@ -517,7 +517,7 @@ export const resolvers = {
       }
     },
 
-    niches: async (_, { filters }: { filters?: any }): Promise<NicheAnalysis[]> => {
+    niches: async (_: any, { filters }: { filters?: Record<string, any> }): Promise<NicheAnalysis[]> => {
       try {
         if (filters) {
           return await dataImportService.getFilteredNiches(filters);
@@ -530,7 +530,7 @@ export const resolvers = {
       }
     },
 
-    niche: async (_, { nicheId }: { nicheId: string }): Promise<NicheAnalysis | null> => {
+    niche: async (_: any, { nicheId }: { nicheId: string }): Promise<NicheAnalysis | null> => {
       try {
         const dataset = await dataImportService.importResearchData();
         return dataset.niches.find(n => n.niche_id === nicheId) || null;
@@ -540,7 +540,7 @@ export const resolvers = {
       }
     },
 
-    persona: async (_, { nicheId }: { nicheId: string }): Promise<ResearchPersona | null> => {
+    persona: async (_: any, { nicheId }: { nicheId: string }): Promise<ResearchPersona | null> => {
       try {
         return await dataImportService.getPersonaForNiche(nicheId);
       } catch (error) {
@@ -549,7 +549,7 @@ export const resolvers = {
       }
     },
 
-    nicheMetrics: async (_, { nicheId }: { nicheId: string }): Promise<any> => {
+    nicheMetrics: async (_: any, { nicheId }: { nicheId: string }): Promise<Record<string, any> | null> => {
       try {
         return await dataImportService.getMetricsForNiche(nicheId);
       } catch (error) {
@@ -573,13 +573,13 @@ export const resolvers = {
   },
 
   Mutation: {
-    startProcess: async (_, { input }: { input: any }): Promise<Process> => {
+    startProcess: async (_: any, { input }: { input: { name: string; type: string } }): Promise<Process> => {
       try {
         const newProcess: Process = {
           id: uuidv4(),
           name: input.name,
           status: 'running',
-          type: input.type,
+          type: input.type as 'research' | 'content' | 'automation' | 'analysis',
           startTime: new Date(),
           lastUpdate: new Date(),
           progress: 0,
@@ -596,7 +596,7 @@ export const resolvers = {
               timestamp: new Date(),
               level: 'info',
               message: `Process ${input.name} started`,
-              metadata: input.config || {},
+              metadata: {},
             },
           ],
         };
@@ -615,7 +615,7 @@ export const resolvers = {
       }
     },
 
-    stopProcess: async (_, { id }: { id: string }): Promise<Process> => {
+    stopProcess: async (_: any, { id }: { id: string }): Promise<Process> => {
       try {
         const processes = await cacheGet<Process[]>('processes:all') || [];
         const processIndex = processes.findIndex(p => p.id === id);
@@ -624,7 +624,7 @@ export const resolvers = {
           throw new Error('Process not found');
         }
 
-        processes[processIndex].status = 'STOPPED';
+        processes[processIndex].status = 'stopped';
         processes[processIndex].lastUpdate = new Date();
         processes[processIndex].logs.push({
           id: uuidv4(),
@@ -645,7 +645,7 @@ export const resolvers = {
       }
     },
 
-    updateProcessStatus: async (_, { id, status }: { id: string; status: string }): Promise<Process> => {
+    updateProcessStatus: async (_: any, { id, status }: { id: string; status: string }): Promise<Process> => {
       try {
         const processes = await cacheGet<Process[]>('processes:all') || [];
         const processIndex = processes.findIndex(p => p.id === id);
@@ -654,7 +654,7 @@ export const resolvers = {
           throw new Error('Process not found');
         }
 
-        processes[processIndex].status = status;
+        processes[processIndex].status = status as 'running' | 'stopped' | 'error' | 'pending';
         processes[processIndex].lastUpdate = new Date();
         processes[processIndex].logs.push({
           id: uuidv4(),
@@ -675,7 +675,7 @@ export const resolvers = {
       }
     },
 
-    createResearchQuery: async (_, { input }: { input: any }): Promise<ResearchData> => {
+    createResearchQuery: async (_: any, { input }: { input: { query: string; source?: string } }): Promise<ResearchData> => {
       try {
         const researchData: ResearchData = {
           id: uuidv4(),
@@ -685,8 +685,8 @@ export const resolvers = {
           source: 'manual_query',
           metadata: {
             duration: 0,
-            sources: input.sources || [],
-            filters: input.filters || {},
+            sources: [input.source || 'manual'],
+            filters: {},
           },
         };
 
@@ -698,7 +698,7 @@ export const resolvers = {
               content: 'Comprehensive analysis of your query...',
               relevanceScore: 0.9,
               entities: [],
-              sentiment: { score: 0.5, label: 'NEUTRAL' },
+              sentiment: { score: 0.5, label: 'neutral' },
             },
           ];
           researchData.metadata.duration = Math.random() * 5000 + 1000;
@@ -713,7 +713,7 @@ export const resolvers = {
       }
     },
 
-    updateDashboardConfig: async (_, { input }: { input: any }): Promise<DashboardConfig> => {
+    updateDashboardConfig: async (_: any, { input }: { input: Partial<DashboardConfig> }): Promise<DashboardConfig> => {
       try {
         const currentConfig = await cacheGet<DashboardConfig>('dashboard:config');
         if (!currentConfig) {
@@ -730,7 +730,7 @@ export const resolvers = {
       }
     },
 
-    acknowledgeAlert: async (_, { id }: { id: string }): Promise<boolean> => {
+    acknowledgeAlert: async (_: any, { id }: { id: string }): Promise<boolean> => {
       try {
         logger.info(`Alert ${id} acknowledged`);
         return true;
@@ -740,7 +740,7 @@ export const resolvers = {
       }
     },
 
-    executeScalingAction: async (_, { recommendationId, actionId }: { recommendationId: string; actionId: string }): Promise<boolean> => {
+    executeScalingAction: async (_: any, { recommendationId, actionId }: { recommendationId: string; actionId: string }): Promise<boolean> => {
       try {
         logger.info(`Executing scaling action ${actionId} for recommendation ${recommendationId}`);
         return true;
@@ -750,7 +750,7 @@ export const resolvers = {
       }
     },
 
-    restartAutomation: async (_, { workflowId }: { workflowId: string }): Promise<AutomationHealth> => {
+    restartAutomation: async (_: any, { workflowId }: { workflowId: string }): Promise<AutomationHealth> => {
       try {
         const workflows = await cacheGet<AutomationHealth[]>('automation:health:all') || [];
         const workflow = workflows.find(w => w.workflowId === workflowId);
@@ -759,7 +759,7 @@ export const resolvers = {
           throw new Error('Workflow not found');
         }
 
-        workflow.status = 'HEALTHY';
+        workflow.status = 'healthy';
         workflow.lastRun = new Date();
         workflow.nextRun = new Date(Date.now() + 3600000);
         workflow.errors = [];

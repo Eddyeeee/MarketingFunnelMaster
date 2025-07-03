@@ -1,10 +1,11 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_RESEARCH_DATASET } from '../../graphql/queries';
+import type { NicheAnalysis } from '@intelligence-dashboard/shared';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { LineChart, Line, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+// import { Progress } from '@/components/ui/progress'; // Removed as not used
+import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { 
   TrendingUp, 
   Target,
@@ -13,8 +14,8 @@ import {
   Zap,
   Brain,
   DollarSign,
-  Activity,
-  Gauge
+  // Activity, // Removed as not used
+  // Gauge // Removed as not used
 } from 'lucide-react';
 
 interface ResearchMetricsDashboardProps {
@@ -27,15 +28,15 @@ export function ResearchMetricsDashboard({ className }: ResearchMetricsDashboard
   });
 
   const chartData = useMemo(() => {
-    if (!data?.researchDataset?.niches) return [];
+    if (!data?.researchDataset?.niches) return { priorityData: [], riskVsROI: [] };
     
     const niches = data.researchDataset.niches;
     
     // Create chart data for different visualizations
     const priorityData = niches
-      .sort((a: any, b: any) => b.priority_score - a.priority_score)
+      .sort((a: NicheAnalysis, b: NicheAnalysis) => b.priority_score - a.priority_score)
       .slice(0, 8)
-      .map((niche: any) => ({
+      .map((niche: NicheAnalysis) => ({
         name: niche.niche_name.length > 15 ? 
               niche.niche_name.substring(0, 15) + '...' : 
               niche.niche_name,
@@ -45,7 +46,7 @@ export function ResearchMetricsDashboard({ className }: ResearchMetricsDashboard
         risk: niche.risk_assessment_score,
       }));
 
-    const riskVsROI = niches.map((niche: any) => ({
+    const riskVsROI = niches.map((niche: NicheAnalysis) => ({
       name: niche.niche_name.length > 12 ? 
             niche.niche_name.substring(0, 12) + '...' : 
             niche.niche_name,
@@ -55,26 +56,7 @@ export function ResearchMetricsDashboard({ className }: ResearchMetricsDashboard
       automation: niche.automation_ready_score,
     }));
 
-    const automationDistribution = [
-      { name: 'High (9-10)', value: niches.filter((n: any) => n.automation_ready_score >= 9).length, color: '#10b981' },
-      { name: 'Medium (7-8)', value: niches.filter((n: any) => n.automation_ready_score >= 7 && n.automation_ready_score < 9).length, color: '#f59e0b' },
-      { name: 'Low (≤6)', value: niches.filter((n: any) => n.automation_ready_score < 7).length, color: '#ef4444' },
-    ];
-
-    const timelineData = [...niches]
-      .sort((a: any, b: any) => a.implementation_difficulty - b.implementation_difficulty)
-      .slice(0, 6)
-      .map((niche: any, index: any) => ({
-        phase: `Phase ${index + 1}`,
-        niche: niche.niche_name.length > 20 ? 
-               niche.niche_name.substring(0, 20) + '...' : 
-               niche.niche_name,
-        difficulty: niche.implementation_difficulty,
-        roi: niche.roi_projection.realistic / 1000,
-        timeline: (index + 1) * 30, // Days
-      }));
-
-    return { priorityData, riskVsROI, automationDistribution, timelineData };
+    return { priorityData, riskVsROI };
   }, [data]);
 
   if (loading) {
@@ -102,7 +84,6 @@ export function ResearchMetricsDashboard({ className }: ResearchMetricsDashboard
         </CardHeader>
         <CardContent>
           <div className="text-center py-8">
-            <Activity className="h-8 w-8 mx-auto mb-2 text-muted-foreground" />
             <p className="text-sm text-muted-foreground">No data available</p>
           </div>
         </CardContent>
@@ -232,82 +213,6 @@ export function ResearchMetricsDashboard({ className }: ResearchMetricsDashboard
             </ResponsiveContainer>
           </CardContent>
         </Card>
-
-        {/* Automation Distribution */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Gauge className="h-5 w-5 mr-2" />
-              Automation Readiness
-            </CardTitle>
-            <CardDescription>Distribution of automation scores</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={chartData.automationDistribution}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={({ name, value }) => `${name}: ${value}`}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {chartData.automationDistribution.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
-        {/* Implementation Timeline */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Activity className="h-5 w-5 mr-2" />
-              Implementation Timeline
-            </CardTitle>
-            <CardDescription>Recommended implementation order by difficulty</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <AreaChart data={chartData.timelineData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="phase" />
-                <YAxis />
-                <Tooltip 
-                  formatter={(value, name) => [
-                    name === 'roi' ? `€${value}K` : 
-                    name === 'timeline' ? `${value} days` : value,
-                    name === 'roi' ? 'ROI' : 
-                    name === 'timeline' ? 'Timeline' : 'Difficulty'
-                  ]}
-                />
-                <Area 
-                  type="monotone" 
-                  dataKey="roi" 
-                  stackId="1" 
-                  stroke="#f59e0b" 
-                  fill="#f59e0b" 
-                  fillOpacity={0.6}
-                />
-                <Area 
-                  type="monotone" 
-                  dataKey="timeline" 
-                  stackId="2" 
-                  stroke="#06b6d4" 
-                  fill="#06b6d4" 
-                  fillOpacity={0.6}
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
       </div>
 
       {/* Quick Insights */}
@@ -327,7 +232,7 @@ export function ResearchMetricsDashboard({ className }: ResearchMetricsDashboard
               </div>
               <h4 className="font-semibold mb-1">Immediate Action</h4>
               <p className="text-sm text-muted-foreground">
-                Focus on {niches.filter((n: any) => n.priority_score >= 90).length} high-priority niches 
+                Focus on {niches.filter((n: NicheAnalysis) => n.priority_score >= 90).length} high-priority niches 
                 with {Math.round((summary.highAutomationReadyCount / summary.totalNiches) * 100)}% automation ready.
               </p>
             </div>
@@ -338,8 +243,8 @@ export function ResearchMetricsDashboard({ className }: ResearchMetricsDashboard
               </div>
               <h4 className="font-semibold mb-1">Investment Safety</h4>
               <p className="text-sm text-muted-foreground">
-                {niches.filter((n: any) => n.risk_assessment_score <= 35).length} low-risk opportunities 
-                with combined ROI of €{(niches.filter((n: any) => n.risk_assessment_score <= 35).reduce((sum: number, n: any) => sum + n.roi_projection.realistic, 0) / 1000).toFixed(0)}K.
+                {niches.filter((n: NicheAnalysis) => n.risk_assessment_score <= 35).length} low-risk opportunities 
+                with combined ROI of €{(niches.filter((n: NicheAnalysis) => n.risk_assessment_score <= 35).reduce((sum: number, n: NicheAnalysis) => sum + n.roi_projection.realistic, 0) / 1000).toFixed(0)}K.
               </p>
             </div>
 
@@ -349,9 +254,9 @@ export function ResearchMetricsDashboard({ className }: ResearchMetricsDashboard
               </div>
               <h4 className="font-semibold mb-1">Growth Potential</h4>
               <p className="text-sm text-muted-foreground">
-                Top performer: {niches.reduce((top: any, n: any) => 
+                Top performer: {niches.reduce((top: NicheAnalysis | null, n: NicheAnalysis) => 
                   !top || n.priority_score > top.priority_score ? n : top, null)?.niche_name} 
-                with {niches.reduce((top: any, n: any) => 
+                with {niches.reduce((top: NicheAnalysis | null, n: NicheAnalysis) => 
                   !top || n.priority_score > top.priority_score ? n : top, null)?.priority_score} priority.
               </p>
             </div>

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_RESEARCH_DATASET } from '../../graphql/queries';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,22 +7,17 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
 import { 
-  BarChart3,
-  TrendingUp,
   Target,
   Zap,
   AlertTriangle,
   DollarSign,
   Users,
-  Brain,
   Search,
   Filter,
-  ArrowUp,
-  ArrowDown,
   Star,
-  Clock,
   Shield
 } from 'lucide-react';
+import type { NicheAnalysis, ResearchPersona } from '@intelligence-dashboard/shared';
 
 
 interface ResearchIntelligenceProps {
@@ -46,31 +41,31 @@ export function ResearchIntelligence({ className }: ResearchIntelligenceProps) {
     let filtered = data.researchDataset.niches;
     
     if (searchQuery) {
-      filtered = filtered.filter((niche: any) =>
+      filtered = filtered.filter((niche: NicheAnalysis) =>
         niche.niche_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         niche.description.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
     
     if (priorityFilter !== null) {
-      filtered = filtered.filter((niche: any) => niche.priority_score >= priorityFilter);
+      filtered = filtered.filter((niche: NicheAnalysis) => niche.priority_score >= priorityFilter);
     }
     
     if (riskFilter !== null) {
-      filtered = filtered.filter((niche: any) => niche.risk_assessment_score <= riskFilter);
+      filtered = filtered.filter((niche: NicheAnalysis) => niche.risk_assessment_score <= riskFilter);
     }
     
-    return filtered.sort((a: any, b: any) => b.priority_score - a.priority_score);
+    return filtered.sort((a: NicheAnalysis, b: NicheAnalysis) => b.priority_score - a.priority_score);
   }, [data, searchQuery, priorityFilter, riskFilter]);
 
   const selectedNicheData = useMemo(() => {
     if (!selectedNiche || !data?.researchDataset?.niches) return null;
-    return data.researchDataset.niches.find((n: any) => n.niche_id === selectedNiche);
+    return data.researchDataset.niches.find((n: NicheAnalysis) => n.niche_id === selectedNiche);
   }, [selectedNiche, data]);
 
   const selectedPersona = useMemo(() => {
     if (!selectedNiche || !data?.researchDataset?.personas) return null;
-    return data.researchDataset.personas.find((p: any) => p.niche_id === selectedNiche);
+    return data.researchDataset.personas.find((p: ResearchPersona) => p.niche_id === selectedNiche);
   }, [selectedNiche, data]);
 
   if (loading) {
@@ -268,7 +263,7 @@ export function ResearchIntelligence({ className }: ResearchIntelligenceProps) {
           {/* Niche Grid/List View */}
           {viewMode === 'grid' && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredNiches.map((niche: any) => (
+              {filteredNiches.map((niche: NicheAnalysis) => (
                 <Card
                   key={niche.niche_id}
                   className={`cursor-pointer transition-all hover:shadow-md ${
@@ -327,7 +322,7 @@ export function ResearchIntelligence({ className }: ResearchIntelligenceProps) {
 
           {viewMode === 'list' && (
             <div className="space-y-2">
-              {filteredNiches.map((niche: any) => (
+              {filteredNiches.map((niche: NicheAnalysis) => (
                 <Card
                   key={niche.niche_id}
                   className={`cursor-pointer transition-all hover:shadow-sm ${

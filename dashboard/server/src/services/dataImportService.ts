@@ -132,7 +132,7 @@ class DataImportService {
 
     } catch (error) {
       logger.error('Failed to import research data:', error);
-      throw new Error(`Research data import failed: ${error.message}`);
+      throw new Error(`Research data import failed: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
@@ -162,7 +162,7 @@ class DataImportService {
         logger.info(`Successfully loaded ${niches.length} niches from ${file}`);
         allNiches.push(...niches);
       } catch (error) {
-        logger.warn(`Failed to read niche analysis file ${file}:`, error.message);
+        logger.warn(`Failed to read niche analysis file ${file}:`, error instanceof Error ? error.message : String(error));
       }
     }
 
@@ -253,7 +253,7 @@ class DataImportService {
         
         allRoadmaps.push(roadmap);
       } catch (error) {
-        logger.warn(`Failed to read roadmap file ${file}:`, error.message);
+        logger.warn(`Failed to read roadmap file ${file}:`, error instanceof Error ? error.message : String(error));
       }
     }
 
@@ -264,7 +264,7 @@ class DataImportService {
   /**
    * Generate summary statistics from imported data
    */
-  private generateSummary(niches: NicheAnalysis[], metrics: MetricsDashboard): ResearchDataset['summary'] {
+  private generateSummary(niches: NicheAnalysis[], _metrics: MetricsDashboard): ResearchDataset['summary'] {
     const totalNiches = niches.length;
     const averagePriorityScore = totalNiches > 0 ? 
       Math.round(niches.reduce((sum, n) => sum + (n.priority_score || 0), 0) / totalNiches) : 0;

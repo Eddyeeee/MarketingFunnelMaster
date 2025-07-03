@@ -79,7 +79,6 @@ export function SearchInterface({ className }: SearchInterfaceProps) {
   const [query, setQuery] = useState('');
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
   const [selectedResult, setSelectedResult] = useState<ResearchResult | null>(null);
-  const [filters, setFilters] = useState<any>({});
 
   const [searchResearch, { data, loading, error }] = useLazyQuery(SEARCH_RESEARCH, {
     errorPolicy: 'all',
@@ -98,7 +97,7 @@ export function SearchInterface({ className }: SearchInterfaceProps) {
     searchResearch({
       variables: {
         query: query.trim(),
-        filters,
+        filters: {},
       },
     });
 
@@ -355,7 +354,7 @@ export function SearchInterface({ className }: SearchInterfaceProps) {
               <div className="text-center">
                 <Search className="h-8 w-8 mx-auto mb-2" />
                 <p>Enter a search query to find intelligence data</p>
-                <p className="text-xs mt-1">Try: "AI trends", "competitor analysis", "market opportunities"</p>
+                <p className="text-xs mt-1">Try: &quot;AI trends&quot;, &quot;competitor analysis&quot;, &quot;market opportunities&quot;</p>
               </div>
             </div>
           )}

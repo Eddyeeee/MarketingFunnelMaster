@@ -6,7 +6,7 @@ export interface TreeNode {
   id: string;
   label: string;
   children?: TreeNode[];
-  data?: any;
+  data?: unknown;
   icon?: React.ReactNode;
   expanded?: boolean;
   selected?: boolean;

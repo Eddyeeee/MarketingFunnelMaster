@@ -40,7 +40,7 @@ export async function testApiConnectivity() {
   } catch (error) {
     console.error('API connectivity test failed:', error);
     return {
-      error: error.message,
+      error: error instanceof Error ? error.message : String(error),
       success: false
     };
   }

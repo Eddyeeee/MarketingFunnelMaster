@@ -1,23 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useSubscription } from '@apollo/client';
 import { gql } from 'graphql-tag';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
-import { LineChart, Line, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { 
   Search, 
   TrendingUp, 
   Eye, 
   Mic, 
-  Users, 
-  Target,
-  BarChart3,
-  Activity,
-  Award,
-  Zap,
   Brain,
   RefreshCw
 } from 'lucide-react';
@@ -74,11 +66,10 @@ interface AIMetricsDashboardProps {
 
 export function AIMetricsDashboard({ className }: AIMetricsDashboardProps) {
   const [selectedPlatform, setSelectedPlatform] = useState<string>('');
-  const [timeframe, setTimeframe] = useState('24h');
   const [metrics, setMetrics] = useState<AIMetrics[]>([]);
 
   const { data, loading, error, refetch } = useQuery(GET_AI_METRICS, {
-    variables: { platform: selectedPlatform || undefined, timeframe },
+    variables: { platform: selectedPlatform || undefined, timeframe: '24h' },
     pollInterval: 60000,
     errorPolicy: 'all',
   });

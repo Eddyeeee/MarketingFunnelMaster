@@ -110,7 +110,7 @@ export function truncateText(text: string, maxLength: number): string {
   return text.substring(0, maxLength) + '...'
 }
 
-export function debounce<T extends (...args: any[]) => void>(
+export function debounce<T extends (...args: unknown[]) => void>(
   func: T,
   wait: number
 ): (...args: Parameters<T>) => void {
@@ -121,7 +121,7 @@ export function debounce<T extends (...args: any[]) => void>(
   }
 }
 
-export function throttle<T extends (...args: any[]) => void>(
+export function throttle<T extends (...args: unknown[]) => void>(
   func: T,
   limit: number
 ): (...args: Parameters<T>) => void {
@@ -151,7 +151,7 @@ export function isValidUrl(string: string): boolean {
   try {
     new URL(string)
     return true
-  } catch (_) {
+  } catch {
     return false
   }
 }

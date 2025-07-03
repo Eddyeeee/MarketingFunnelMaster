@@ -5,10 +5,9 @@ const redisConfig = {
   host: process.env.REDIS_HOST || 'localhost',
   port: parseInt(process.env.REDIS_PORT || '6379', 10),
   password: process.env.REDIS_PASSWORD || undefined,
-  maxRetriesPerRequest: 3,
+  maxRetriesPerRequest: null,
   retryDelayOnFailover: 100,
   enableReadyCheck: true,
-  maxRetriesPerRequest: null,
   lazyConnect: true,
 };
 
@@ -30,7 +29,7 @@ redisClient.on('close', () => {
   logger.info('Redis client connection closed');
 });
 
-redisClient.on('reconnecting', (delay) => {
+redisClient.on('reconnecting', (delay: number) => {
   logger.info(`Redis client reconnecting in ${delay}ms`);
 });
 

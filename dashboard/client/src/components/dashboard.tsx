@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ProcessViewer } from '@/components/features/process-viewer';
 import { SearchInterface } from '@/components/features/search-interface';
-import { AIMetricsDashboard } from '@/components/features/ai-metrics-dashboard';
 import { ResearchIntelligence } from '@/components/features/research-intelligence';
 import { ResearchOverview } from '@/components/features/research-overview';
 import { ResearchMetricsDashboard } from '@/components/features/research-metrics-dashboard';

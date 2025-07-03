@@ -1,12 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_RESEARCH_DATASET } from '../graphql/queries';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 
+interface ApiHealthResponse {
+  status: string;
+  services?: {
+    redis: string;
+    websocket: string;
+  };
+}
+
 export function StatusCheck() {
-  const [apiHealth, setApiHealth] = useState<any>(null);
+  const [apiHealth, setApiHealth] = useState<ApiHealthResponse | null>(null);
   const [apiError, setApiError] = useState<string | null>(null);
 
   const { data: researchData, loading: researchLoading, error: researchError } = useQuery(GET_RESEARCH_DATASET);

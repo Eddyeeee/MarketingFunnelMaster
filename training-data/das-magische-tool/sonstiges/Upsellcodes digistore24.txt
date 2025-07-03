@@ -1,0 +1,7 @@
+<script src="https://www.digistore24.com/service/digistore.js"></script><script>digistoreUpsell()</script>
+
+
+https://www.digistore24.com/answer/yes?template=light
+
+
+https://www.digistore24.com/answer/no

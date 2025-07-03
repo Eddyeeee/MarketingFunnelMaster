@@ -103,7 +103,7 @@ async function startServer() {
       res.status(404).json({ error: 'Not found' });
     });
 
-    app.use((error: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+    app.use((error: Error, req: express.Request, res: express.Response, _next: express.NextFunction) => {
       logger.error('Express error:', error);
       res.status(500).json({ error: 'Internal server error' });
     });

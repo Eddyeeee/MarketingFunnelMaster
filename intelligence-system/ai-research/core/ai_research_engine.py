@@ -1,6 +1,7 @@
 """
 AI Research Engine - The brain of the intelligent system
 Combines multiple AI models, ML algorithms, and knowledge graphs
+ENHANCED: Now includes training-data integration for sales materials
 """
 
 import asyncio
