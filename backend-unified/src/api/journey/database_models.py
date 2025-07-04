@@ -50,7 +50,7 @@ class JourneySession(Base):
     referrer_data = Column(JSON, nullable=True)
     exit_point = Column(JSON, nullable=True)
     conversion_events = Column(JSON, nullable=True)
-    metadata = Column(JSON, nullable=True)
+    session_metadata = Column(JSON, nullable=True)
     
     # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now())
@@ -98,7 +98,7 @@ class JourneyTouchpoint(Base):
     performance_metrics = Column(JSON, nullable=True)
     personalization_applied = Column(JSON, nullable=True)
     ab_test_variant = Column(String(50), nullable=True)
-    metadata = Column(JSON, nullable=True)
+    touchpoint_metadata = Column(JSON, nullable=True)
     
     # Relationships
     session = relationship("JourneySession", back_populates="touchpoints")
@@ -131,7 +131,7 @@ class ConversionEvent(Base):
     revenue_attributed = Column(DECIMAL(10, 2), default=0.00)
     commission_earned = Column(DECIMAL(10, 2), default=0.00)
     lifetime_value_prediction = Column(DECIMAL(10, 2), nullable=True)
-    metadata = Column(JSON, nullable=True)
+    conversion_metadata = Column(JSON, nullable=True)
     
     # Relationships
     session = relationship("JourneySession", back_populates="conversions")
@@ -167,7 +167,7 @@ class PersonalizationData(Base):
     
     # Timestamps
     applied_timestamp = Column(DateTime(timezone=True), server_default=func.now())
-    metadata = Column(JSON, nullable=True)
+    personalization_metadata = Column(JSON, nullable=True)
     
     # Relationships
     session = relationship("JourneySession", back_populates="personalizations")
@@ -217,7 +217,7 @@ class UXJourneySessionBridge(Base):
     integration_timestamp = Column(DateTime(timezone=True), server_default=func.now())
     data_flow_direction = Column(String(20), nullable=True)
     integration_status = Column(String(20), default="active", index=True)
-    metadata = Column(JSON, nullable=True)
+    scarcity_metadata = Column(JSON, nullable=True)
 
 class PersonaJourneyEvolution(Base):
     """Persona evolution tracking through journey interactions"""
@@ -259,7 +259,7 @@ class ScarcityTriggerEvent(Base):
     engagement_change = Column(Float, nullable=True)
     conversion_attributed = Column(Boolean, default=False, index=True)
     trigger_timestamp = Column(DateTime(timezone=True), server_default=func.now(), index=True)
-    metadata = Column(JSON, nullable=True)
+    optimization_metadata = Column(JSON, nullable=True)
     
     # Relationships
     session = relationship("JourneySession", back_populates="scarcity_triggers")
@@ -294,7 +294,7 @@ class OptimizationEvent(Base):
     # Additional metadata
     ml_model_version = Column(String(50), nullable=True)
     confidence_score = Column(Float, nullable=True)
-    metadata = Column(JSON, nullable=True)
+    analytics_metadata = Column(JSON, nullable=True)
     
     # Relationships
     session = relationship("JourneySession", back_populates="optimizations")

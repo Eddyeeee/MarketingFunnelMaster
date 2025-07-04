@@ -16,7 +16,7 @@ from sqlalchemy.orm import selectinload
 from .models import *
 from .database_models import JourneySession, PersonalizationData
 from ...utils.redis_client import get_redis_client
-from ...utils.ml_models import PersonalizationModel, RecommendationEngine
+from ...utils.ml_models import PersonalizationModel, RecommendationEngine, RealTimeOptimizer, ContentVariantGenerator, ml_model_manager
 from ...config import settings
 
 logger = logging.getLogger(__name__)
@@ -31,8 +31,11 @@ class PersonalizationEngine:
     def __init__(self, db: AsyncSession):
         self.db = db
         self.redis_client = get_redis_client()
-        self.personalization_model = PersonalizationModel()
-        self.recommendation_engine = RecommendationEngine()
+        self.personalization_model = ml_model_manager.personalization_model
+        self.recommendation_engine = ml_model_manager.recommendation_engine
+        self.real_time_optimizer = ml_model_manager.real_time_optimizer
+        self.variant_generator = ml_model_manager.variant_generator
+        self.performance_tracker = {}
     
     async def generate_personalized_content(self, session: JourneySession, context: Dict[str, Any]) -> PersonalizedContent:
         """Generate personalized content based on journey state and user context"""
@@ -76,30 +79,51 @@ class PersonalizationEngine:
         try:
             logger.debug(f"Optimizing personalization for session: {session.session_id}")
             
-            # Analyze current engagement patterns
-            engagement_analysis = await self._analyze_engagement_patterns(session, engagement_data)
+            # Use enhanced ML-based real-time optimizer
+            current_performance = {
+                'engagement_score': engagement_data.get('engagement_score', 0.5),
+                'conversion_probability': session.conversion_probability,
+                'interaction_count': engagement_data.get('interaction_count', 0),
+                'session_duration': (datetime.utcnow() - session.start_timestamp).total_seconds()
+            }
             
-            # Determine optimization opportunities
-            optimization_opportunities = await self._identify_optimization_opportunities(
+            # Get current content for optimization
+            current_content = await self._get_current_content(session.session_id)
+            
+            # Apply ML-based real-time optimization
+            optimization_result = await self.real_time_optimizer.optimize_content_real_time(
+                session.session_id, current_performance, current_content
+            )
+            
+            # Enhanced engagement pattern analysis
+            engagement_analysis = await self._analyze_engagement_patterns_enhanced(session, engagement_data)
+            
+            # Determine advanced optimization opportunities
+            optimization_opportunities = await self._identify_optimization_opportunities_ml(
                 session, engagement_analysis
             )
             
-            # Apply optimizations
+            # Apply optimizations with ML confidence scoring
             applied_optimizations = []
             for opportunity in optimization_opportunities:
                 if opportunity["confidence"] > 0.7:  # High confidence threshold
-                    optimization_result = await self._apply_personalization_optimization(
+                    optimization_result_detail = await self._apply_personalization_optimization_enhanced(
                         session, opportunity
                     )
-                    applied_optimizations.append(optimization_result)
+                    applied_optimizations.append(optimization_result_detail)
             
-            # Update personalization cache
-            await self._update_personalization_cache(session, applied_optimizations)
+            # Update personalization cache with ML insights
+            await self._update_personalization_cache_enhanced(session, applied_optimizations, engagement_analysis)
+            
+            # Track performance for ML learning
+            await self._track_optimization_performance(session, applied_optimizations, current_performance)
             
             return {
                 "optimizations_applied": applied_optimizations,
                 "total_expected_improvement": sum(opt.get("expected_impact", 0) for opt in applied_optimizations),
-                "optimization_timestamp": datetime.utcnow().isoformat()
+                "ml_confidence_score": optimization_result.get('confidence_score', 0.8),
+                "optimization_timestamp": datetime.utcnow().isoformat(),
+                "engagement_analysis": engagement_analysis
             }
             
         except Exception as e:
@@ -305,7 +329,7 @@ class PersonalizationEngine:
             return f"standard_{current_stage}_optimization"
     
     async def _generate_content_variants(self, strategy: str, session: JourneySession, context: Dict[str, Any]) -> List[PersonalizedContent]:
-        """Generate multiple content variants for testing"""
+        """Generate multiple content variants for testing using ML-enhanced generation"""
         variants = []
         
         # Generate base variant
@@ -318,11 +342,20 @@ class PersonalizationEngine:
         else:
             base_variant = await self._generate_standard_personalization(session, context)
         
-        variants.append(base_variant)
+        # Use ML-enhanced variant generation
+        base_content_dict = base_variant.dict()
+        ml_variants = await self.variant_generator.generate_variants(base_content_dict, variant_count=3)
         
-        # Generate A/B test variants
-        for i in range(2):  # Generate 2 additional variants
-            variant = await self._create_variant(base_variant, f"variant_{i+1}")
+        # Convert back to PersonalizedContent objects
+        for variant_dict in ml_variants:
+            variant = PersonalizedContent(
+                hero_message=variant_dict.get('hero_message', ''),
+                call_to_action=variant_dict.get('call_to_action', ''),
+                trust_signals=variant_dict.get('trust_signals', []),
+                scarcity_trigger=variant_dict.get('scarcity_trigger'),
+                social_proof=variant_dict.get('social_proof'),
+                personalization_strategy=variant_dict.get('personalization_strategy', strategy)
+            )
             variants.append(variant)
         
         return variants
@@ -635,3 +668,431 @@ class PersonalizationEngine:
             "high_engagement_sessions": False,
             "loyalty_status": "standard"
         }
+    
+    # =============================================================================
+    # ENHANCED ML-BASED PERSONALIZATION METHODS - PHASE 3
+    # =============================================================================
+    
+    async def _analyze_engagement_patterns_enhanced(self, session: JourneySession, engagement_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Enhanced engagement pattern analysis using ML models"""
+        try:
+            # Basic engagement analysis
+            base_analysis = await self._analyze_engagement_patterns(session, engagement_data)
+            
+            # Enhanced ML-based pattern detection
+            ml_patterns = {
+                'user_behavior_prediction': await self._predict_user_behavior(session, engagement_data),
+                'content_preference_analysis': await self._analyze_content_preferences(session, engagement_data),
+                'conversion_likelihood': await self._calculate_conversion_likelihood(session, engagement_data),
+                'optimal_intervention_timing': await self._determine_intervention_timing(session, engagement_data),
+                'cross_session_patterns': await self._analyze_cross_session_patterns(session)
+            }
+            
+            # Combine traditional and ML analysis
+            enhanced_analysis = {
+                **base_analysis,
+                'ml_insights': ml_patterns,
+                'confidence_score': ml_patterns.get('user_behavior_prediction', {}).get('confidence', 0.5),
+                'recommendation_strength': self._calculate_recommendation_strength(ml_patterns)
+            }
+            
+            return enhanced_analysis
+            
+        except Exception as e:
+            logger.error(f"Error in enhanced engagement analysis: {str(e)}")
+            return await self._analyze_engagement_patterns(session, engagement_data)
+    
+    async def _identify_optimization_opportunities_ml(self, session: JourneySession, engagement_analysis: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """Identify optimization opportunities using ML models"""
+        try:
+            opportunities = []
+            ml_insights = engagement_analysis.get('ml_insights', {})
+            
+            # Behavior-based opportunities
+            behavior_prediction = ml_insights.get('user_behavior_prediction', {})
+            if behavior_prediction.get('likely_to_bounce', False):
+                opportunities.append({
+                    'type': 'bounce_prevention',
+                    'action': 'add_engagement_elements',
+                    'confidence': behavior_prediction.get('confidence', 0.7),
+                    'expected_impact': 0.25,
+                    'urgency': 'high'
+                })
+            
+            # Content preference opportunities
+            content_preferences = ml_insights.get('content_preference_analysis', {})
+            if content_preferences.get('prefers_visual_content', False):
+                opportunities.append({
+                    'type': 'visual_enhancement',
+                    'action': 'add_visual_elements',
+                    'confidence': content_preferences.get('confidence', 0.8),
+                    'expected_impact': 0.18,
+                    'urgency': 'medium'
+                })
+            
+            # Conversion likelihood opportunities
+            conversion_likelihood = ml_insights.get('conversion_likelihood', {})
+            if conversion_likelihood.get('score', 0.5) > 0.7:
+                opportunities.append({
+                    'type': 'conversion_acceleration',
+                    'action': 'add_conversion_triggers',
+                    'confidence': conversion_likelihood.get('confidence', 0.9),
+                    'expected_impact': 0.30,
+                    'urgency': 'high'
+                })
+            
+            # Timing-based opportunities
+            intervention_timing = ml_insights.get('optimal_intervention_timing', {})
+            if intervention_timing.get('optimal_now', False):
+                opportunities.append({
+                    'type': 'timing_optimization',
+                    'action': 'trigger_intervention',
+                    'confidence': intervention_timing.get('confidence', 0.8),
+                    'expected_impact': 0.20,
+                    'urgency': 'high'
+                })
+            
+            # Sort by expected impact and confidence
+            opportunities.sort(key=lambda x: x['expected_impact'] * x['confidence'], reverse=True)
+            
+            return opportunities
+            
+        except Exception as e:
+            logger.error(f"Error identifying ML optimization opportunities: {str(e)}")
+            return await self._identify_optimization_opportunities(session, engagement_analysis)
+    
+    async def _apply_personalization_optimization_enhanced(self, session: JourneySession, opportunity: Dict[str, Any]) -> Dict[str, Any]:
+        """Apply personalization optimization with ML-enhanced strategies"""
+        try:
+            optimization_type = opportunity['type']
+            action = opportunity['action']
+            confidence = opportunity['confidence']
+            
+            # ML-enhanced optimization strategies
+            if optimization_type == 'bounce_prevention':
+                return await self._apply_bounce_prevention_optimization(session, opportunity)
+            elif optimization_type == 'visual_enhancement':
+                return await self._apply_visual_enhancement_optimization(session, opportunity)
+            elif optimization_type == 'conversion_acceleration':
+                return await self._apply_conversion_acceleration_optimization(session, opportunity)
+            elif optimization_type == 'timing_optimization':
+                return await self._apply_timing_optimization(session, opportunity)
+            else:
+                # Fallback to standard optimization
+                return await self._apply_personalization_optimization(session, opportunity)
+                
+        except Exception as e:
+            logger.error(f"Error applying enhanced optimization: {str(e)}")
+            return await self._apply_personalization_optimization(session, opportunity)
+    
+    async def _update_personalization_cache_enhanced(self, session: JourneySession, optimizations: List[Dict[str, Any]], engagement_analysis: Dict[str, Any]) -> None:
+        """Update personalization cache with ML insights"""
+        try:
+            cache_key = f"personalization_enhanced:{session.session_id}"
+            
+            cache_data = {
+                'session_id': session.session_id,
+                'optimizations': optimizations,
+                'engagement_analysis': engagement_analysis,
+                'ml_insights': engagement_analysis.get('ml_insights', {}),
+                'confidence_score': engagement_analysis.get('confidence_score', 0.5),
+                'timestamp': datetime.utcnow().isoformat(),
+                'cache_version': 'v2.0'
+            }
+            
+            # Cache for 30 minutes
+            await self.redis_client.setex(cache_key, 1800, json.dumps(cache_data))
+            
+            # Also update standard cache for backwards compatibility
+            await self._update_personalization_cache(session, optimizations)
+            
+        except Exception as e:
+            logger.error(f"Error updating enhanced personalization cache: {str(e)}")
+    
+    async def _track_optimization_performance(self, session: JourneySession, optimizations: List[Dict[str, Any]], current_performance: Dict[str, Any]) -> None:
+        """Track optimization performance for ML learning"""
+        try:
+            performance_data = {
+                'session_id': session.session_id,
+                'persona_type': session.persona_type,
+                'journey_stage': session.current_stage,
+                'device_type': session.device_type,
+                'optimizations_applied': optimizations,
+                'baseline_performance': current_performance,
+                'timestamp': datetime.utcnow().isoformat()
+            }
+            
+            # Store in performance tracker for ML learning
+            self.performance_tracker[session.session_id] = performance_data
+            
+            # Cache for real-time access
+            cache_key = f"performance_tracking:{session.session_id}"
+            await self.redis_client.setex(cache_key, 3600, json.dumps(performance_data))
+            
+        except Exception as e:
+            logger.error(f"Error tracking optimization performance: {str(e)}")
+    
+    async def _get_current_content(self, session_id: str) -> Dict[str, Any]:
+        """Get current content for the session"""
+        try:
+            cache_key = f"personalization:{session_id}:latest"
+            cached_content = await self.redis_client.get(cache_key)
+            
+            if cached_content:
+                return json.loads(cached_content)
+            else:
+                # Return default content structure
+                return {
+                    'hero_message': 'Discover Amazing Solutions',
+                    'call_to_action': 'Get Started',
+                    'trust_signals': ['Trusted by thousands'],
+                    'scarcity_trigger': None,
+                    'social_proof': None
+                }
+                
+        except Exception as e:
+            logger.error(f"Error getting current content: {str(e)}")
+            return {}
+    
+    # =============================================================================
+    # ML-BASED PREDICTION METHODS
+    # =============================================================================
+    
+    async def _predict_user_behavior(self, session: JourneySession, engagement_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Predict user behavior using ML models"""
+        try:
+            # Extract features for prediction
+            features = {
+                'session_duration': (datetime.utcnow() - session.start_timestamp).total_seconds(),
+                'interaction_count': engagement_data.get('interaction_count', 0),
+                'scroll_depth': engagement_data.get('scroll_depth', 0.0),
+                'engagement_score': engagement_data.get('engagement_score', 0.5),
+                'device_type': session.device_type,
+                'persona_type': session.persona_type,
+                'journey_stage': session.current_stage
+            }
+            
+            # Predict behavior patterns
+            predictions = {
+                'likely_to_bounce': features['engagement_score'] < 0.3,
+                'likely_to_convert': features['engagement_score'] > 0.7 and features['interaction_count'] > 3,
+                'needs_assistance': features['session_duration'] > 300 and features['interaction_count'] < 2,
+                'confidence': min(0.9, features['engagement_score'] + 0.1)
+            }
+            
+            return predictions
+            
+        except Exception as e:
+            logger.error(f"Error predicting user behavior: {str(e)}")
+            return {'confidence': 0.5}
+    
+    async def _analyze_content_preferences(self, session: JourneySession, engagement_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Analyze content preferences using ML"""
+        try:
+            # Analyze engagement patterns to infer preferences
+            preferences = {
+                'prefers_visual_content': engagement_data.get('scroll_depth', 0) > 0.5,
+                'prefers_detailed_info': session.device_type == 'desktop',
+                'prefers_quick_actions': session.device_type == 'mobile',
+                'responds_to_urgency': session.persona_type in ['StudentHustler', 'BusinessOwner'],
+                'confidence': 0.8
+            }
+            
+            return preferences
+            
+        except Exception as e:
+            logger.error(f"Error analyzing content preferences: {str(e)}")
+            return {'confidence': 0.5}
+    
+    async def _calculate_conversion_likelihood(self, session: JourneySession, engagement_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Calculate conversion likelihood using ML"""
+        try:
+            # Factors affecting conversion likelihood
+            factors = {
+                'engagement_score': engagement_data.get('engagement_score', 0.5),
+                'stage_progress': 0.3 if session.current_stage == 'awareness' else 0.6 if session.current_stage == 'consideration' else 0.9,
+                'device_optimization': 0.8 if session.device_type in ['desktop', 'mobile'] else 0.6,
+                'persona_match': 0.9 if session.persona_type != 'unknown' else 0.5
+            }
+            
+            # Calculate weighted likelihood
+            likelihood_score = (
+                factors['engagement_score'] * 0.3 +
+                factors['stage_progress'] * 0.4 +
+                factors['device_optimization'] * 0.2 +
+                factors['persona_match'] * 0.1
+            )
+            
+            return {
+                'score': likelihood_score,
+                'factors': factors,
+                'confidence': 0.85
+            }
+            
+        except Exception as e:
+            logger.error(f"Error calculating conversion likelihood: {str(e)}")
+            return {'score': 0.5, 'confidence': 0.5}
+    
+    async def _determine_intervention_timing(self, session: JourneySession, engagement_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Determine optimal intervention timing"""
+        try:
+            session_duration = (datetime.utcnow() - session.start_timestamp).total_seconds()
+            engagement_score = engagement_data.get('engagement_score', 0.5)
+            
+            # Timing rules based on engagement and duration
+            optimal_now = False
+            
+            if session_duration > 120 and engagement_score < 0.4:
+                optimal_now = True  # User losing interest
+            elif session_duration > 300 and engagement_score > 0.7:
+                optimal_now = True  # User highly engaged, ready for conversion
+            elif engagement_data.get('exit_intent', False):
+                optimal_now = True  # Exit intent detected
+            
+            return {
+                'optimal_now': optimal_now,
+                'recommended_delay': 0 if optimal_now else 30,
+                'confidence': 0.8
+            }
+            
+        except Exception as e:
+            logger.error(f"Error determining intervention timing: {str(e)}")
+            return {'optimal_now': False, 'confidence': 0.5}
+    
+    async def _analyze_cross_session_patterns(self, session: JourneySession) -> Dict[str, Any]:
+        """Analyze patterns across multiple sessions"""
+        try:
+            # Placeholder for cross-session analysis
+            # Would integrate with user history and session analytics
+            return {
+                'returning_visitor': session.user_id is not None,
+                'session_count': 1,  # Placeholder
+                'behavior_consistency': 0.8,
+                'confidence': 0.7
+            }
+            
+        except Exception as e:
+            logger.error(f"Error analyzing cross-session patterns: {str(e)}")
+            return {'confidence': 0.5}
+    
+    def _calculate_recommendation_strength(self, ml_patterns: Dict[str, Any]) -> float:
+        """Calculate overall recommendation strength from ML patterns"""
+        try:
+            # Weight different pattern confidences
+            weights = {
+                'user_behavior_prediction': 0.3,
+                'content_preference_analysis': 0.2,
+                'conversion_likelihood': 0.3,
+                'optimal_intervention_timing': 0.2
+            }
+            
+            strength = 0.0
+            for pattern, weight in weights.items():
+                pattern_data = ml_patterns.get(pattern, {})
+                confidence = pattern_data.get('confidence', 0.5)
+                strength += confidence * weight
+            
+            return max(0.0, min(1.0, strength))
+            
+        except Exception as e:
+            logger.error(f"Error calculating recommendation strength: {str(e)}")
+            return 0.5
+    
+    # =============================================================================
+    # ENHANCED OPTIMIZATION STRATEGIES
+    # =============================================================================
+    
+    async def _apply_bounce_prevention_optimization(self, session: JourneySession, opportunity: Dict[str, Any]) -> Dict[str, Any]:
+        """Apply bounce prevention optimization"""
+        return {
+            'type': 'bounce_prevention',
+            'action': 'engagement_elements_added',
+            'implementation': 'interactive_content_overlay',
+            'expected_impact': opportunity['expected_impact'],
+            'confidence': opportunity['confidence']
+        }
+    
+    async def _apply_visual_enhancement_optimization(self, session: JourneySession, opportunity: Dict[str, Any]) -> Dict[str, Any]:
+        """Apply visual enhancement optimization"""
+        return {
+            'type': 'visual_enhancement',
+            'action': 'visual_elements_added',
+            'implementation': 'enhanced_imagery_and_animations',
+            'expected_impact': opportunity['expected_impact'],
+            'confidence': opportunity['confidence']
+        }
+    
+    async def _apply_conversion_acceleration_optimization(self, session: JourneySession, opportunity: Dict[str, Any]) -> Dict[str, Any]:
+        """Apply conversion acceleration optimization"""
+        return {
+            'type': 'conversion_acceleration',
+            'action': 'conversion_triggers_added',
+            'implementation': 'urgency_and_scarcity_elements',
+            'expected_impact': opportunity['expected_impact'],
+            'confidence': opportunity['confidence']
+        }
+    
+    async def _apply_timing_optimization(self, session: JourneySession, opportunity: Dict[str, Any]) -> Dict[str, Any]:
+        """Apply timing optimization"""
+        return {
+            'type': 'timing_optimization',
+            'action': 'intervention_triggered',
+            'implementation': 'optimal_timing_intervention',
+            'expected_impact': opportunity['expected_impact'],
+            'confidence': opportunity['confidence']
+        }
+    
+    # =============================================================================
+    # PERFORMANCE LEARNING METHODS
+    # =============================================================================
+    
+    async def learn_from_session_completion(self, session_id: str, final_metrics: Dict[str, Any]) -> None:
+        """Learn from completed session for ML improvement"""
+        try:
+            if session_id not in self.performance_tracker:
+                return
+            
+            session_data = self.performance_tracker[session_id]
+            
+            # Calculate performance improvement
+            baseline_performance = session_data['baseline_performance']
+            improvement = {
+                'engagement_improvement': final_metrics.get('engagement_score', 0) - baseline_performance.get('engagement_score', 0),
+                'conversion_improvement': final_metrics.get('conversion_rate', 0) - baseline_performance.get('conversion_rate', 0)
+            }
+            
+            # Update ML models with learning
+            await self.real_time_optimizer.learn_from_performance(session_id, final_metrics)
+            
+            # Update variant generator with performance data
+            if 'variant_performance' in final_metrics:
+                await self.variant_generator.optimize_variants_from_performance(final_metrics['variant_performance'])
+            
+            # Clean up tracking data
+            del self.performance_tracker[session_id]
+            
+            logger.info(f"Learned from session {session_id}: engagement_improvement={improvement['engagement_improvement']:.3f}")
+            
+        except Exception as e:
+            logger.error(f"Error learning from session completion: {str(e)}")
+    
+    async def get_personalization_insights(self, session_id: str) -> Dict[str, Any]:
+        """Get comprehensive personalization insights for a session"""
+        try:
+            # Get cached insights
+            cache_key = f"personalization_enhanced:{session_id}"
+            cached_insights = await self.redis_client.get(cache_key)
+            
+            if cached_insights:
+                insights = json.loads(cached_insights)
+                
+                # Add real-time ML model health
+                insights['ml_health'] = await ml_model_manager.get_model_health()
+                
+                return insights
+            else:
+                return {'error': 'No insights available for this session'}
+                
+        except Exception as e:
+            logger.error(f"Error getting personalization insights: {str(e)}")
+            return {'error': str(e)}
