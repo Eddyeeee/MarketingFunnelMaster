@@ -1,0 +1,138 @@
+name: Preview Deployments
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_TEAM_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+jobs:
+  # Deploy Preview when PR is opened/updated
+  deploy-preview:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    outputs:
+      preview_url: ${{ steps.vercel-deploy.outputs.preview_url }}
+      deployment_id: ${{ steps.vercel-deploy.outputs.deployment_id }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build Project Artifacts
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy to Vercel Preview
+        id: vercel-deploy
+        run: |
+          # Deploy and capture the URL
+          DEPLOYMENT_URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} | tail -n 1)
+          echo "preview_url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
+          
+          # Get deployment ID for later cleanup
+          DEPLOYMENT_ID=$(vercel ls --token=${{ secrets.VERCEL_TOKEN }} --meta gitHubCommitSha=${{ github.event.pull_request.head.sha }} | grep -E '^[a-zA-Z0-9]+' | head -1)
+          echo "deployment_id=$DEPLOYMENT_ID" >> $GITHUB_OUTPUT
+
+      - name: Create Preview Alias
+        run: |
+          # Create a custom alias for this PR
+          PR_ALIAS="pr-${{ github.event.pull_request.number }}-marketing-funnel-master"
+          vercel alias set ${{ steps.vercel-deploy.outputs.preview_url }} $PR_ALIAS.vercel.app --token=${{ secrets.VERCEL_TOKEN }}
+          echo "PR_ALIAS=https://$PR_ALIAS.vercel.app" >> $GITHUB_ENV
+
+  # Comment on PR with preview link
+  comment-preview-url:
+    needs: deploy-preview
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Find Comment
+        uses: peter-evans/find-comment@v2
+        id: fc
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: Preview Deployment
+
+      - name: Create or Update Comment
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ## 🚀 Preview Deployment Ready!
+            
+            | Property | Value |
+            |----------|-------|
+            | **Preview URL** | ${{ needs.deploy-preview.outputs.preview_url }} |
+            | **PR Alias** | https://pr-${{ github.event.pull_request.number }}-marketing-funnel-master.vercel.app |
+            | **Branch** | `${{ github.event.pull_request.head.ref }}` |
+            | **Commit** | `${{ github.event.pull_request.head.sha }}` |
+            | **Deployment Time** | ${{ github.event.pull_request.updated_at }} |
+            
+            ### 🧪 Quick Tests
+            - [Lighthouse Report](${{ needs.deploy-preview.outputs.preview_url }}/_lighthouse)
+            - [Bundle Analysis](${{ needs.deploy-preview.outputs.preview_url }}/_next/analyze)
+            
+            <details>
+            <summary>📋 Deployment Details</summary>
+            
+            - **Deployment ID**: `${{ needs.deploy-preview.outputs.deployment_id }}`
+            - **Vercel Project**: `marketing-funnel-master`
+            - **Environment**: `preview`
+            
+            </details>
+            
+            ---
+            <sub>⚡ Powered by Vercel | 🔄 Updates automatically with new commits</sub>
+          edit-mode: replace
+
+  # Cleanup when PR is closed
+  cleanup-preview:
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: Remove Preview Deployments
+        run: |
+          # List all deployments for this PR
+          PR_SHA=${{ github.event.pull_request.head.sha }}
+          DEPLOYMENTS=$(vercel ls --token=${{ secrets.VERCEL_TOKEN }} --meta gitHubCommitSha=$PR_SHA | grep -E '^[a-zA-Z0-9]+' | head -5)
+          
+          # Remove each deployment
+          for deployment in $DEPLOYMENTS; do
+            echo "Removing deployment: $deployment"
+            vercel rm $deployment --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+          done
+
+      - name: Remove PR Alias
+        run: |
+          PR_ALIAS="pr-${{ github.event.pull_request.number }}-marketing-funnel-master.vercel.app"
+          vercel alias rm $PR_ALIAS --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+
+      - name: Comment Cleanup Complete
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ## 🧹 Preview Deployment Cleaned Up
+            
+            The preview deployment for this PR has been removed.
+            
+            ---
+            <sub>Thank you for your contribution! 🙏</sub>

@@ -138,6 +138,7 @@
     "zod-validation-error": "^3.4.0"
   },
   "devDependencies": {
+    "@octokit/rest": "^22.0.0",
     "@replit/vite-plugin-cartographer": "^0.2.7",
     "@replit/vite-plugin-runtime-error-modal": "^0.0.3",
     "@tailwindcss/typography": "^0.5.15",
@@ -155,6 +156,7 @@
     "@types/ws": "^8.5.13",
     "@typescript-eslint/eslint-plugin": "^8.35.1",
     "@typescript-eslint/parser": "^8.35.1",
+    "@vercel/client": "^15.3.8",
     "@vitejs/plugin-react": "^4.3.2",
     "@vitest/ui": "^2.1.8",
     "autoprefixer": "^10.4.20",
