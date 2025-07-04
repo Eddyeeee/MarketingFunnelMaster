@@ -1,0 +1,168 @@
+# Staging Environment Setup - UX Intelligence Engine
+# Docker Compose configuration for staging deployment
+
+version: '3.8'
+
+services:
+  # Next.js Application with UX Intelligence Engine
+  ux-engine-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.staging
+      args:
+        - NODE_ENV=staging
+        - UX_ENGINE_VERSION=v1.0
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=staging
+      - UX_ENGINE_ENABLED=true
+      - ANALYTICS_ENDPOINT=http://analytics:8080
+      - MONITORING_ENDPOINT=http://prometheus:9090
+      - AB_TEST_CONFIG=/app/config/ab-test-config.json
+    volumes:
+      - ./config:/app/config:ro
+      - ./logs:/app/logs
+    depends_on:
+      - analytics
+      - redis
+      - prometheus
+    networks:
+      - ux-engine-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Analytics Service for UX Engine metrics
+  analytics:
+    image: analytics-service:latest
+    build:
+      context: ./analytics
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - POSTGRES_URL=postgresql://analytics:password@postgres:5432/ux_analytics
+      - UX_ENGINE_METRICS_ENABLED=true
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - ux-engine-network
+    restart: unless-stopped
+
+  # Redis for session storage and caching
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+      - ./config/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - ux-engine-network
+    restart: unless-stopped
+
+  # PostgreSQL for analytics data
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=ux_analytics
+      - POSTGRES_USER=analytics
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - ux-engine-network
+    restart: unless-stopped
+
+  # Prometheus for metrics collection
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/rules:/etc/prometheus/rules:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.enable-lifecycle'
+    networks:
+      - ux-engine-network
+    restart: unless-stopped
+
+  # Grafana for monitoring dashboards
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    depends_on:
+      - prometheus
+    networks:
+      - ux-engine-network
+    restart: unless-stopped
+
+  # A/B Testing Service
+  ab-testing:
+    build:
+      context: ./ab-testing
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - POSTGRES_URL=postgresql://analytics:password@postgres:5432/ux_analytics
+      - EXPERIMENT_CONFIG=/app/config/experiment-config.json
+    volumes:
+      - ./config/experiment-config.json:/app/config/experiment-config.json:ro
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - ux-engine-network
+    restart: unless-stopped
+
+  # Load Balancer for staging traffic distribution
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/staging.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - ux-engine-app
+    networks:
+      - ux-engine-network
+    restart: unless-stopped
+
+networks:
+  ux-engine-network:
+    driver: bridge
+
+volumes:
+  redis_data:
+  postgres_data:
+  prometheus_data:
+  grafana_data:
