@@ -25,6 +25,13 @@ class EntityType(str, Enum):
     AGENT = "agent"
     QUERY = "query"
     RESPONSE = "response"
+    # Module 3A: Content Generation Types
+    CONTENT_OUTLINE = "content_outline"
+    CONTENT_PIECE = "content_piece"
+    VISUAL_ASSET = "visual_asset"
+    SOCIAL_ADAPTATION = "social_adaptation"
+    CONTENT_TEMPLATE = "content_template"
+    CONTENT_PIPELINE = "content_pipeline"
 
 class RelationshipType(str, Enum):
     CONTAINS = "contains"
@@ -37,6 +44,12 @@ class RelationshipType(str, Enum):
     DEPENDS_ON = "depends_on"
     GENERATES = "generates"
     OPTIMIZES = "optimizes"
+    # Module 3A: Content Generation Relationships
+    PERSONALIZES_FOR = "personalizes_for"
+    ADAPTS_TO_DEVICE = "adapts_to_device"
+    OPTIMIZES_FOR_PERSONA = "optimizes_for_persona"
+    DERIVED_FROM_TEMPLATE = "derived_from_template"
+    SOCIAL_ADAPTATION_OF = "social_adaptation_of"
 
 class OutcomeType(str, Enum):
     SEARCH_SATISFACTION = "search_satisfaction"
@@ -45,6 +58,12 @@ class OutcomeType(str, Enum):
     ENGAGEMENT = "engagement"
     LEARNING = "learning"
     PERFORMANCE_IMPROVEMENT = "performance_improvement"
+    # Module 3A: Content Generation Outcomes
+    CONTENT_GENERATION_SUCCESS = "content_generation_success"
+    PERSONA_OPTIMIZATION_SUCCESS = "persona_optimization_success"
+    DEVICE_ADAPTATION_SUCCESS = "device_adaptation_success"
+    CONTENT_QUALITY_VALIDATION = "content_quality_validation"
+    SOCIAL_MEDIA_ENGAGEMENT = "social_media_engagement"
 
 # Core Performance Tracking Models
 class PerformanceMetrics(BaseModel):
@@ -503,12 +522,183 @@ def validate_entity_consistency(entity: UniversalEntity) -> List[str]:
     
     return issues
 
+# Module 3A: Content Generation Specialized Entities
+class ContentOutlineEntity(UniversalEntity):
+    """Content outline specific entity model"""
+    type: EntityType = Field(default=EntityType.CONTENT_OUTLINE, const=True)
+    
+    # Outline specific fields
+    niche: str = Field(description="Target niche")
+    persona: str = Field(description="Target persona")
+    device: str = Field(description="Target device type")
+    outline_structure: Dict[str, Any] = Field(default_factory=dict, description="Structured outline data")
+    seo_keywords: List[str] = Field(default_factory=list, description="SEO keywords")
+    target_length: int = Field(default=1000, description="Target content length")
+    conversion_goals: List[str] = Field(default_factory=list, description="Conversion objectives")
+
+class ContentPieceEntity(UniversalEntity):
+    """Generated content piece entity model"""
+    type: EntityType = Field(default=EntityType.CONTENT_PIECE, const=True)
+    
+    # Content specific fields
+    outline_id: Optional[UUID] = Field(default=None, description="Source outline ID")
+    niche: str = Field(description="Content niche")
+    persona: str = Field(description="Target persona")
+    device: str = Field(description="Optimized device type")
+    content_type: str = Field(description="Type of content (blog, product_page, etc.)")
+    
+    # Content structure
+    title: str = Field(description="Content title")
+    meta_description: str = Field(default="", description="SEO meta description")
+    body_content: str = Field(description="Main content body")
+    call_to_action: str = Field(default="", description="Call to action text")
+    
+    # Quality metrics
+    word_count: int = Field(default=0, description="Word count")
+    readability_score: float = Field(default=0.0, description="Readability score")
+    seo_score: float = Field(default=0.0, description="SEO optimization score")
+    persona_alignment_score: float = Field(default=0.0, description="Persona alignment score")
+    
+    # Performance tracking
+    conversion_rate: float = Field(default=0.0, description="Content conversion rate")
+    engagement_metrics: Dict[str, float] = Field(default_factory=dict, description="Engagement metrics")
+
+class VisualAssetEntity(UniversalEntity):
+    """Visual content asset entity model"""
+    type: EntityType = Field(default=EntityType.VISUAL_ASSET, const=True)
+    
+    # Visual specific fields
+    content_piece_id: Optional[UUID] = Field(default=None, description="Associated content piece")
+    asset_type: str = Field(description="Type of visual asset")
+    file_path: str = Field(description="Asset file path")
+    dimensions: Dict[str, int] = Field(default_factory=dict, description="Asset dimensions")
+    file_size_kb: int = Field(default=0, description="File size in KB")
+    
+    # Generation metadata
+    prompt_used: str = Field(default="", description="Generation prompt")
+    style_guidelines: Dict[str, Any] = Field(default_factory=dict, description="Style guidelines")
+    brand_compliance: bool = Field(default=True, description="Brand compliance status")
+
+class SocialAdaptationEntity(UniversalEntity):
+    """Social media adaptation entity model"""
+    type: EntityType = Field(default=EntityType.SOCIAL_ADAPTATION, const=True)
+    
+    # Social adaptation fields
+    source_content_id: UUID = Field(description="Source content piece ID")
+    platform: str = Field(description="Target social media platform")
+    adaptation_type: str = Field(description="Type of adaptation")
+    
+    # Platform-specific content
+    caption: str = Field(default="", description="Social media caption")
+    hashtags: List[str] = Field(default_factory=list, description="Hashtags")
+    platform_specific_data: Dict[str, Any] = Field(default_factory=dict, description="Platform specific data")
+    
+    # Engagement optimization
+    hook_strategy: str = Field(default="", description="Engagement hook strategy")
+    call_to_action: str = Field(default="", description="Social CTA")
+    engagement_prediction: float = Field(default=0.0, description="Predicted engagement rate")
+
+class ContentTemplateEntity(UniversalEntity):
+    """Content template entity model"""
+    type: EntityType = Field(default=EntityType.CONTENT_TEMPLATE, const=True)
+    
+    # Template fields
+    template_name: str = Field(description="Template name")
+    template_category: str = Field(description="Template category")
+    target_niche: str = Field(description="Target niche")
+    template_structure: Dict[str, Any] = Field(default_factory=dict, description="Template structure")
+    
+    # Personalization rules
+    persona_adaptations: Dict[str, Dict[str, Any]] = Field(default_factory=dict, description="Persona-specific adaptations")
+    device_optimizations: Dict[str, Dict[str, Any]] = Field(default_factory=dict, description="Device-specific optimizations")
+    
+    # Performance data
+    usage_count: int = Field(default=0, description="Times template was used")
+    average_performance: float = Field(default=0.0, description="Average template performance")
+    success_patterns: List[Dict[str, Any]] = Field(default_factory=list, description="Successful usage patterns")
+
+class ContentPipelineEntity(UniversalEntity):
+    """Content generation pipeline execution entity model"""
+    type: EntityType = Field(default=EntityType.CONTENT_PIPELINE, const=True)
+    
+    # Pipeline execution data
+    pipeline_id: UUID = Field(description="Pipeline execution ID")
+    niche: str = Field(description="Target niche")
+    persona: str = Field(description="Target persona")
+    device: str = Field(description="Target device")
+    
+    # Execution tracking
+    stages_completed: int = Field(default=0, description="Number of stages completed")
+    total_stages: int = Field(default=4, description="Total pipeline stages")
+    execution_start: datetime = Field(default_factory=datetime.now, description="Pipeline start time")
+    execution_end: Optional[datetime] = Field(default=None, description="Pipeline end time")
+    
+    # Generated content references
+    outline_id: Optional[UUID] = Field(default=None, description="Generated outline ID")
+    content_id: Optional[UUID] = Field(default=None, description="Generated content ID")
+    visual_asset_ids: List[UUID] = Field(default_factory=list, description="Generated visual asset IDs")
+    social_adaptation_ids: List[UUID] = Field(default_factory=list, description="Generated social adaptation IDs")
+    
+    # Pipeline performance
+    generation_time_seconds: float = Field(default=0.0, description="Total generation time")
+    quality_score: float = Field(default=0.0, description="Overall quality score")
+    pipeline_efficiency: float = Field(default=0.0, description="Pipeline efficiency score")
+    
+    # Error tracking
+    errors_encountered: List[Dict[str, Any]] = Field(default_factory=list, description="Errors during execution")
+    retry_count: int = Field(default=0, description="Number of retries")
+
+# Factory functions for content entities
+def create_content_outline_entity(niche: str, persona: str, device: str, 
+                                 outline_data: Dict[str, Any]) -> ContentOutlineEntity:
+    """Create a new content outline entity"""
+    return ContentOutlineEntity(
+        name=f"Content Outline: {outline_data.get('title', 'Untitled')}",
+        niche=niche,
+        persona=persona,
+        device=device,
+        outline_structure=outline_data,
+        seo_keywords=outline_data.get('seo_keywords', []),
+        target_length=outline_data.get('target_length', 1000),
+        conversion_goals=outline_data.get('conversion_goals', [])
+    )
+
+def create_content_piece_entity(title: str, content: str, niche: str, 
+                               persona: str, device: str, 
+                               outline_id: Optional[UUID] = None) -> ContentPieceEntity:
+    """Create a new content piece entity"""
+    return ContentPieceEntity(
+        name=title,
+        title=title,
+        body_content=content,
+        niche=niche,
+        persona=persona,
+        device=device,
+        outline_id=outline_id,
+        word_count=len(content.split()) if content else 0,
+        content_type="generated_content"
+    )
+
+def create_content_pipeline_entity(niche: str, persona: str, device: str) -> ContentPipelineEntity:
+    """Create a new content pipeline entity"""
+    pipeline_id = uuid4()
+    return ContentPipelineEntity(
+        name=f"Content Pipeline: {niche}-{persona}-{device}",
+        pipeline_id=pipeline_id,
+        niche=niche,
+        persona=persona,
+        device=device
+    )
+
 # Export all models
 __all__ = [
     "EntityType", "RelationshipType", "OutcomeType",
     "PerformanceMetrics", "LearningSignals",
     "UniversalEntity", "DocumentEntity", "ChunkEntity", "QueryEntity", "ResponseEntity",
+    "ContentOutlineEntity", "ContentPieceEntity", "VisualAssetEntity", "SocialAdaptationEntity",
+    "ContentTemplateEntity", "ContentPipelineEntity",
     "EntityRelationship", "OutcomeEvent", "SystemMetrics",
     "create_document_entity", "create_chunk_entity", "create_query_entity", "create_relationship",
+    "create_content_outline_entity", "create_content_piece_entity", "create_content_pipeline_entity",
     "validate_entity_consistency"
 ]
