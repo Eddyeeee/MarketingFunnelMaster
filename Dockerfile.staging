@@ -1,0 +1,49 @@
+# Dockerfile for UX Intelligence Engine - Staging Environment
+FROM node:18-alpine AS builder
+
+# Set working directory
+WORKDIR /app
+
+# Install dependencies
+COPY package*.json ./
+RUN npm ci --only=production
+
+# Copy source code
+COPY . .
+
+# Copy UX Intelligence Engine
+COPY TEC-code-UXIntelligenceEngine-v1.ts ./src/lib/ux-intelligence-engine.ts
+
+# Build the application
+ENV NODE_ENV=staging
+ENV UX_ENGINE_VERSION=v1.0
+RUN npm run build
+
+# Production image
+FROM node:18-alpine AS runner
+
+WORKDIR /app
+
+# Add non-root user
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+# Copy built application
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/src/lib/ux-intelligence-engine.ts ./src/lib/
+
+# Set permissions
+RUN chown -R nextjs:nodejs /app
+USER nextjs
+
+# Expose port
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:3000/health || exit 1
+
+# Start the application
+CMD ["node", "server.js"]
