@@ -1,0 +1,312 @@
+name: 🎯 Performance Budget Validation Pipeline
+
+on:
+  push:
+    branches: [ main, develop, 'staging/*' ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+    inputs:
+      device_override:
+        description: 'Force specific device type'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - 'all'
+          - 'mobile'
+          - 'desktop'
+          - 'tablet'
+      environment_override:
+        description: 'Force specific environment'
+        required: false
+        default: 'auto'
+        type: choice
+        options:
+          - 'auto'
+          - 'production'
+          - 'staging'
+          - 'development'
+      skip_budget_validation:
+        description: 'Skip budget validation (emergency override)'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  NODE_VERSION: '18'
+  CACHE_VERSION: 'v2'
+
+jobs:
+  # ===============================
+  # PERFORMANCE BUDGET VALIDATION
+  # ===============================
+  performance-budget-validation:
+    name: 🎯 Performance Budget Validation
+    runs-on: ubuntu-latest
+    if: ${{ !inputs.skip_budget_validation }}
+    strategy:
+      fail-fast: false
+      matrix:
+        device: ${{ fromJson(inputs.device_override == 'all' && '["mobile", "desktop", "tablet"]' || format('["{0}"]', inputs.device_override)) }}
+        include:
+          - device: mobile
+            budget_profile: mobile-strict
+            viewport: 375x667
+          - device: desktop
+            budget_profile: desktop-optimal
+            viewport: 1920x1080
+          - device: tablet
+            budget_profile: tablet-balanced
+            viewport: 768x1024
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # Need previous commit for regression detection
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🏗️ Build application
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: 🔍 Environment Detection
+        id: env-detect
+        run: |
+          if [ "${{ inputs.environment_override }}" != "auto" ]; then
+            echo "environment=${{ inputs.environment_override }}" >> $GITHUB_OUTPUT
+          elif [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "environment=production" >> $GITHUB_OUTPUT
+          elif [ "${{ github.ref }}" == "refs/heads/develop" ] || [[ "${{ github.ref }}" == refs/heads/staging/* ]]; then
+            echo "environment=staging" >> $GITHUB_OUTPUT
+          else
+            echo "environment=development" >> $GITHUB_OUTPUT
+          fi
+          
+          echo "branch=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          echo "commit=${{ github.sha }}" >> $GITHUB_OUTPUT
+          echo "device=${{ matrix.device }}" >> $GITHUB_OUTPUT
+
+      - name: 🚀 Start server
+        run: npm start &
+        env:
+          NODE_ENV: production
+          PORT: 3000
+
+      - name: ⏳ Wait for server
+        run: |
+          timeout 120 bash -c 'until curl -f http://localhost:3000/health 2>/dev/null; do sleep 2; done'
+          echo "Server is ready"
+
+      - name: 📊 Run Performance Budget Validation
+        id: budget-check
+        run: |
+          # Set environment variables for budget configuration
+          export LIGHTHOUSE_DEVICE=${{ matrix.device }}
+          export LIGHTHOUSE_ENVIRONMENT=${{ steps.env-detect.outputs.environment }}
+          export GITHUB_REF_NAME=${{ steps.env-detect.outputs.branch }}
+          
+          # Run Lighthouse CI with enhanced budget configuration
+          npm install -g @lhci/cli@0.12.x
+          
+          # Use the enhanced budget configuration
+          lhci autorun --config=lighthouse-budgets.config.js 2>&1 | tee lighthouse-output.log
+          
+          # Capture exit code
+          LHCI_EXIT_CODE=$?
+          echo "lhci_exit_code=$LHCI_EXIT_CODE" >> $GITHUB_OUTPUT
+          
+          # Extract performance metrics for reporting
+          if [ -f ".lighthouseci/lhr-*.json" ]; then
+            node -e "
+              const fs = require('fs');
+              const glob = require('glob');
+              const reports = glob.sync('.lighthouseci/lhr-*.json');
+              
+              if (reports.length > 0) {
+                const report = JSON.parse(fs.readFileSync(reports[0], 'utf8'));
+                const metrics = report.audits;
+                
+                console.log('PERFORMANCE_METRICS<<EOF');
+                console.log('LCP: ' + Math.round(metrics['largest-contentful-paint']?.numericValue || 0) + 'ms');
+                console.log('FCP: ' + Math.round(metrics['first-contentful-paint']?.numericValue || 0) + 'ms');
+                console.log('TBT: ' + Math.round(metrics['total-blocking-time']?.numericValue || 0) + 'ms');
+                console.log('CLS: ' + (metrics['cumulative-layout-shift']?.numericValue || 0).toFixed(3));
+                console.log('Performance Score: ' + Math.round((report.categories.performance?.score || 0) * 100) + '%');
+                console.log('EOF');
+              }
+            " >> $GITHUB_OUTPUT
+          fi
+          
+          # Return the original exit code
+          exit $LHCI_EXIT_CODE
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+          LHCI_BUILD_CONTEXT__GITHUB_SHA: ${{ github.sha }}
+          LHCI_BUILD_CONTEXT__GITHUB_REF: ${{ github.ref }}
+
+      - name: 📊 Performance Regression Detection
+        if: github.event_name == 'pull_request'
+        run: |
+          # Compare performance against base branch
+          git checkout ${{ github.event.pull_request.base.sha }}
+          npm run build
+          
+          # Run baseline performance check
+          export LIGHTHOUSE_DEVICE=${{ matrix.device }}
+          export LIGHTHOUSE_ENVIRONMENT=${{ steps.env-detect.outputs.environment }}
+          
+          lhci autorun --config=lighthouse-budgets.config.js --upload.target=filesystem --upload.outputDir=./baseline-reports
+          
+          # Compare results
+          node scripts/performance-regression-detector.cjs \
+            --baseline ./baseline-reports \
+            --current ./.lighthouseci \
+            --threshold 10 \
+            --device ${{ matrix.device }} \
+            --environment ${{ steps.env-detect.outputs.environment }}
+
+      - name: 📤 Upload Performance Reports
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: lighthouse-reports-${{ matrix.device }}-${{ steps.env-detect.outputs.environment }}
+          path: |
+            .lighthouseci/
+            lighthouse-reports/
+            lighthouse-output.log
+          retention-days: 30
+
+      - name: 💬 Performance Budget Comment (PR)
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const device = '${{ matrix.device }}';
+            const environment = '${{ steps.env-detect.outputs.environment }}';
+            const exitCode = '${{ steps.budget-check.outputs.lhci_exit_code }}';
+            const metrics = `${{ steps.budget-check.outputs.PERFORMANCE_METRICS }}`;
+            
+            const status = exitCode === '0' ? '✅ PASSED' : '❌ FAILED';
+            const deviceEmoji = device === 'mobile' ? '📱' : device === 'desktop' ? '🖥️' : '💻';
+            
+            const comment = `## ${deviceEmoji} Performance Budget ${status}
+            
+            **Device:** ${device} | **Environment:** ${environment}
+            
+            ### Performance Metrics
+            \`\`\`
+            ${metrics}
+            \`\`\`
+            
+            ${exitCode === '0' ? 
+              '🎉 All performance budgets are within acceptable limits!' : 
+              '⚠️ Performance budget violations detected. Please optimize before merging.'
+            }
+            
+            [View detailed report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            `;
+            
+            // Find existing comment to update
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number
+            });
+            
+            const existingComment = comments.data.find(c => 
+              c.body.includes(`Performance Budget`) && 
+              c.body.includes(`**Device:** ${device}`)
+            );
+            
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existingComment.id,
+                body: comment
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment
+              });
+            }
+
+      - name: 🚨 Budget Violation Alert
+        if: steps.budget-check.outputs.lhci_exit_code != '0'
+        run: |
+          echo "❌ Performance budget violation detected!"
+          echo "Device: ${{ matrix.device }}"
+          echo "Environment: ${{ steps.env-detect.outputs.environment }}"
+          echo "Build will fail unless emergency override is used."
+          
+          # Send Slack notification if webhook is configured
+          if [ -n "${{ secrets.SLACK_WEBHOOK_URL }}" ]; then
+            curl -X POST -H 'Content-type: application/json' \
+              --data "{\"text\":\"🚨 Performance Budget Violation\\n*Device:* ${{ matrix.device }}\\n*Environment:* ${{ steps.env-detect.outputs.environment }}\\n*Branch:* ${{ github.ref_name }}\\n*Commit:* ${{ github.sha }}\\n\\n<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Details>\"}" \
+              ${{ secrets.SLACK_WEBHOOK_URL }}
+          fi
+          
+          exit 1
+
+  # ===============================
+  # BUDGET VALIDATION SUMMARY
+  # ===============================
+  budget-validation-summary:
+    name: 📊 Budget Validation Summary
+    runs-on: ubuntu-latest
+    needs: performance-budget-validation
+    if: always() && !inputs.skip_budget_validation
+    steps:
+      - name: 📋 Validation Summary
+        run: |
+          echo "## 🎯 Performance Budget Validation Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Devices Tested:** ${{ join(fromJson(inputs.device_override == 'all' && '["mobile", "desktop", "tablet"]' || format('["{0}"]', inputs.device_override)), ', ') }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Validation Status:** ${{ needs.performance-budget-validation.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ needs.performance-budget-validation.result }}" == "success" ]; then
+            echo "✅ All performance budgets are compliant!" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Performance budget violations detected. Build blocked." >> $GITHUB_STEP_SUMMARY
+          fi
+
+  # ===============================
+  # EMERGENCY BYPASS NOTIFICATION
+  # ===============================
+  emergency-bypass-notification:
+    name: 🚨 Emergency Bypass Notification
+    runs-on: ubuntu-latest
+    if: inputs.skip_budget_validation
+    steps:
+      - name: 🚨 Emergency Bypass Alert
+        run: |
+          echo "🚨 EMERGENCY BYPASS ACTIVATED" >> $GITHUB_STEP_SUMMARY
+          echo "Performance budget validation has been skipped." >> $GITHUB_STEP_SUMMARY
+          echo "⚠️ This should only be used in critical situations." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Bypass Reason:** Manual override by ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Timestamp:** $(date -u)" >> $GITHUB_STEP_SUMMARY
+          
+          # Send critical alert if webhook is configured
+          if [ -n "${{ secrets.SLACK_WEBHOOK_URL }}" ]; then
+            curl -X POST -H 'Content-type: application/json' \
+              --data "{\"text\":\"🚨 EMERGENCY BYPASS ACTIVATED\\n*User:* ${{ github.actor }}\\n*Branch:* ${{ github.ref_name }}\\n*Reason:* Performance budget validation bypassed\\n\\n⚠️ Manual review required!\"}" \
+              ${{ secrets.SLACK_WEBHOOK_URL }}
+          fi
