@@ -395,9 +395,26 @@ app.include_router(
     tags=["Agent Communication"]
 )
 
+# Include Module 2C: A/B Testing & Conversion Optimization
+app.include_router(
+    ab_testing_router,
+    prefix="/api/v1/conversion",
+    tags=["A/B Testing"]
+)
+
+app.include_router(
+    behavioral_tracking_router,
+    prefix="/api/v1/conversion",
+    tags=["Behavioral Tracking"]
+)
+
 # Include existing API routers (V1 compatibility)
 from api.v1 import auth, agents, websites, analytics, intelligence
 from api import webhooks
+
+# Import Module 2C: A/B Testing Framework
+from src.api.conversion.ab_testing_controller import router as ab_testing_router
+from src.api.conversion.behavioral_tracking_controller import router as behavioral_tracking_router
 
 app.include_router(
     auth.router,

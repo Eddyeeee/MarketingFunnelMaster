@@ -57,6 +57,7 @@ pillow==10.1.0
 # Data Processing & Analysis
 pandas==2.1.4
 numpy==1.24.4
+scipy==1.11.4  # Statistical analysis for A/B testing
 
 # Authentication & Security
 python-jose[cryptography]==3.3.0

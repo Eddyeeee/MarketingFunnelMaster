@@ -18,10 +18,10 @@ import asyncio
 import logging
 from enum import Enum
 
-from ..database.connection import get_database_connection
-from ..services.websocket_manager import WebSocketManager
-from ..services.trigger_engine import TriggerEngine
-from ..models.behavioral_models import (
+from ...database.connection import get_database_connection
+from ...services.websocket_manager import WebSocketManager
+from ...services.trigger_engine import TriggerEngine
+from ...models.behavioral_models import (
     BehavioralEvent,
     BehavioralInsights,
     TriggerResponse,
