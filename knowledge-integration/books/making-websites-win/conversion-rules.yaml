@@ -1,0 +1,195 @@
+# 🎯 Making Websites Win - Conversion Rules Configuration
+
+knowledge_source:
+  book: "Making Websites Win"
+  extraction_date: "2025-07-05"
+  version: "1.0"
+  confidence_level: 0.9
+
+# Core conversion optimization principles
+conversion_principles:
+  
+  clarity_over_creativity:
+    id: "principle_001"
+    name: "Clarity Over Creativity"
+    description: "Clear, direct messaging consistently outperforms clever creativity"
+    confidence_score: 0.95
+    
+    application:
+      test_types: ["headline", "value_proposition", "cta_text"]
+      recommendations:
+        - "Use simple, direct language over clever wordplay"
+        - "Test benefit-focused headlines vs feature-focused"
+        - "Prioritize comprehension over engagement"
+      
+    ab_testing_rules:
+      variant_generation:
+        - type: "simplify_copy"
+          action: "Remove jargon and complex terms"
+        - type: "direct_benefit"
+          action: "Lead with primary benefit statement"
+        - type: "clarity_test"
+          action: "Test 5th-grade reading level version"
+      
+      success_metrics:
+        primary: "conversion_rate"
+        secondary: ["engagement_rate", "time_on_page"]
+        mobile_weight: 1.5  # Mobile performance weighted higher
+  
+  friction_reduction:
+    id: "principle_002" 
+    name: "Remove Friction from Conversion Path"
+    description: "Every additional step reduces conversion rate exponentially"
+    confidence_score: 0.92
+    
+    application:
+      test_types: ["form_optimization", "checkout_flow", "registration"]
+      recommendations:
+        - "Test fewer form fields vs current number"
+        - "Single-step vs multi-step processes"
+        - "Progressive disclosure of information"
+      
+    ab_testing_rules:
+      variant_generation:
+        - type: "reduce_fields"
+          action: "Remove non-essential form fields"
+        - type: "single_step"
+          action: "Combine multiple steps into one"
+        - type: "optional_fields"
+          action: "Make fields optional where possible"
+      
+      success_metrics:
+        primary: "completion_rate"
+        secondary: ["form_abandonment", "conversion_rate"]
+        thresholds:
+          minimum_improvement: 0.05  # 5% minimum improvement
+          
+  single_element_testing:
+    id: "principle_003"
+    name: "Single Element Testing"
+    description: "Test one element at a time for clear attribution"
+    confidence_score: 0.98
+    
+    application:
+      test_types: ["isolated_variable", "clean_attribution"]
+      recommendations:
+        - "Never test multiple elements simultaneously"
+        - "Isolate one variable per test"
+        - "Ensure clear cause-effect relationship"
+      
+    ab_testing_rules:
+      test_validation:
+        - rule: "single_variable_only"
+          validation: "Reject tests with multiple variables"
+        - rule: "control_isolation"
+          validation: "Ensure only one difference between variants"
+        - rule: "attribution_clarity"
+          validation: "Require clear success metric mapping"
+      
+      enforcement:
+        strict_mode: true
+        auto_reject_multi_variable: true
+        warning_threshold: 2  # Warning if >2 elements changed
+        
+  mobile_first_optimization:
+    id: "principle_004"
+    name: "Mobile-First Optimization"
+    description: "Mobile experience drives overall conversion performance"
+    confidence_score: 0.90
+    
+    application:
+      test_types: ["mobile_layout", "touch_interaction", "mobile_performance"]
+      recommendations:
+        - "Design for mobile screen sizes first"
+        - "Test touch-friendly interaction patterns"
+        - "Prioritize mobile page load speed"
+      
+    ab_testing_rules:
+      metric_weighting:
+        mobile_conversion_rate: 2.0    # 2x weight vs desktop
+        mobile_engagement: 1.5         # 1.5x weight vs desktop
+        mobile_load_time: 2.0          # 2x weight vs desktop
+      
+      variant_requirements:
+        mobile_responsive: true
+        touch_optimized: true
+        mobile_load_time_max: 3.0  # seconds
+        
+  statistical_significance:
+    id: "principle_005"
+    name: "Statistical Significance Before Decisions"
+    description: "Wait for statistical significance before declaring winners"
+    confidence_score: 0.96
+    
+    application:
+      test_types: ["result_validation", "decision_timing"]
+      recommendations:
+        - "Enforce minimum sample sizes"
+        - "Require 95% confidence level"
+        - "Prevent premature test termination"
+      
+    ab_testing_rules:
+      significance_requirements:
+        confidence_level: 0.95         # 95% confidence required
+        minimum_sample_size: 1000      # Per variant
+        minimum_conversions: 50        # Per variant
+        minimum_test_duration: 7       # days
+        
+      early_stopping:
+        enabled: false                 # Prevent early stopping
+        exception_criteria:
+          significant_negative_impact: true  # Stop if harmful
+          confidence_threshold: 0.99        # 99% confidence for early stop
+
+# Integration configuration
+integration_config:
+  target_framework: "ab_testing_framework"
+  enhancement_mode: "additive"  # Don't modify core functionality
+  fallback_enabled: true
+  
+  hooks:
+    test_creation: "apply_conversion_principles"
+    variant_generation: "suggest_principle_based_variants"
+    result_analysis: "validate_statistical_significance"
+    decision_making: "enforce_significance_requirements"
+  
+  monitoring:
+    track_enhancement_effectiveness: true
+    compare_enhanced_vs_original: true
+    log_principle_applications: true
+
+# A/B testing enhancement settings
+enhancement_settings:
+  auto_apply_principles: true
+  suggest_improvements: true
+  validate_test_design: true
+  mobile_priority: true
+  
+  confidence_thresholds:
+    minimum_for_application: 0.7
+    recommended_for_auto_apply: 0.8
+    required_for_strict_mode: 0.9
+  
+  fallback_behavior:
+    on_principle_failure: "use_original_method"
+    on_low_confidence: "suggest_only"
+    on_system_error: "disable_enhancement"
+
+# Success tracking
+success_metrics:
+  enhancement_effectiveness:
+    - "conversion_rate_improvement"
+    - "test_quality_score"
+    - "statistical_significance_rate"
+    - "mobile_conversion_improvement"
+    - "decision_accuracy_rate"
+  
+  baseline_comparison:
+    compare_against: "original_ab_testing"
+    measurement_period: "30_days"
+    required_improvement: 0.1  # 10% improvement threshold
+    
+  reporting:
+    daily_metrics: true
+    weekly_summary: true
+    monthly_analysis: true
