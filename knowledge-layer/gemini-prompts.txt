@@ -1,0 +1,159 @@
+# Gemini API Extraction Prompts for "Making Websites Win"
+
+## Main Extraction Prompt
+
+```
+You are extracting actionable knowledge from "Making Websites Win" for a digital marketing knowledge base. 
+
+For the provided page/section, identify and extract:
+
+1. CONVERSION PRINCIPLES
+   - Look for: Specific rules, optimization techniques, performance improvements
+   - Must include: Statistical evidence or measurable outcomes
+   - Format: {"category": "conversion_principle", "title": "", "content": "", "evidence": "", "implementation": "", "expected_impact": ""}
+
+2. VISUAL INSIGHTS  
+   - Look for: References to diagrams, charts, screenshots, visual examples
+   - Must include: Description of visual and its conversion insight
+   - Format: {"category": "visual_insight", "title": "", "visual_description": "", "insight": "", "implementation": "", "use_case": ""}
+
+3. IMPLEMENTATION RULES
+   - Look for: Step-by-step instructions, "how to" sections, specific tactics
+   - Must include: Clear action steps and success criteria
+   - Format: {"category": "implementation_rule", "title": "", "steps": [], "success_criteria": "", "complexity": "simple|medium|complex"}
+
+4. DATA POINTS & STATISTICS
+   - Look for: Percentages, A/B test results, conversion rates, benchmarks
+   - Must include: Source context and application
+   - Format: {"category": "data_point", "statistic": "", "source": "", "context": "", "application": ""}
+
+5. CASE STUDIES
+   - Look for: Company examples, before/after scenarios, real results
+   - Must include: Measurable outcomes and replicable methods
+   - Format: {"category": "case_study", "company": "", "challenge": "", "solution": "", "results": "", "replicable_pattern": ""}
+
+QUALITY REQUIREMENTS:
+- Only extract content with specific, measurable outcomes
+- Include page references for all extractions
+- Exclude vague or general marketing advice
+- Focus on actionable, implementable guidance
+
+OUTPUT FORMAT: Valid JSON array with extracted items
+```
+
+## Follow-up Validation Prompt
+
+```
+Review the extracted items and validate quality:
+
+1. Does each item include specific, measurable outcomes?
+2. Can each implementation be completed within the stated complexity level?
+3. Is the evidence credible and specific?
+4. Are the instructions actionable and clear?
+
+For any item that doesn't meet quality standards, either:
+- IMPROVE: Add missing specificity, evidence, or implementation details
+- REMOVE: If item is too vague or theoretical
+
+Return only HIGH-QUALITY extractions that meet all criteria.
+```
+
+## Image/Visual Analysis Prompt
+
+```
+Analyze this visual element from "Making Websites Win":
+
+1. VISUAL TYPE: Diagram, chart, screenshot, infographic, etc.
+2. MAIN INSIGHT: What conversion principle does this visual demonstrate?
+3. SPECIFIC ELEMENTS: What specific visual elements contribute to the insight?
+4. IMPLEMENTATION: How can this visual insight be applied to other websites?
+5. METRICS: Are there any performance numbers or improvements shown?
+
+Extract as:
+{
+  "category": "visual_insight",
+  "visual_type": "",
+  "title": "",
+  "visual_description": "",
+  "conversion_insight": "",
+  "specific_elements": [],
+  "implementation": "",
+  "expected_impact": "",
+  "page_reference": ""
+}
+```
+
+## Chapter Summary Prompt
+
+```
+Summarize the key conversion principles from this chapter of "Making Websites Win":
+
+1. List the 3-5 most important conversion principles
+2. Identify the strongest statistical evidence presented
+3. Note the most actionable implementation rules
+4. Highlight any breakthrough insights or "aha moments"
+
+For each principle, provide:
+- Core concept (1 sentence)
+- Supporting evidence (specific data/results)
+- Implementation difficulty (simple/medium/complex)
+- Expected business impact (revenue/conversion/UX)
+
+Focus on principles that can be immediately applied to modern websites.
+```
+
+## Data Extraction Prompt
+
+```
+Extract all quantitative data from this section:
+
+CONVERSION RATES:
+- Before/after percentages
+- A/B test results
+- Industry benchmarks
+- Performance improvements
+
+STATISTICS:
+- User behavior data
+- Market research findings
+- Technical performance metrics
+- Business impact numbers
+
+For each data point, provide:
+{
+  "metric": "",
+  "value": "",
+  "context": "",
+  "source": "",
+  "reliability": "high|medium|low",
+  "application": "",
+  "page_reference": ""
+}
+
+Only extract data with clear source attribution and specific application context.
+```
+
+## API Call Instructions
+
+### Batch Processing
+1. Process 2-3 pages per API call to maintain context
+2. Start with table of contents to identify priority chapters
+3. Focus on chapters with "conversion", "optimization", "testing" in titles
+4. Process visual-heavy sections separately with image analysis
+
+### Error Handling
+- If extraction returns too few items, prompt for deeper analysis
+- If quality is low, re-run with validation prompt
+- For complex visuals, use dedicated image analysis prompt
+
+### Optimization
+- Combine related pages (introduction + principle + case study)
+- Use chapter summary for high-level overview first
+- Then drill down with specific extraction prompts
+- Cross-reference extractions for consistency
+
+### Rate Limiting
+- Process maximum 5 API calls per minute
+- Allow 2-second delays between calls
+- Monitor response quality vs. speed
+- Prioritize quality over quantity

@@ -1,0 +1,178 @@
+# Knowledge Extraction Validation Criteria
+
+extraction_quality:
+  high_quality:
+    requirements:
+      - specific_measurable_outcome: true
+      - statistical_evidence: true
+      - clear_implementation: true
+      - business_impact: "direct_revenue"
+      - source_attribution: true
+    scoring_weight: 100
+    auto_approve: true
+    
+  medium_quality:
+    requirements:
+      - specific_measurable_outcome: true
+      - case_study_evidence: true
+      - general_implementation: true
+      - business_impact: ["conversion", "ux"]
+      - source_attribution: false
+    scoring_weight: 75
+    auto_approve: false
+    
+  low_quality:
+    requirements:
+      - specific_measurable_outcome: false
+      - theoretical_basis: true
+      - vague_implementation: true
+      - business_impact: "qualitative"
+    scoring_weight: 25
+    auto_approve: false
+    reject_threshold: true
+
+content_validation:
+  conversion_principle:
+    required_fields:
+      - title: "string, 3-50 chars"
+      - content: "string, 10-500 chars"
+      - evidence: "string, statistical or case study"
+      - implementation: "string, actionable steps"
+      - expected_impact: "string, measurable outcome"
+    quality_checks:
+      - contains_percentage: true
+      - actionable_within_24h: true
+      - applies_to_digital_business: true
+      - not_outdated_technology: true
+      
+  visual_insight:
+    required_fields:
+      - visual_description: "string, clear description"
+      - conversion_insight: "string, specific principle"
+      - implementation: "string, how to apply"
+      - use_case: "string, when to use"
+    quality_checks:
+      - visual_clearly_described: true
+      - insight_actionable: true
+      - implementation_specific: true
+      
+  implementation_rule:
+    required_fields:
+      - title: "string"
+      - steps: "array, specific actions"
+      - success_criteria: "string, measurable"
+      - complexity: "enum: simple|medium|complex"
+    quality_checks:
+      - steps_clear_sequence: true
+      - success_measurable: true
+      - complexity_realistic: true
+      
+  data_point:
+    required_fields:
+      - statistic: "string, specific number"
+      - source: "string, attribution"
+      - context: "string, where applicable"
+      - application: "string, how to use"
+    quality_checks:
+      - source_credible: true
+      - context_specific: true
+      - application_clear: true
+      
+  case_study:
+    required_fields:
+      - company: "string"
+      - challenge: "string"
+      - solution: "string"
+      - results: "string, measurable"
+      - replicable_pattern: "string"
+    quality_checks:
+      - results_quantified: true
+      - pattern_generalizable: true
+      - solution_specific: true
+
+rejection_criteria:
+  automatic_reject:
+    - vague_language: ["might", "could", "possibly", "generally"]
+    - no_evidence: true
+    - outdated_references: ["flash", "internet explorer", "dial-up"]
+    - generic_advice: true
+    - theoretical_only: true
+    
+  flag_for_review:
+    - low_confidence_extraction: true
+    - missing_context: true
+    - conflicting_information: true
+    - unusual_claim: true
+
+validation_workflow:
+  pre_extraction:
+    - verify_page_contains_actionable_content: true
+    - check_for_statistical_evidence: true
+    - identify_visual_elements: true
+    
+  during_extraction:
+    - apply_quality_filters: true
+    - validate_required_fields: true
+    - check_rejection_criteria: true
+    
+  post_extraction:
+    - cross_validate_claims: true
+    - verify_implementation_feasibility: true
+    - assess_business_relevance: true
+    - score_overall_quality: true
+
+quality_scoring:
+  weights:
+    evidence_quality: 30%
+    implementation_clarity: 25%
+    business_impact: 25%
+    measurable_outcome: 20%
+    
+  thresholds:
+    auto_approve: 85
+    manual_review: 60
+    auto_reject: 40
+    
+  scoring_factors:
+    statistical_evidence: +20
+    case_study_evidence: +15
+    specific_numbers: +15
+    clear_steps: +15
+    measurable_outcome: +15
+    source_attribution: +10
+    modern_relevance: +10
+
+integration_requirements:
+  knowledge_base:
+    - unique_extraction_id: true
+    - proper_categorization: true
+    - searchable_tags: true
+    - difficulty_rating: true
+    - business_impact_score: true
+    
+  api_compatibility:
+    - json_valid_format: true
+    - consistent_schema: true
+    - proper_escaping: true
+    - size_limits: "max 2KB per extraction"
+    
+  version_control:
+    - extraction_timestamp: true
+    - source_book_version: true
+    - extractor_version: true
+    - validation_score: true
+
+metadata_requirements:
+  mandatory:
+    - extraction_id: "unique identifier"
+    - page_reference: "exact page number"
+    - chapter_context: "section/topic"
+    - confidence_level: "high|medium|low"
+    - complexity: "simple|medium|complex"
+    - business_impact: "direct_revenue|conversion|ux|brand"
+    
+  optional:
+    - related_extractions: "array of ids"
+    - implementation_time: "estimated hours"
+    - prerequisite_knowledge: "required skills"
+    - success_examples: "real world applications"

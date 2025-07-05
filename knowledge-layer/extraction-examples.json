@@ -1,0 +1,141 @@
+{
+  "example_extractions": [
+    {
+      "type": "conversion_principle",
+      "example": {
+        "extraction_id": "mww_001",
+        "category": "conversion_principle",
+        "title": "Above-Fold Value Proposition Rule",
+        "content": "Clear value proposition visible without scrolling increases conversions by 23-47% across tested landing pages",
+        "evidence": "A/B test with 50,000 visitors across 12 industries showed 23% minimum improvement, 47% maximum",
+        "implementation": "1. Place primary benefit statement in top 100px of page 2. Use contrasting colors for visibility 3. Include specific outcome or benefit 4. Test against current version for 2 weeks",
+        "expected_impact": "15-25% conversion improvement within 30 days",
+        "page_reference": "47",
+        "chapter": "Landing Page Optimization",
+        "confidence": "high",
+        "complexity": "simple",
+        "business_impact": "direct_revenue"
+      },
+      "why_good": "Contains specific percentage improvement, detailed implementation steps, clear testing methodology, and measurable expected outcome"
+    },
+    {
+      "type": "visual_insight", 
+      "example": {
+        "extraction_id": "mww_002",
+        "category": "visual_insight",
+        "visual_type": "heatmap_analysis",
+        "title": "F-Pattern Eye Tracking for Landing Pages",
+        "visual_description": "Heatmap showing user eye movement in F-pattern: horizontal scan at top, second horizontal scan lower, then vertical scan down left side",
+        "conversion_insight": "Users spend 80% of viewing time in F-pattern area, placing key elements outside this pattern reduces engagement by 65%",
+        "specific_elements": [
+          "Primary headline in top horizontal scan",
+          "Key benefits in second horizontal scan", 
+          "Call-to-action button in left vertical scan area",
+          "Trust signals (testimonials) in F-pattern zones"
+        ],
+        "implementation": "Position headline, key benefits, CTA, and social proof within F-pattern zones based on 1024px width standard",
+        "expected_impact": "20-35% improvement in page engagement metrics",
+        "page_reference": "73",
+        "chapter": "Visual Design Psychology",
+        "confidence": "high",
+        "complexity": "medium",
+        "business_impact": "conversion"
+      },
+      "why_good": "Specific visual description, quantified user behavior data, clear element positioning rules, and measurable engagement improvement"
+    },
+    {
+      "type": "implementation_rule",
+      "example": {
+        "extraction_id": "mww_003", 
+        "category": "implementation_rule",
+        "title": "Mobile-First Form Optimization Protocol",
+        "steps": [
+          "Reduce form fields to maximum 3 for mobile signup",
+          "Use auto-complete and input type attributes for faster entry", 
+          "Implement real-time validation with green checkmarks",
+          "Add progress indicator for multi-step forms",
+          "Test form on actual devices, not just browser resize"
+        ],
+        "success_criteria": "Form completion rate >65% on mobile devices, <30 seconds average completion time",
+        "complexity": "medium",
+        "context": "Mobile signup forms with conversion rate <40%",
+        "page_reference": "156",
+        "chapter": "Mobile Conversion Optimization",
+        "confidence": "high",
+        "business_impact": "direct_revenue"
+      },
+      "why_good": "Step-by-step actionable instructions, specific success metrics, appropriate complexity rating, and clear application context"
+    },
+    {
+      "type": "data_point",
+      "example": {
+        "extraction_id": "mww_004",
+        "category": "data_point", 
+        "statistic": "Checkout abandonment drops 37% when security badges are visible during payment",
+        "source": "Baymard Institute study of 2,000 e-commerce checkouts",
+        "context": "E-commerce checkout pages with payment form visible",
+        "application": "Add SSL certificate badge, payment security logos, and privacy policy link within 200px of payment fields",
+        "page_reference": "203",
+        "chapter": "Trust and Security Optimization",
+        "confidence": "high",
+        "reliability": "high",
+        "business_impact": "direct_revenue"
+      },
+      "why_good": "Specific percentage improvement, credible source attribution, clear application context, and direct revenue impact"
+    },
+    {
+      "type": "case_study",
+      "example": {
+        "extraction_id": "mww_005",
+        "category": "case_study",
+        "company": "SaaS Startup (anonymized)",
+        "challenge": "Trial signup conversion rate stuck at 2.3% despite high traffic volume",
+        "solution": "Implemented exit-intent popup with simplified 2-field form and '7-day free trial' emphasis instead of '30-day trial'",
+        "results": "Conversion rate increased to 3.8% (65% improvement), trial-to-paid rate remained constant at 18%",
+        "replicable_pattern": "Exit-intent + simplified form + shorter trial period = higher initial conversion without reducing quality",
+        "page_reference": "134",
+        "chapter": "Case Studies in Conversion Optimization", 
+        "confidence": "medium",
+        "complexity": "simple",
+        "business_impact": "direct_revenue"
+      },
+      "why_good": "Specific before/after metrics, clear solution methodology, quantified results, and extractable pattern for replication"
+    }
+  ],
+  "extraction_quality_examples": {
+    "excellent_extraction": {
+      "has": [
+        "Specific percentage or numerical improvement",
+        "Clear step-by-step implementation",
+        "Credible source or testing methodology", 
+        "Measurable success criteria",
+        "Modern relevance and applicability"
+      ],
+      "example": "Above-fold value proposition example - contains 23-47% improvement range, 4-step implementation, 50k visitor test data, and measurable 30-day outcome"
+    },
+    "poor_extraction": {
+      "has": [
+        "Vague language like 'improves performance'",
+        "No specific implementation guidance",
+        "No evidence or source attribution",
+        "Outdated technology references",
+        "Theoretical advice without practical application"
+      ],
+      "example": "Bad: 'Good design improves conversions' - no specifics, no evidence, no implementation guidance"
+    }
+  },
+  "validation_examples": {
+    "auto_approve": {
+      "criteria": "Score >85, statistical evidence, clear implementation, direct revenue impact",
+      "example": "mww_001 - has 23-47% improvement data, 4-step implementation, A/B test evidence, direct conversion impact"
+    },
+    "manual_review": {
+      "criteria": "Score 60-85, case study evidence, general implementation, indirect impact", 
+      "example": "mww_005 - has case study evidence and good results, but anonymized source reduces confidence score"
+    },
+    "auto_reject": {
+      "criteria": "Score <40, no evidence, vague implementation, theoretical only",
+      "example": "Generic advice like 'make your website user-friendly' without specifics or evidence"
+    }
+  }
+}
