@@ -1,0 +1,55 @@
+{
+  "module_imports": [
+    {
+      "module": "device_intelligence_enhanced",
+      "status": "failed",
+      "error": "No module named 'user_agents'"
+    },
+    {
+      "module": "content_variant_generator",
+      "status": "failed",
+      "error": "No module named 'user_agents'"
+    },
+    {
+      "module": "performance_optimization_framework",
+      "status": "failed",
+      "error": "No module named 'user_agents'"
+    },
+    {
+      "module": "device_variant_integration",
+      "status": "failed",
+      "error": "attempted relative import beyond top-level package"
+    }
+  ],
+  "class_instantiation": [
+    {
+      "class": "AdvancedDeviceDetector",
+      "status": "failed",
+      "error": "local variable 'AdvancedDeviceDetector' referenced before assignment"
+    },
+    {
+      "class": "IntelligentContentVariantGenerator",
+      "status": "failed",
+      "error": "local variable 'IntelligentContentVariantGenerator' referenced before assignment"
+    },
+    {
+      "class": "RealTimePerformanceMonitor",
+      "status": "failed",
+      "error": "local variable 'RealTimePerformanceMonitor' referenced before assignment"
+    },
+    {
+      "class": "AdaptivePerformanceOptimizer",
+      "status": "failed",
+      "error": "local variable 'AdaptivePerformanceOptimizer' referenced before assignment"
+    },
+    {
+      "class": "IntegratedDeviceAwarePersonalizationEngine",
+      "status": "failed",
+      "error": "local variable 'IntegratedDeviceAwarePersonalizationEngine' referenced before assignment"
+    }
+  ],
+  "method_validation": [],
+  "integration_validation": [],
+  "overall_status": "error",
+  "critical_error": "local variable 'AdvancedDeviceDetector' referenced before assignment"
+}
