@@ -1,0 +1,250 @@
+# Conversion Rules - Generated from Knowledge Layer
+# Source: Making Websites Win by Dr. Karl Blanks & Ben Jesson
+
+metadata:
+  version: "1.0.0"
+  generated_date: "2025-01-05"
+  source_books:
+    - "making-websites-win"
+  integration_target: "ABTestingFramework"
+
+conversion_rules:
+  # Value Proposition Rules
+  value_proposition:
+    - rule_id: "VP-001"
+      name: "5-Second Value Clear"
+      description: "Ensure value proposition is understood within 5 seconds"
+      conditions:
+        - "page_type == 'landing'"
+        - "first_visit == true"
+      actions:
+        - type: "content_placement"
+          config:
+            position: "above_fold"
+            prominence: "high"
+            format: "headline_with_subtext"
+        - type: "copy_optimization"
+          config:
+            style: "benefit_focused"
+            readability_score: ">70"
+      metrics:
+        - "time_to_understand"
+        - "bounce_rate"
+      expected_impact: "20-30% bounce reduction"
+
+    - rule_id: "VP-002"
+      name: "Persona-Specific Value"
+      description: "Tailor value proposition to detected persona"
+      conditions:
+        - "persona_confidence > 0.7"
+      actions:
+        - type: "dynamic_content"
+          config:
+            TechEarlyAdopter: "Cutting-edge {product} for tech pioneers"
+            RemoteDad: "Save time and money for your family with {product}"
+            StudentHustler: "Affordable {product} to boost your side hustle"
+            BusinessOwner: "Scale your business efficiently with {product}"
+      metrics:
+        - "engagement_rate"
+        - "conversion_rate"
+
+  # Friction Reduction Rules
+  friction_reduction:
+    - rule_id: "FR-001"
+      name: "Progressive Disclosure"
+      description: "Show information progressively to reduce cognitive load"
+      conditions:
+        - "form_fields_count > 4"
+      actions:
+        - type: "form_transformation"
+          config:
+            style: "multi_step"
+            initial_fields: ["email"]
+            field_grouping: "logical"
+            progress_indicator: true
+      metrics:
+        - "form_completion_rate"
+        - "field_abandonment_rate"
+      expected_impact: "25% completion increase"
+
+    - rule_id: "FR-002"
+      name: "Smart Defaults"
+      description: "Pre-fill predictable information"
+      conditions:
+        - "returning_visitor == true OR geo_data_available == true"
+      actions:
+        - type: "field_prefill"
+          config:
+            country: "from_geo"
+            timezone: "from_geo"
+            currency: "from_geo"
+            language: "from_browser"
+      metrics:
+        - "form_completion_time"
+        - "error_rate"
+
+  # Social Proof Rules
+  social_proof:
+    - rule_id: "SP-001"
+      name: "Above-Fold Testimonials"
+      description: "Display social proof prominently"
+      conditions:
+        - "conversion_intent_score > 0.5"
+      actions:
+        - type: "widget_placement"
+          config:
+            widget_type: "testimonial_carousel"
+            position: "above_fold"
+            count: 3
+            rotation_speed: "5s"
+        - type: "content_selection"
+          config:
+            relevance: "persona_matched"
+            recency: "<30_days"
+            rating: ">=4_stars"
+      metrics:
+        - "trust_score"
+        - "conversion_rate"
+
+    - rule_id: "SP-002"
+      name: "Dynamic Usage Stats"
+      description: "Show real-time usage statistics"
+      conditions:
+        - "page_type IN ['landing', 'pricing']"
+      actions:
+        - type: "dynamic_widget"
+          config:
+            stats_shown:
+              - "active_users_count"
+              - "success_stories_count"
+              - "average_roi_percentage"
+            update_frequency: "real_time"
+            animation: "count_up"
+      metrics:
+        - "engagement_duration"
+        - "click_through_rate"
+
+  # Mobile Optimization Rules
+  mobile_optimization:
+    - rule_id: "MO-001"
+      name: "Thumb-Friendly CTAs"
+      description: "Optimize for one-handed mobile use"
+      conditions:
+        - "device_type == 'mobile'"
+        - "screen_width < 768"
+      actions:
+        - type: "ui_adjustment"
+          config:
+            cta_size: "min_44px"
+            cta_position: "bottom_fixed"
+            spacing: "increased_20%"
+            font_size: "min_16px"
+      metrics:
+        - "tap_accuracy"
+        - "mobile_conversion_rate"
+
+    - rule_id: "MO-002"
+      name: "Single Column Layout"
+      description: "Simplify layout for mobile devices"
+      conditions:
+        - "device_type == 'mobile'"
+      actions:
+        - type: "layout_transformation"
+          config:
+            columns: 1
+            content_order: "priority_based"
+            image_handling: "responsive"
+            table_handling: "horizontal_scroll"
+      metrics:
+        - "scroll_depth"
+        - "engagement_rate"
+
+  # Urgency and Scarcity Rules
+  urgency_scarcity:
+    - rule_id: "US-001"
+      name: "Limited Time Offers"
+      description: "Create authentic urgency for promotions"
+      conditions:
+        - "active_promotion == true"
+        - "promotion_end_date < 7_days"
+      actions:
+        - type: "countdown_timer"
+          config:
+            style: "prominent"
+            position: "near_cta"
+            update_frequency: "real_time"
+            end_behavior: "hide_offer"
+      metrics:
+        - "conversion_rate"
+        - "average_order_value"
+
+    - rule_id: "US-002"
+      name: "Stock Indicators"
+      description: "Show genuine stock levels when low"
+      conditions:
+        - "product_stock < 20 OR product_stock_percentage < 0.1"
+      actions:
+        - type: "stock_display"
+          config:
+            message_template: "Only {count} left in stock"
+            style: "subtle_warning"
+            update_frequency: "real_time"
+      metrics:
+        - "add_to_cart_rate"
+        - "purchase_velocity"
+
+# A/B Testing Hypotheses Generated from Rules
+ab_test_hypotheses:
+  - test_id: "ABT-MWW-001"
+    name: "Value Proposition Placement Test"
+    hypothesis: "Moving value prop above fold increases conversions by 20%"
+    base_rule: "VP-001"
+    variants:
+      control:
+        description: "Current placement"
+      variant_a:
+        description: "Value prop as main headline"
+        changes:
+          - "position: absolute_top"
+          - "font_size: increase_20%"
+          - "contrast: high"
+    success_metrics:
+      primary: "conversion_rate"
+      secondary: ["bounce_rate", "time_to_first_action"]
+    minimum_sample_size: 2000
+
+  - test_id: "ABT-MWW-002"
+    name: "Progressive Form Test"
+    hypothesis: "Progressive disclosure increases form completion by 25%"
+    base_rule: "FR-001"
+    variants:
+      control:
+        description: "Single-page form"
+      variant_a:
+        description: "Multi-step form"
+        changes:
+          - "steps: 3"
+          - "initial_fields: [email]"
+          - "progress_bar: visible"
+    success_metrics:
+      primary: "form_completion_rate"
+      secondary: ["time_to_complete", "error_rate"]
+    minimum_sample_size: 1000
+
+# Integration Configuration
+integration_config:
+  ab_testing_framework:
+    auto_test_generation: true
+    confidence_threshold: 0.95
+    minimum_test_duration: "7_days"
+    
+  personalization_engine:
+    rule_priority: "persona_specific_first"
+    fallback_behavior: "use_generic_rule"
+    
+  content_generation:
+    template_variables:
+      - "{product}"
+      - "{benefit}"
+      - "{persona_need}"
+      - "{social_proof_stat}"

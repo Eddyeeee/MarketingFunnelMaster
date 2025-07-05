@@ -1,0 +1,94 @@
+# Book Extraction Template
+# This template defines how to extract knowledge from business books
+
+book_metadata:
+  title: ""
+  author: ""
+  isbn: ""
+  category: ""
+  relevance_score: 0  # 1-10 scale
+  extraction_date: ""
+  extracted_by: ""
+
+extraction_structure:
+  # Core concepts that can be directly applied to our system
+  core_principles:
+    - principle_id: ""
+      name: ""
+      description: ""
+      actionable_insight: ""
+      implementation_priority: ""  # high/medium/low
+      applicable_to:  # Which parts of our system
+        - ""
+      
+  # Specific techniques/tactics
+  techniques:
+    - technique_id: ""
+      name: ""
+      description: ""
+      step_by_step:
+        - ""
+      expected_outcome: ""
+      measurement_metric: ""
+      
+  # Case studies or examples
+  case_studies:
+    - case_id: ""
+      company: ""
+      challenge: ""
+      solution: ""
+      result: ""
+      key_takeaway: ""
+      
+  # Direct quotes for reference
+  key_quotes:
+    - quote: ""
+      page: ""
+      context: ""
+      relevance: ""
+      
+  # Metrics and benchmarks
+  metrics:
+    - metric_name: ""
+      benchmark_value: ""
+      industry: ""
+      significance: ""
+      
+  # Tools or frameworks mentioned
+  tools_frameworks:
+    - name: ""
+      purpose: ""
+      how_to_use: ""
+      integration_potential: ""
+
+# Conversion to our system
+system_integration:
+  # How this knowledge maps to our architecture
+  component_mapping:
+    - knowledge_element: ""
+      target_component: ""  # e.g., "PersonalizationEngine", "ABTestingFramework"
+      integration_type: ""  # rule/algorithm/configuration
+      
+  # Specific rules to generate
+  generated_rules:
+    - rule_id: ""
+      rule_type: ""  # conversion/personalization/optimization
+      condition: ""
+      action: ""
+      expected_impact: ""
+      
+  # A/B test ideas
+  test_hypotheses:
+    - hypothesis: ""
+      control: ""
+      variant: ""
+      success_metric: ""
+      minimum_sample_size: ""
+
+# Quality control
+validation:
+  accuracy_check: false
+  relevance_check: false
+  actionability_check: false
+  integration_feasibility: false
+  reviewer_notes: ""
